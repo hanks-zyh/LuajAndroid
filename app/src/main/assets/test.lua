@@ -10,13 +10,16 @@
 --
 -- Arguments are the activity and the view.
 
+-- require "import"
 
 local activity, view = ...
 print('activity', activity, 'view', view)
 
+activity:setTitle('HHHHH')
+
 -- AlertDialog
-local DB = luajava.bindClass('android.app.AlertDialog$Builder')
-local dl = DB.new(activity)
+local AlertDialog_Builder = luajava.bindClass('android.app.AlertDialog$Builder')
+local dl = AlertDialog_Builder.new(activity)
 dl:setTitle('标题待定')
 dl:setMessage('呢哦人')
 dl:show()
