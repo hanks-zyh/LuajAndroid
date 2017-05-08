@@ -1,4 +1,4 @@
-package pub.hanks.luaj_android;
+package pub.hanks.luaj;
 
 import org.junit.Test;
 

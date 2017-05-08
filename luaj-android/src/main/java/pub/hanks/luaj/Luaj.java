@@ -1,10 +1,12 @@
-package pub.hanks.luaj_android;
+package pub.hanks.luaj;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.ResourceFinder;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+
+import pub.hanks.luaj.net.Http;
 
 /**
  * Created by hanks on 2017/5/3. Copyright (C) 2017 Hanks

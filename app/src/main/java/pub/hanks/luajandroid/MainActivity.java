@@ -2,7 +2,7 @@ package pub.hanks.luajandroid;
 
 import android.os.Bundle;
 
-import pub.hanks.luaj_android.LuajActivity;
+import pub.hanks.luaj.LuajActivity;
 
 public class MainActivity extends LuajActivity {
 

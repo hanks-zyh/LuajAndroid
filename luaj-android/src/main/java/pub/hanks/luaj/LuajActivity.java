@@ -1,6 +1,5 @@
-package pub.hanks.luaj_android;
+package pub.hanks.luaj;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +9,8 @@ import org.luaj.vm2.lib.ResourceFinder;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import java.io.InputStream;
+
+import pub.hanks.luaj.net.Http;
 
 /**
  * Created by hanks on 2017/5/3. Copyright (C) 2017 Hanks
@@ -25,7 +26,8 @@ public class LuajActivity extends AppCompatActivity implements ResourceFinder {
         try {
             luaj = Luaj.getInstance(this);
             LuaValue activity = CoerceJavaToLua.coerce(this);
-            luaj.loadfile("main.lua").call(activity);
+            Http http = Http.getInstance();
+            luaj.loadfile("main.lua").call(activity, CoerceJavaToLua.coerce(http));
             luaj.callLua("onCreate", savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package pub.hanks.luaj_android;
+package pub.hanks.luaj;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

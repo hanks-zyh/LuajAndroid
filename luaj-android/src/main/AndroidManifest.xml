@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-          package="pub.hanks.luaj_android"
+          package="pub.hanks.luaj"
 >
 
     <application android:allowBackup="true"
