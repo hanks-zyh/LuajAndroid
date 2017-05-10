@@ -5,14 +5,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.luajava.JavaFunction;
+import com.luajava.LuaException;
+import com.luajava.LuaObject;
+import com.luajava.LuaState;
+import com.luajava.LuaStateFactory;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
-
-import luajava.JavaFunction;
-import luajava.LuaException;
-import luajava.LuaObject;
-import luajava.LuaState;
-import luajava.LuaStateFactory;
 
 public class LuaThread extends Thread implements Runnable {
     public boolean isRun = false;
@@ -193,7 +193,7 @@ public class LuaThread extends Thread implements Runnable {
         }
         L.pushJavaObject(this);
         L.setGlobal("this");
-        L.pushContext(mLuaContext.getContext());
+        L.pushContext(mLuaContext);
 
         JavaFunction print = new LuaPrint(mLuaContext, L);
         print.register("print");

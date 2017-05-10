@@ -4,6 +4,7 @@ import android.util.Log;
 
 
 /**
+ * Logs
  * Created by hanks on 2016/11/19.
  */
 
@@ -13,25 +14,25 @@ public class Logs {
 
     public static void i(String s) {
         if (logOpen) {
-            Log.i(TAG, s);
+            Log.i(TAG, s==null?"null":s);
         }
     }
 
     public static void w(String s) {
         if (logOpen) {
-            Log.w(TAG, s);
+            Log.w(TAG, s==null?"null":s);
         }
     }
 
     public static void d(String s) {
         if (logOpen) {
-            Log.d(TAG, s);
+            Log.d(TAG, s==null?"null":s);
         }
     }
 
     public static void e(String s) {
         if (logOpen) {
-            Log.e(TAG, s);
+            Log.e(TAG, s==null?"null":s);
         }
     }
 

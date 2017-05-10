@@ -15,6 +15,12 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.luajava.JavaFunction;
+import com.luajava.LuaException;
+import com.luajava.LuaObject;
+import com.luajava.LuaState;
+import com.luajava.LuaStateFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,13 +28,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import dalvik.system.DexClassLoader;
-import luajava.JavaFunction;
-import luajava.LuaException;
-import luajava.LuaObject;
-import luajava.LuaState;
-import luajava.LuaStateFactory;
 
 public class LuaService extends Service implements LuaContext {
 
@@ -86,6 +88,11 @@ public class LuaService extends Service implements LuaContext {
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public ArrayList<ClassLoader> getClassLoaders() {
+        return null;
     }
 
     @Override

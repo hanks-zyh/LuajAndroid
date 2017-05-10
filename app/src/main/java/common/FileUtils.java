@@ -37,7 +37,7 @@ import static android.graphics.Bitmap.CompressFormat.PNG;
  */
 public class FileUtils {
 
-    private static final String APP_DIR = "Note";
+    private static final String APP_DIR = "LLLLLua";
 
     private static Context getContext() {
         return LuaApplication.instance;

@@ -25,6 +25,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luajava.JavaFunction;
+import com.luajava.LuaException;
+import com.luajava.LuaObject;
+import com.luajava.LuaState;
+import com.luajava.LuaStateFactory;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,17 +39,13 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import common.FileUtils;
 import common.Logs;
 import dalvik.system.DexClassLoader;
-import luajava.JavaFunction;
-import luajava.LuaException;
-import luajava.LuaObject;
-import luajava.LuaState;
-import luajava.LuaStateFactory;
 
 public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiver.OnReceiveListener, LuaContext {
 
@@ -69,6 +71,8 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
     private LuaBroadcastReceiver mReceiver;
     private String luaLpath;
     private String luaMdDir;
+    private LuaDexLoader luaDexLoader;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,9 +108,12 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
         luaLpath = (luaDir + "/?.lua;" + luaDir + "/lua/?.lua;" + luaDir + "/?/init.lua;") + luaLpath;
         try {
             Object[] arg =  LuaUtil.IntentHelper.getArgs(getIntent());
-            luaPath = LuaUtil.IntentHelper.getLuaPath(getIntent());
+            luaPath = FileUtils.getAndroLuaDir()+"/main.lua";
             luaDir = new File(luaPath).getParent();
+            luaLpath+= ";" + luaDir + "/?.lua";
             initLua();
+            luaDexLoader = new LuaDexLoader(this);
+            luaDexLoader.loadLibs();
             doFile(luaPath, arg);
             runFunc("onCreate", savedInstanceState);
         } catch (Exception e) {
@@ -131,6 +138,18 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
     }
 
 
+    @Override
+    public ArrayList<ClassLoader> getClassLoaders() {
+        return luaDexLoader.getClassLoaders();
+    }
+
+    public HashMap<String, String> getLibrarys() {
+        return luaDexLoader.getLibrarys();
+    }
+
+    public void loadResources(String path) {
+        luaDexLoader.loadResources(path);
+    }
 
     @Override
     public String getLuaLpath() {

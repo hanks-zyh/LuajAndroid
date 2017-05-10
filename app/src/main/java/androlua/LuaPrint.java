@@ -1,9 +1,9 @@
 package androlua;
 
 
-import luajava.JavaFunction;
-import luajava.LuaException;
-import luajava.LuaState;
+import com.luajava.JavaFunction;
+import com.luajava.LuaException;
+import com.luajava.LuaState;
 
 public class LuaPrint extends JavaFunction {
 

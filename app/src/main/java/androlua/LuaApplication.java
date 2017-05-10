@@ -4,10 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.luajava.LuaState;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import common.FileUtils;
-import luajava.LuaState;
 
 public class LuaApplication extends Application implements LuaContext {
 
@@ -75,6 +77,10 @@ public class LuaApplication extends Application implements LuaContext {
         return luaMdDir;
     }
 
+    @Override
+    public ArrayList<ClassLoader> getClassLoaders() {
+        return null;
+    }
     @Override
     public String getLuaExtDir() {
         return luaExtDir;
