@@ -14,20 +14,20 @@ local ltrs = {}
 
 local context = activity or service
 
-local ViewGroup = bindClass("android.view.ViewGroup")
 local String = bindClass("java.lang.String")
+local Context = bindClass("android.content.Context")
+local ViewGroup = bindClass("android.view.ViewGroup")
 local Gravity = bindClass("android.view.Gravity")
 local OnClickListener = bindClass("android.view.View$OnClickListener")
 local TypedValue = bindClass("android.util.TypedValue")
 local BitmapDrawable = bindClass("android.graphics.drawable.BitmapDrawable")
-local LuaDrawable = bindClass("androlua.LuaDrawable")
 local ArrayListAdapter = bindClass("android.widget.ArrayListAdapter")
 local ArrayPageAdapter = bindClass("android.widget.ArrayPageAdapter")
 local ScaleType = bindClass("android.widget.ImageView$ScaleType")
 local TruncateAt = bindClass("android.text.TextUtils$TruncateAt")
-local android_R = bindClass("android.R")
-local Context = bindClass("android.content.Context")
 local DisplayMetrics = bindClass("android.util.DisplayMetrics")
+local android_R = bindClass("android.R")
+local LuaDrawable = bindClass("androlua.LuaDrawable")
 
 android = { R = android_R }
 local scaleTypes = ScaleType.values()
