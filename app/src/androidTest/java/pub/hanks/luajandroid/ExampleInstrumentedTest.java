@@ -3,6 +3,8 @@ package pub.hanks.luajandroid;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.Menu;
+import android.widget.LinearLayout;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,8 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
+        new LinearLayout(appContext).setOrientation(LinearLayout.VERTICAL);
         assertEquals("pub.hanks.luajandroid", appContext.getPackageName());
+
     }
 }

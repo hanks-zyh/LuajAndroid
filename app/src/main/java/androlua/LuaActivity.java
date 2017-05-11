@@ -616,18 +616,25 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
     private void initLua() throws Exception {
         L = LuaStateFactory.newLuaState();
         L.openLibs();
+
         L.pushJavaObject(this);
         L.setGlobal("activity");
+
         L.getGlobal("activity");
         L.setGlobal("this");
+
         L.pushContext(this);
         L.getGlobal("luajava");
+
         L.pushString(luaExtDir);
         L.setField(-2, "luaextdir");
+
         L.pushString(luaDir);
         L.setField(-2, "luadir");
+
         L.pushString(luaPath);
         L.setField(-2, "luapath");
+
         L.pop(1);
 
         JavaFunction print = new LuaPrint(this, L);
@@ -640,7 +647,7 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
         L.setField(-2, "cpath");
         L.pop(1);
 
-        JavaFunction set = new JavaFunction(L) {
+        new JavaFunction(L) {
             @Override
             public int execute() throws LuaException {
                 LuaThread thread = (LuaThread) L.toJavaObject(2);
@@ -648,14 +655,12 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
                 thread.set(L.toString(3), L.toJavaObject(4));
                 return 0;
             }
-        };
-        set.register("set");
+        }.register("set");
 
-        JavaFunction call = new JavaFunction(L) {
+        new JavaFunction(L) {
             @Override
             public int execute() throws LuaException {
                 LuaThread thread = (LuaThread) L.toJavaObject(2);
-
                 int top = L.getTop();
                 if (top > 3) {
                     Object[] args = new Object[top - 3];
@@ -666,14 +671,9 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
                 } else if (top == 3) {
                     thread.call(L.toString(3));
                 }
-
                 return 0;
             }
-
-            ;
-        };
-        call.register("call");
-
+        }.register("call");
     }
 
 

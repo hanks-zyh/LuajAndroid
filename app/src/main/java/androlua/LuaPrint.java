@@ -5,6 +5,8 @@ import com.luajava.JavaFunction;
 import com.luajava.LuaException;
 import com.luajava.LuaState;
 
+import common.Logs;
+
 public class LuaPrint extends JavaFunction {
 
     private LuaState L;
@@ -42,7 +44,8 @@ public class LuaPrint extends JavaFunction {
             output.append(val);
             output.append("\t");
         }
-        mLuaContext.toast(output.toString().substring(1, output.length() - 1));
+        //mLuaContext.toast(output.toString().substring(1, output.length() - 1));
+        Logs.e(output.toString().substring(1, output.length() - 1));
         output.setLength(0);
         return 0;
     }

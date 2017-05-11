@@ -2,6 +2,8 @@ package common;
 
 import android.util.Log;
 
+import pub.hanks.luajandroid.BuildConfig;
+
 
 /**
  * Logs
@@ -10,7 +12,7 @@ import android.util.Log;
 
 public class Logs {
     private static final String TAG = "LLogs";
-    private static boolean logOpen = true;
+    private static boolean logOpen = BuildConfig.DEBUG;
 
     public static void i(String s) {
         if (logOpen) {

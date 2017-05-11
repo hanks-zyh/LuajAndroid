@@ -1,5 +1,7 @@
 package pub.hanks.luajandroid;
 
+import android.widget.LinearLayout;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

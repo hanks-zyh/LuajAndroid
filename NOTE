@@ -1,0 +1,347 @@
+文字 图片 列表
+
+点击，长按，触摸
+
+table: 0xdf433060 {
+  [short] => short
+  [next] => function: 0xe0809e59
+  [setmetatable] => function: 0xe080a17d
+  [luajava] => table: 0xdf433060 {
+                 [astable] => function: 0xe0806491
+                 [instanceof] => function: 0xe0804021
+                 [luapath] => "/storage/emulated/0/LLLLLua/main.lua"
+                 [_VERSION] => "4.0"
+                 [luadir] => "/storage/emulated/0/LLLLLua"
+                 [newInstance] => function: 0xe08061dd
+                 [coding] => function: 0xe08064e1
+                 [loaded] => table: 0xdf433a60 {
+                             }
+                 [new] => function: 0xe08060e9
+                 [_DESCRIPTION] => "LuaJava is a script tool for Java"
+                 [bindClass] => function: 0xe080605d
+                 [imported] => table: 0xdf433a60 {
+                                 [1] => "java.lang.*"
+                                 [2] => "java.util.*"
+                                 [3] => "androlua.*"
+                                 [4] => "loadlayout"
+                                 [5] => "loadbitmap"
+                                 [6] => "loadmenu"
+                                 [7] => "android.widget.*"
+                                 [8] => "android.content.*"
+                               }
+                 [tostring] => function: 0xe0804ee5
+                 [newArray] => function: 0xe08063a9
+                 [createProxy] => function: 0xe0806315
+                 [package] => table: 0xdf433a60 {
+                                [1] => ""
+                                [2] => "java.lang."
+                                [3] => "java.util."
+                                [4] => "androlua."
+                                [5] => "android.widget."
+                                [6] => "android.content."
+                              }
+                 [_MOD] => "by nirenr"
+                 [luaextdir] => "/storage/emulated/0/LLLLLua"
+                 [ids] => table: 0xdf433a60 {
+                            [id] => 2130706432
+                          }
+                 [_COPYRIGHT] => "Copyright (C) 2003-2007 Kepler Project"
+                 [clear] => function: 0xe0803e35
+                 [createArray] => function: 0xe08063fd
+                 [_NAME] => "LuaJava"
+                 [loadLib] => function: 0xe0806249
+               }
+  [loadfile] => function: 0xe0809d39
+  [print_r] => function: 0xf4bea928
+  [require] => function: 0xdf4334e0
+  [findtable] => function: 0xe0809c8d
+  [table] => table: 0xdf433060 {
+               [foreach] => function: 0xe0817b91
+               [size] => function: 0xe0817d61
+               [move] => function: 0xe08181b5
+               [concat] => function: 0xe0817a89
+               [maxn] => function: 0xe0817ce1
+               [sort] => function: 0xe08183f9
+               [foreachi] => function: 0xe0817c15
+               [find] => function: 0xe0817e0b
+               [pack] => function: 0xe0817f61
+               [clear] => function: 0xe0817dc1
+               [remove] => function: 0xe08180ad
+               [unpack] => function: 0xe0817fb9
+               [insert] => function: 0xe0817e55
+             }
+  [rawlen] => function: 0xe080a035
+  [error] => function: 0xe0809c41
+  [unpack] => function: 0xe0817fb9
+  [utf8] => table: 0xdf433060 {
+              [codes] => function: 0xe0819919
+              [offset] => function: 0xe08192d1
+              [charpattern] => "[
+              [len] => function: 0xe0819779
+              [char] => function: 0xe08196f5
+              [codepoint] => function: 0xe081954d
+            }
+  [loadmenu] => function: 0xdf5bcce0
+  [boolean] => boolean
+  [setBackground] => function: 0xdf52f2e0
+  [char] => char
+  [double] => double
+  [pcall] => function: 0xe0809ea9
+  [pairs] => function: 0xe0809e89
+  [collectgarbage] => function: 0xe0809b41
+  [dofile] => function: 0xe0809be9
+  [android] => table: 0xdf433060 {
+                 [R] => class android.R
+               }
+  [rawequal] => function: 0xe080a009
+  [compile] => function: 0xdf463f40
+  [import] => function: 0xf4a71d98
+  [io] => table: 0xdf433060 {
+            [type] => function: 0xe080e9dd
+            [lines] => function: 0xe080e77d
+            [close] => function: 0xe080e6bd
+            [open] => function: 0xe080e815
+            [output] => function: 0xe080e8d5
+            [stderr] => file (0xf74624c0)
+            [popen] => function: 0xe080e8f1
+            [write] => function: 0xe080ea25
+            [tmpfile] => function: 0xe080e991
+            [read] => function: 0xe080e971
+            [stdout] => file (0xf746246c)
+            [input] => function: 0xe080e761
+            [stdin] => file (0xf7462418)
+            [flush] => function: 0xe080e735
+          }
+  [os] => table: 0xdf433060 {
+            [setlocale] => function: 0xe0811b01
+            [difftime] => function: 0xe08119d9
+            [clock] => function: 0xe0811819
+            [getenv] => function: 0xe0811a7d
+            [date] => function: 0xe0811849
+            [remove] => function: 0xe0811a9b
+            [tmpname] => function: 0xe0811c85
+            [exit] => function: 0xe0811a31
+            [rename] => function: 0xe0811ac9
+            [time] => function: 0xe0811b49
+            [execute] => function: 0xe0811a05
+          }
+  [tonumber] => function: 0xe080a271
+  [ipairs] => function: 0xe0809d19
+  [long] => long
+Runtime error: bad argument #1 to 'luajava.tostring' (JavaObject expected, got userdata)
+stack traceback:
+	[C]: in function 'luajava.tostring'
+	[C]: in function 'import.tostring'
+	/storage/emulated/0/LLLLLua/main.lua:22: in local 'sub_print_r'
+	/storage/emulated/0/LLLLLua/main.lua:32: in function 'import.print_r'
+	/storage/emulated/0/LLLLLua/main.lua:40: in main chunk
+
+
+
+
+
+
+-- G
+
+table: 00BA2DB0 {
+  [string] => table: 00BA2DB0 {
+                [sub] => function: 00BAAEC8
+                [upper] => function: 00BAB0E8
+                [len] => function: 00BAAE48
+                [gfind] => function: 00BA9200
+                [rep] => function: 00BAAFA8
+                [find] => function: 00BA9580
+                [match] => function: 00BAAF28
+                [char] => function: 00BA92A0
+                [dump] => function: 00BA9520
+                [gmatch] => function: 00BA9200
+                [reverse] => function: 00BAAF68
+                [byte] => function: 00BA94C0
+                [format] => function: 00BA95C0
+                [gsub] => function: 00BA9240
+                [lower] => function: 00BAAF48
+              }
+  [xpcall] => function: 00BA69A8
+  [package] => table: 00BA2DB0 {
+                 [preload] => table: 00BA7640 {
+                              }
+                 [loadlib] => function: 00BA81D8
+                 [loaded] => table: 00BA7640 {
+                               [string] => table: 00BA6F90 {
+                                             *table: 00BA9E70
+                                           }
+                               [debug] => table: 00BA6F90 {
+                                            [getupvalue] => function: 00BABB78
+                                            [debug] => function: 00BABAD8
+                                            [sethook] => function: 00BABB98
+                                            [getmetatable] => function: 00BABD38
+                                            [gethook] => function: 00BABCD8
+                                            [setmetatable] => function: 00BABBB8
+                                            [setlocal] => function: 00BABDB8
+                                            [traceback] => function: 00BAB778
+                                            [setfenv] => function: 00BABD58
+                                            [getinfo] => function: 00BABCF8
+                                            [setupvalue] => function: 00BABB18
+                                            [getlocal] => function: 00BABD18
+                                            [getregistry] => function: 00BABD78
+                                            [getfenv] => function: 00BABA78
+                                          }
+                               [package] => table: 00BA6F90 {
+                                              *table: 00BA7640
+                                            }
+                               [_G] => table: 00BA6F90 {
+                                         *table: 00BA2DB0
+                                       }
+                               [io] => table: 00BA6F90 {
+                                         [lines] => function: 00BA9920
+                                         [write] => function: 00BA98C0
+                                         [close] => function: 00BA9860
+                                         [flush] => function: 00BA9820
+                                         [open] => function: 00BA9600
+                                         [output] => function: 00BA9760
+                                         [type] => function: 00BA98A0
+                                         [read] => function: 00BA97A0
+                                         [stderr] => file (5E851BB8)
+                                         [stdin] => file (5E851B78)
+                                         [input] => function: 00BA9740
+                                         [stdout] => file (5E851B98)
+                                         [popen] => function: 00BA9960
+                                         [tmpfile] => function: 00BA9980
+                                       }
+                               [os] => table: 00BA6F90 {
+                                         [exit] => function: 00BA9540
+                                         [setlocale] => function: 00BA93A0
+                                         [date] => function: 00BA96E0
+                                         [getenv] => function: 00BA9300
+                                         [difftime] => function: 00BA9700
+                                         [remove] => function: 00BA9420
+                                         [time] => function: 00BA93E0
+                                         [clock] => function: 00BA97C0
+                                         [tmpname] => function: 00BA92C0
+                                         [rename] => function: 00BA9480
+                                         [execute] => function: 00BA9280
+                                       }
+                               [table] => table: 00BA6F90 {
+                                            [setn] => function: 00BA7BB8
+                                            [insert] => function: 00BA7CB8
+                                            [getn] => function: 00BA7D98
+                                            [foreachi] => function: 00BA7ED8
+                                            [maxn] => function: 00BA7C38
+                                            [foreach] => function: 00BA8238
+                                            [concat] => function: 00BA81F8
+                                            [sort] => function: 00BA7EF8
+                                            [remove] => function: 00BA7C98
+                                          }
+                               [math] => table: 00BA6F90 {
+                                           [log] => function: 00BAAB28
+                                           [max] => function: 00BAAAC8
+                                           [acos] => function: 00BAB188
+                                           [huge] => 1.#INF
+                                           [ldexp] => function: 00BAAA28
+                                           [pi] => 3.1415926535898
+                                           [cos] => function: 00BAADC8
+                                           [tanh] => function: 00BABB58
+                                           [pow] => function: 00BAAD68
+                                           [deg] => function: 00BAAAE8
+                                           [tan] => function: 00BABA18
+                                           [cosh] => function: 00BAB088
+                                           [sinh] => function: 00BAABE8
+                                           [random] => function: 00BAAB08
+                                           [randomseed] => function: 00BAABC8
+                                           [frexp] => function: 00BAACA8
+                                           [ceil] => function: 00BAAEA8
+                                           [floor] => function: 00BAADE8
+                                           [rad] => function: 00BAAA48
+                                           [abs] => function: 00BAB0C8
+                                           [sqrt] => function: 00BABAB8
+                                           [modf] => function: 00BAAD28
+                                           [asin] => function: 00BAB1A8
+                                           [min] => function: 00BAAD88
+                                           [mod] => function: 00BAAC28
+                                           [fmod] => function: 00BAAC28
+                                           [log10] => function: 00BAAB68
+                                           [atan2] => function: 00BAAF88
+                                           [exp] => function: 00BAAC48
+                                           [sin] => function: 00BABBD8
+                                           [atan] => function: 00BAAE88
+                                         }
+                               [coroutine] => table: 00BA6F90 {
+                                                [resume] => function: 00BA6B48
+                                                [yield] => function: 00BA8018
+                                                [status] => function: 00BA67C8
+                                                [wrap] => function: 00BA6828
+                                                [create] => function: 00BA67A8
+                                                [running] => function: 00BA6A48
+                                              }
+                             }
+                 [loaders] => table: 00BA7640 {
+                                [1] => function: 00BA82B8
+                                [2] => function: 00BA7FD8
+                                [3] => function: 00BA7FF8
+                                [4] => function: 00BA7F38
+                              }
+                 [cpath] => ".\?.dll;D:\Program Files (x86)\Lua\5.1\?.dll;D:\Program Files (x86)\Lua\5.1\loadall.dll;D:\Program Files (x86)\Lua\5.1\clibs\?.dll;D:\Program Files (x86)\Lua\5.1\clibs\loadall.dll;.\?51.dll;D:\Program Files (x86)\Lua\5.1\?51.dll;D:\Program Files (x86)\Lua\5.1\clibs\?51.dll"
+                 [config] => "\
+;
+?
+!
+-"
+                 [path] => ".\?.lua;D:\Program Files (x86)\Lua\5.1\lua\?.lua;D:\Program Files (x86)\Lua\5.1\lua\?\init.lua;D:\Program Files (x86)\Lua\5.1\?.lua;D:\Program Files (x86)\Lua\5.1\?\init.lua"
+                 [seeall] => function: 00BA8098
+               }
+  [tostring] => function: 00BA68C8
+  [print] => function: 00BA6D68
+  [os] => table: 00BA2DB0 {
+            *table: 00BA9E48
+          }
+  [unpack] => function: 00BA6928
+  [require] => function: 00BA8198
+  [getfenv] => function: 00BA6E88
+  [setmetatable] => function: 00BA6B28
+  [next] => function: 00BA6D08
+  [assert] => function: 00BA6C68
+  [tonumber] => function: 00BA6988
+  [io] => table: 00BA2DB0 {
+            *table: 00BA74D8
+          }
+  [rawequal] => function: 00BA6DE8
+  [collectgarbage] => function: 00BA6F28
+  [arg] => table: 00BA2DB0 {
+             [-1] => "lua"
+             [0] => "d:\Desktop\learn_lua.lua"
+           }
+  [getmetatable] => function: 00BA6C08
+  [module] => function: 00BA8218
+  [rawset] => function: 00BA6A68
+  [coroutine] => table: 00BA2DB0 {
+                   *table: 00BA75C8
+                 }
+  [math] => table: 00BA2DB0 {
+              *table: 00BA9F88
+            }
+  [debug] => table: 00BA2DB0 {
+               *table: 00BAA0C8
+             }
+  [pcall] => function: 00BA6DA8
+  [table] => table: 00BA2DB0 {
+               *table: 00BA7460
+             }
+  [newproxy] => function: 00BA0578
+  [type] => function: 00BA6868
+  [print_r] => function: 00BA6F08
+  [_G] => table: 00BA2DB0 {
+            *table: 00BA2DB0
+          }
+  [select] => function: 00BA6B08
+  [gcinfo] => function: 00BA6CC8
+  [pairs] => function: 00BA0548
+  [rawget] => function: 00BA68A8
+  [loadstring] => function: 00BA6CE8
+  [ipairs] => function: 00BA0518
+  [_VERSION] => "Lua 5.1"
+  [dofile] => function: 00BA6BA8
+  [setfenv] => function: 00BA6808
+  [load] => function: 00BA6CA8
+  [error] => function: 00BA6BC8
+  [loadfile] => function: 00BA6C28
+}
