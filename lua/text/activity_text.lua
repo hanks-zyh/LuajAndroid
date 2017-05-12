@@ -3,7 +3,7 @@
 -- User: hanks
 -- Date: 2017/5/12
 -- Time: 13:57
---
+-- using textview in lua
 
 require "import"
 import "android.widget.*"

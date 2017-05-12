@@ -47,14 +47,20 @@ return {
         {
             Button,
             layout_width = "fill",
-            text = "Test Text",
+            text = "Text",
             id = "btn_text"
         },
         {
             Button,
             layout_width = "fill",
-            text = "Test ImageView",
+            text = "Image",
             id = "btn_image"
+        },
+        {
+            Button,
+            layout_width = "fill",
+            text = "List",
+            id = "btn_list"
         },
     }
 }

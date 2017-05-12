@@ -3,11 +3,11 @@
 -- User: hanks
 -- Date: 2017/5/12
 -- Time: 16:40
+-- using imageview in lua
 --
 require "import"
 import "android.widget.*"
 import "android.content.*"
-local AlertBuilder = import "android.app.AlertDialog$Builder"
 
 local layout = require "image.layout_image"
 

@@ -23,6 +23,9 @@ function onCreate(savedInstanceState)
     btn_image.onClick = function()
         newActivity("image/activity_image.lua")
     end
+    btn_list.onClick = function()
+        newActivity("list/activity_list.lua")
+    end
 end
 
 function  onCreateOptionsMenu(menu)
