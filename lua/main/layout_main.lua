@@ -5,26 +5,31 @@ return {
         LinearLayout,
         orientation = 1,
         layout_width = "fill",
-        paddingLeft = 20,
+        padding = 20,
         {
             TextView,
-            text = "脚本路径"
+            text = "用户名"
         },
         {
             EditText,
             id = "luaPath",
+            textSize="12sp",
+            hint = "手机号/邮箱",
             layout_width = "fill",
-            singleLine = true,
+            singleLine = true
         },
         {
             TextView,
-            text = "包名称"
+            text = "密码"
         },
         {
             EditText,
             id = "packageName",
+            hint="6-20位数字或字母",
             layout_width = "fill",
             singleLine = true,
+            textSize="12sp",
+            inputType="textPassword"
         },
         {
             TextView,
@@ -33,33 +38,23 @@ return {
         {
             EditText,
             id = "appName",
+            textSize="12sp",
             layout_width = "fill",
-            singleLine = true,
+            singleLine = true
         },
+
+
         {
-            TextView,
-            text = "程序版本"
-        },
-        {
-            EditText,
-            id = "appVer",
+            Button,
             layout_width = "fill",
-            singleLine = true,
+            text = "Test Text",
+            id = "btn_text"
         },
         {
-            TextView,
-            text = "apk路径"
-        },
-        {
-            EditText,
-            id = "apkPath",
+            Button,
             layout_width = "fill",
-            singleLine = true,
-        },
-        {
-            TextView,
-            text = "打包使用debug签名",
-            id = "status"
+            text = "Test ImageView",
+            id = "btn_image"
         },
     }
 }

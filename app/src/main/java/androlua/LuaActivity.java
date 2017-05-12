@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,16 +31,10 @@ import com.luajava.LuaState;
 import com.luajava.LuaStateFactory;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import common.FileUtils;
 import common.Logs;
@@ -55,7 +48,7 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
     public String luaCpath;
     private LuaState L;
     private String luaPath;
-    private LinearLayout layout;
+    private ScrollView errorLayout;
     private boolean isSetViewed;
     private long lastShow;
     private Menu optionsMenu;
@@ -73,29 +66,19 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
     private String luaMdDir;
     private LuaDexLoader luaDexLoader;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         handler = new MainHandler(this);
 
+        // 用于出错时显示
+        initErrorLayout();
 
-        layout = new LinearLayout(this);
-        layout.setBackgroundColor(Color.WHITE);
+        initLua(savedInstanceState);
+    }
 
-        ScrollView scroll = new ScrollView(this);
-        scroll.setFillViewport(true);
-
-        status = new TextView(this);
-        status.setTextColor(Color.BLACK);
-
-        scroll.addView(status, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        layout.addView(scroll, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        status.setText("");
-        status.setTextIsSelectable(true);
-
-        //定义文件夹
+    private void initLua(Bundle savedInstanceState) {
         LuaApplication app = LuaApplication.instance;
         localDir = app.getLocalDir();
         odexDir = app.getOdexDir();
@@ -105,38 +88,32 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
         luaDir = localDir;
         luaLpath = app.getLuaLpath();
         luaExtDir = app.getLuaExtDir();
-        luaLpath = (luaDir + "/?.lua;" + luaDir + "/lua/?.lua;" + luaDir + "/?/init.lua;") + luaLpath;
         try {
-            Object[] arg =  LuaUtil.IntentHelper.getArgs(getIntent());
-            luaPath = FileUtils.getAndroLuaDir()+"/main.lua";
-            luaDir = new File(luaPath).getParent();
-            luaLpath+= ";" + luaDir + "/?.lua";
-            initLua();
+            Object[] arg = LuaUtil.IntentHelper.getArgs(getIntent());
+            luaPath = LuaUtil.IntentHelper.getLuaPath(getIntent());
+            initLuaEnv();
             luaDexLoader = new LuaDexLoader(this);
             luaDexLoader.loadLibs();
             doFile(luaPath, arg);
             runFunc("onCreate", savedInstanceState);
         } catch (Exception e) {
             sendMsg(e.getMessage());
-            setContentView(layout);
-            return;
+            setContentView(this.errorLayout);
         }
-
-        mOnKeyDown = L.getLuaObject("onKeyDown");
-        if (mOnKeyDown.isNil())
-            mOnKeyDown = null;
-        mOnKeyUp = L.getLuaObject("onKeyUp");
-        if (mOnKeyUp.isNil())
-            mOnKeyUp = null;
-        mOnKeyLongPress = L.getLuaObject("onKeyLongPress");
-        if (mOnKeyLongPress.isNil())
-            mOnKeyLongPress = null;
-        mOnTouchEvent = L.getLuaObject("onTouchEvent");
-        if (mOnTouchEvent.isNil())
-            mOnTouchEvent = null;
-
     }
 
+    private void initErrorLayout() {
+        errorLayout = new ScrollView(this);
+        errorLayout.setFillViewport(true);
+        errorLayout.setBackgroundColor(Color.WHITE);
+
+        status = new TextView(this);
+        status.setTextColor(Color.BLACK);
+        status.setText("");
+        status.setTextIsSelectable(true);
+
+        errorLayout.addView(status, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+    }
 
     @Override
     public ArrayList<ClassLoader> getClassLoaders() {
@@ -203,58 +180,6 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
             if (!dir.mkdirs())
                 return null;
         return dir.getAbsolutePath();
-    }
-
-    /**
-     * 解压Assets中的文件
-     */
-    public void unZipAssets(String assetName, String outputDirectory) throws IOException {
-        //创建解压目标目录
-        File file = new File(outputDirectory);
-        //如果目标目录不存在，则创建
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        InputStream inputStream = null;
-        //打开压缩文件
-        try {
-            inputStream = this.getAssets().open(assetName);
-        } catch (IOException e) {
-            return;
-        }
-
-
-        ZipInputStream zipInputStream = new ZipInputStream(inputStream);
-        //读取一个进入点
-        ZipEntry zipEntry = zipInputStream.getNextEntry();
-        //使用1Mbuffer
-        byte[] buffer = new byte[1024 * 32];
-        //解压时字节计数
-        int count = 0;
-        //如果进入点为空说明已经遍历完所有压缩包中文件和目录
-        while (zipEntry != null) {
-            //如果是一个目录
-            if (zipEntry.isDirectory()) {
-                //String name = zipEntry.getName();
-                //name = name.substring(0, name.length() - 1);
-                file = new File(outputDirectory + File.separator + zipEntry.getName());
-                file.mkdir();
-            } else {
-                //如果是文件
-                file = new File(outputDirectory + File.separator
-                        + zipEntry.getName());
-                //创建该文件
-                file.createNewFile();
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                while ((count = zipInputStream.read(buffer)) > 0) {
-                    fileOutputStream.write(buffer, 0, count);
-                }
-                fileOutputStream.close();
-            }
-            //定位到下一个文件入口
-            zipEntry = zipInputStream.getNextEntry();
-        }
-        zipInputStream.close();
     }
 
     public DexClassLoader loadDex(String path) throws LuaException {
@@ -613,7 +538,7 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
     }
 
     //初始化lua使用的Java函数
-    private void initLua() throws Exception {
+    private void initLuaEnv() throws Exception {
         L = LuaStateFactory.newLuaState();
         L.openLibs();
 
@@ -674,8 +599,20 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
                 return 0;
             }
         }.register("call");
-    }
 
+        mOnKeyDown = L.getLuaObject("onKeyDown");
+        if (mOnKeyDown.isNil())
+            mOnKeyDown = null;
+        mOnKeyUp = L.getLuaObject("onKeyUp");
+        if (mOnKeyUp.isNil())
+            mOnKeyUp = null;
+        mOnKeyLongPress = L.getLuaObject("onKeyLongPress");
+        if (mOnKeyLongPress.isNil())
+            mOnKeyLongPress = null;
+        mOnTouchEvent = L.getLuaObject("onTouchEvent");
+        if (mOnTouchEvent.isNil())
+            mOnTouchEvent = null;
+    }
 
 
     //运行lua脚本
@@ -687,7 +624,7 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
         int ok = 0;
         try {
             if (filePath.charAt(0) != '/')
-                filePath = luaDir + "/" + filePath;
+                filePath = luaExtDir + "/" + filePath;
 
             L.setTop(0);
             ok = L.LloadFile(filePath);
@@ -712,7 +649,7 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
             throw new LuaException(errorReason(ok) + ": " + L.toString(-1));
         } catch (LuaException e) {
             setTitle(errorReason(ok));
-            setContentView(layout);
+            setContentView(errorLayout);
             sendMsg(e.getMessage());
             String s = e.getMessage();
             String p = "android.permission.";
@@ -766,7 +703,7 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
             throw new LuaException(errorReason(ok) + ": " + L.toString(-1));
         } catch (Exception e) {
             setTitle(errorReason(ok));
-            setContentView(layout);
+            setContentView(errorLayout);
             sendMsg(e.getMessage());
         }
 
@@ -832,8 +769,6 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
         return null;
     }
 
-    //读取asset文件
-
     //生成错误信息
     private String errorReason(int error) {
         switch (error) {
@@ -851,23 +786,6 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
                 return "Yield error";
         }
         return "Unknown error " + error;
-    }
-
-    //复制asset文件到sd卡
-    public void assetsToSD(String InFileName, String OutFileName) throws IOException {
-        InputStream myInput;
-        OutputStream myOutput = new FileOutputStream(OutFileName);
-        myInput = this.getAssets().open(InFileName);
-        byte[] buffer = new byte[8192];
-        int length = myInput.read(buffer);
-        while (length > 0) {
-            myOutput.write(buffer, 0, length);
-            length = myInput.read(buffer);
-        }
-
-        myOutput.flush();
-        myInput.close();
-        myOutput.close();
     }
 
     //显示信息
@@ -933,11 +851,14 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
 
     }
 
+    // avoid handler leak memory
     private static class MainHandler extends Handler {
         WeakReference<Activity> activityWeakReference;
-        private MainHandler(Activity activity){
+
+        private MainHandler(Activity activity) {
             activityWeakReference = new WeakReference<>(activity);
         }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -945,27 +866,28 @@ public class LuaActivity extends AppCompatActivity implements LuaBroadcastReceiv
             if (activity == null || !(activity instanceof LuaActivity)) {
                 return;
             }
+            LuaActivity luaActivity = (LuaActivity) activity;
             switch (msg.what) {
                 case 0: {
                     String data = msg.getData().getString("data");
-                    ((LuaActivity) activity).toast(data);
-                    ((LuaActivity) activity).status.append(data + "\n");
+                    luaActivity.toast(data);
+                    luaActivity.status.append(data + "\n");
                 }
                 break;
                 case 1: {
                     Bundle data = msg.getData();
-                    ((LuaActivity) activity).setField(data.getString("data"), ((Object[]) data.getSerializable("args"))[0]);
+                    luaActivity.setField(data.getString("data"), ((Object[]) data.getSerializable("args"))[0]);
                 }
                 break;
                 case 2: {
                     String src = msg.getData().getString("data");
-                    ((LuaActivity) activity). runFunc(src);
+                    luaActivity.runFunc(src);
                 }
                 break;
                 case 3: {
                     String src = msg.getData().getString("data");
                     Serializable args = msg.getData().getSerializable("args");
-                    ((LuaActivity) activity).runFunc(src, (Object[]) args);
+                    luaActivity.runFunc(src, (Object[]) args);
                 }
             }
         }

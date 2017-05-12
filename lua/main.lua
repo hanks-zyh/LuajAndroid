@@ -3,28 +3,26 @@ import "android.widget.*"
 import "android.content.*"
 import "android.support.v4.view.ViewPager"
 import "android.support.v7.widget.Toolbar"
-
-local layout = require "layout_main"
+import "androlua.LuaActivity"
+local layout = require "main.layout_main"
 
 activity.setTitle('LuaFileActicity')
 
+
+function newActivity(luaPath)
+    local intent = Intent(activity,LuaActivity)
+    intent.putExtra("luaPath",luaPath)
+    activity.startActivity(intent)
+end
+
 function onCreate(savedInstanceState)
---    local layout = LinearLayout(activity)
---    layout.setOrientation(LinearLayout.VERTICAL)
---    local button = Button(activity)
---    local toolbar = Toolbar(activity)
---    button.setText("click me")
---    layout.addView(toolbar)
---    layout.addView(button)
---    toolbar.setBackgroundColor(0xff223344)
---    toolbar.getLayoutParams().width=300
---    toolbar.getLayoutParams().height=100
---
---    activity.setContentView(layout)
---    button.onClick=function(v)
---        print("click"..v.toString())
---    end
     activity.setContentView(loadlayout(layout))
+    btn_text.onClick = function()
+        newActivity("text/activity_text.lua")
+    end
+    btn_image.onClick = function()
+        newActivity("image/activity_image.lua")
+    end
 end
 
 function  onCreateOptionsMenu(menu)

@@ -185,6 +185,7 @@ import 'androlua.*'
 import "loadlayout"
 import "loadbitmap"
 import "loadmenu"
+import "imageloader"
 
 function enum(e)
     return function()

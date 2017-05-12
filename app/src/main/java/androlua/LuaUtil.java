@@ -20,17 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import common.StringUtils;
+
 public class LuaUtil {
 
 
     public static class IntentHelper{
         public static String getLuaPath(Intent intent) {
-            Uri uri = intent.getData();
-            String path = null;
-            if (uri != null) {
-                path = uri.getPath();
-            }
-            return path;
+            String luaPath = intent.getStringExtra("luaPath");
+            return StringUtils.isEmpty(luaPath)? "main.lua":luaPath;
+
         }
         public static Object[] getArgs(Intent intent){
             Object[] arg = (Object[]) intent.getSerializableExtra("arg");

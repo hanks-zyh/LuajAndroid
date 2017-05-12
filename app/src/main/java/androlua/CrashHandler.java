@@ -176,12 +176,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = "/sdcard/androlua/crash/";
-                File dir = new File(path);
-                if (!dir.exists())
-                    dir.mkdirs();
-
-                FileOutputStream fos = new FileOutputStream(path + fileName);
+                File dir = LuaApplication.instance.getExternalFilesDir("crash");
+                dir.mkdirs();
+                FileOutputStream fos = new FileOutputStream(dir.getAbsolutePath() +"/"+ fileName);
                 //				FileOutputStream fos = mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
                 fos.write(sb.toString().getBytes());
                 Log.e("crash", sb.toString());

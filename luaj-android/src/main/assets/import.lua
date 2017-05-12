@@ -326,7 +326,7 @@ local function printstack()
 end
 
 import "loadlayout"
-import "loadbitmap"
+import "imageloader"
 import "loadmenu"
 
 

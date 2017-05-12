@@ -450,10 +450,8 @@ local function setattribute(root, view, params, k, v, ids)
     elseif k == "src" then
         if v:find("^%?") then
             view.setImageResource(getIdentifier(v:sub(2, -1)))
-        elseif v:find("^https?://") then
-            task([[require "import" url=... return loadbitmap(url)]], v, function(bmp) view.setImageBitmap(bmp) end)
         else
-            view.setImageBitmap(loadbitmap(v))
+            ImageLoader.load(view,v)
         end
     elseif k == "scaleType" then
         view.setScaleType(scaleTypes[scaleType[v]])
