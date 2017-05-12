@@ -28,6 +28,7 @@ local TruncateAt = bindClass("android.text.TextUtils$TruncateAt")
 local DisplayMetrics = bindClass("android.util.DisplayMetrics")
 local android_R = bindClass("android.R")
 local LuaDrawable = bindClass("androlua.LuaDrawable")
+local ImageLoader = bindClass("androlua.LuaImageLoader")
 
 android = { R = android_R }
 local scaleTypes = ScaleType.values()
@@ -289,8 +290,8 @@ local function checkint(s)
     local ret = 0
     for n in split(s, "|") do
         if toint[n] then
-            ret = bit.bor(ret ,toint[n])
-            else
+            ret = bit.bor(ret, toint[n])
+        else
             return nil
         end
     end
@@ -451,7 +452,7 @@ local function setattribute(root, view, params, k, v, ids)
         if v:find("^%?") then
             view.setImageResource(getIdentifier(v:sub(2, -1)))
         else
-            ImageLoader.load(view,v)
+            ImageLoader.load(view, v)
         end
     elseif k == "scaleType" then
         view.setScaleType(scaleTypes[scaleType[v]])

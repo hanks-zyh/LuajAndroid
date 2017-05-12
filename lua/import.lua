@@ -185,7 +185,6 @@ import 'androlua.*'
 import "loadlayout"
 import "loadbitmap"
 import "loadmenu"
-import "imageloader"
 
 function enum(e)
     return function()
@@ -330,20 +329,6 @@ local function printstack()
     -- print("info="..dump(dbs))
     -- print("_ENV="..dump(ups._ENV or lps._ENV))
 end
-
---if activity then
---    function print(...)
---        local buf = {}
---        --  select(index, · · ·)
---        --  如果 index 是个数字， 那么返回参数中第 index 个之后的部分； 负的数字会从后向前索引（-1 指最后一个参数）。
---        --  否则，index 必须是字符串 "#"， 此时 select 返回参数的个数
---        for n = 1, select("#", ...) do
---            table.insert(buf, tostring(select(n, ...)))
---        end
---        local msg = table.concat(buf, "\t\t")
---        activity.sendMsg(msg)
---    end
---end
 
 
 function getids()
