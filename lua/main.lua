@@ -34,6 +34,10 @@ function onCreate(savedInstanceState)
     btn_pager.onClick = function()
         newActivity("pager/activity_pager.lua")
     end
+
+    btn_webview.onClick = function()
+        newActivity("webview/activity_webview.lua")
+    end
 end
 
 function  onCreateOptionsMenu(menu)

@@ -70,5 +70,11 @@ return {
             text = "pager",
             id = "btn_pager"
         },
+        {
+            Button,
+            layout_width = "fill",
+            text = "webview",
+            id = "btn_webview"
+        },
     }
 }
