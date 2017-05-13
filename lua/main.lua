@@ -16,15 +16,23 @@ function newActivity(luaPath)
 end
 
 function onCreate(savedInstanceState)
+
     activity.setContentView(loadlayout(layout))
+
     btn_text.onClick = function()
         newActivity("text/activity_text.lua")
     end
+
     btn_image.onClick = function()
         newActivity("image/activity_image.lua")
     end
+
     btn_list.onClick = function()
         newActivity("list/activity_list.lua")
+    end
+
+    btn_pager.onClick = function()
+        newActivity("pager/activity_pager.lua")
     end
 end
 

@@ -23,6 +23,7 @@ local layout = {
 local item_view = {
     LinearLayout,
     layout_widht = "fill",
+    layout_height = "wrap",
     orientation = "horizontal",
     gravity = "center_vertical",
     padding = "8dp",
@@ -46,7 +47,7 @@ local data = {}
 for i = 1, 59 do
     data[i] = {
         url = string.format("http://i.meizitu.net/2017/05/07a%02d.jpg",i),
-        text = "this is item : " .. i
+        text = "this is item : " .. (i-1)
     }
 end
 
@@ -60,6 +61,10 @@ local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator"
         if convertView == nil then
             local views = {} -- store views
             convertView = loadlayout(item_view, views)
+            if parent then
+                local params = convertView.getLayoutParams()
+                params.width = parent.getWidth()
+            end
             convertView.setTag(views)
         end
         local views = convertView.getTag()
@@ -76,6 +81,16 @@ function onCreate(savedInstanceState)
     activity.setTitle('Test List')
     activity.setContentView(loadlayout(layout))
     listview.setAdapter(adapter)
+    listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener",{
+        onItemClick = function(adapter,view,position,id)
+            activity.toast('click item:' .. position)
+        end,
+    }))
+    listview.setOnItemLongClickListener(luajava.createProxy("android.widget.AdapterView$OnItemLongClickListener",{
+        onItemLongClick = function(adapter,view,position,id)
+            activity.toast('long click item:' .. position)
+        end,
+    }))
 end
 
 

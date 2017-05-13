@@ -554,7 +554,7 @@ local function loadlayout(t, root, group)
     end
 
     if style then
-        view = t[1](context, nil, style)
+        view = t[1](context, nil, style) -- 第3个构造方法
     else
         view = t[1](context) --创建view
     end

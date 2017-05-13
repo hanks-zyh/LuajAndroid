@@ -25,7 +25,8 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        new LinearLayout(appContext).setOrientation(LinearLayout.VERTICAL);
+        LinearLayout linearLayout = new LinearLayout(appContext);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
         assertEquals("pub.hanks.luajandroid", appContext.getPackageName());
 
 

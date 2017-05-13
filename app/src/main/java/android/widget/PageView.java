@@ -51,7 +51,7 @@ import java.util.List;
 /**
  * Layout manager that allows the user to flip left and right
  * through pages of data.  You supply an implementation of a
- * {@link PagerAdapter} to generate the pages that the view shows.
+ * {@link PageAdapter} to generate the pages that the view shows.
  * <p>
  * <p>Note this class is currently under early design and
  * development.  The API will likely change in later updates of

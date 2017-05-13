@@ -6,6 +6,8 @@ return {
         orientation = 1,
         layout_width = "fill",
         padding = 20,
+        focusable=true,
+        focusableInTouchMode=true,
         {
             TextView,
             text = "用户名"
@@ -61,6 +63,12 @@ return {
             layout_width = "fill",
             text = "List",
             id = "btn_list"
+        },
+        {
+            Button,
+            layout_width = "fill",
+            text = "pager",
+            id = "btn_pager"
         },
     }
 }
