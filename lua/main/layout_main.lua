@@ -76,5 +76,11 @@ return {
             text = "webview",
             id = "btn_webview"
         },
+        {
+            Button,
+            layout_width = "fill",
+            text = "animation",
+            id = "btn_animation"
+        },
     }
 }

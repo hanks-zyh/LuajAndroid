@@ -38,6 +38,10 @@ function onCreate(savedInstanceState)
     btn_webview.onClick = function()
         newActivity("webview/activity_webview.lua")
     end
+
+    btn_animation.onClick = function()
+        newActivity("animation/activity_animation.lua")
+    end
 end
 
 function  onCreateOptionsMenu(menu)

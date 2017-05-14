@@ -28,7 +28,7 @@ public class ExampleInstrumentedTest {
         LinearLayout linearLayout = new LinearLayout(appContext);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         assertEquals("pub.hanks.luajandroid", appContext.getPackageName());
-
+        linearLayout.animate().scaleX(2).scaleY(2).translationX(100).setDuration(3000).start();
 
     }
 
