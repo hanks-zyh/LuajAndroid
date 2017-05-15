@@ -82,5 +82,11 @@ return {
             text = "animation",
             id = "btn_animation"
         },
+        {
+            Button,
+            layout_width = "fill",
+            text = "http",
+            id = "btn_http"
+        },
     }
 }

@@ -42,6 +42,10 @@ function onCreate(savedInstanceState)
     btn_animation.onClick = function()
         newActivity("animation/activity_animation.lua")
     end
+
+    btn_http.onClick = function()
+        newActivity("http/activity_http.lua")
+    end
 end
 
 function  onCreateOptionsMenu(menu)

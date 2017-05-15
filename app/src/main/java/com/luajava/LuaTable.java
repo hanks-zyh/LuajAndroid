@@ -23,7 +23,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public void clear() {
-        // TODO: Implement this method
         push();
         L.pushNil();
         while (L.next(-2) != 0) {
@@ -37,7 +36,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO: Implement this method
         boolean b = false;
         push();
         try {
@@ -53,13 +51,11 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        // TODO: Implement this method
         return false;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        // TODO: Implement this method
         HashSet<Entry<K, V>> sets = new HashSet<Entry<K, V>>();
         push();
         L.pushNil();
@@ -76,7 +72,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public V get(Object key) {
-        // TODO: Implement this method
         push();
         V obj = null;
         try {
@@ -92,7 +87,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
-        // TODO: Implement this method
         push();
         L.pushNil();
         boolean b = L.next(-2) == 0;
@@ -105,7 +99,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        // TODO: Implement this method
         HashSet<K> sets = new HashSet<K>();
         push();
         L.pushNil();
@@ -122,7 +115,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
-        // TODO: Implement this method
         push();
         try {
             L.pushObjectValue(key);
@@ -136,12 +128,10 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public void putAll(Map p1) {
-        // TODO: Implement this method
     }
 
     @Override
     public V remove(Object key) {
-        // TODO: Implement this method
         push();
         try {
             L.pushObjectValue(key);
@@ -169,7 +159,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
     }
 
     public int length() {
-        // TODO: Implement this method
         push();
         int len = L.rawLen(-1);
         pop();
@@ -178,7 +167,6 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public int size() {
-        // TODO: Implement this method
         int n = 0;
         push();
         L.pushNil();
@@ -192,11 +180,10 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
     @Override
     public Collection values() {
-        // TODO: Implement this method
         return null;
     }
 
-    public class LuaEntry<K, V> implements Entry<K, V> {
+    public  static class LuaEntry<K, V> implements Entry<K, V> {
 
         private K mKey;
 
@@ -209,18 +196,15 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
 
         @Override
         public K getKey() {
-            // TODO: Implement this method
             return mKey;
         }
 
         @Override
         public V getValue() {
-            // TODO: Implement this method
             return mValue;
         }
 
         public V setValue(V value) {
-            // TODO: Implement this method
             V old = mValue;
             mValue = value;
             return old;
