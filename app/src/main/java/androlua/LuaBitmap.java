@@ -24,7 +24,7 @@ public class LuaBitmap {
 
     public static boolean checkCache(LuaContext context, String url) {
         // TODO: Implement this method
-        String path = context.getLuaExtDir() + "/" + url.hashCode();
+        String path = LuaManager.getInstance().getLuaExtDir() + "/" + url.hashCode();
         File f = new File(path);
         return f.exists();
     }
@@ -56,12 +56,12 @@ public class LuaBitmap {
 
     public static Bitmap getHttpBitmap(LuaContext context, String url) throws IOException {
         //Log.d(TAG, url);
-        String path = context.getLuaExtDir() + "/" + url.hashCode();
+        String path =  LuaManager.getInstance().getLuaExtDir() + "/" + url.hashCode();
         File f = new File(path);
         if (f.exists()) {
             try {
                 /*HttpURLConnection con=(HttpURLConnection) new URL(url).openConnection();
-				con.setRequestMethod("HEAD");
+                con.setRequestMethod("HEAD");
 				con.setConnectTimeout(1000);
 				con.connect();
 				l = con.getContentLength();
@@ -107,7 +107,7 @@ public class LuaBitmap {
         if (path.indexOf("http://") == 0) {
             bitmap = getHttpBitmap(context, path);
         } else if (path.charAt(0) != '/') {
-            bitmap = getLoacalBitmap(context, context.getLuaDir() + "/" + path);
+            bitmap = getLoacalBitmap(context,  LuaManager.getInstance().getLuaDir() + "/" + path);
         } else {
             bitmap = getLoacalBitmap(context, path);
         }

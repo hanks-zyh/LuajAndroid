@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
@@ -25,19 +24,6 @@ import common.StringUtils;
 public class LuaUtil {
 
 
-    public static class IntentHelper{
-        public static String getLuaPath(Intent intent) {
-            String luaPath = intent.getStringExtra("luaPath");
-            return StringUtils.isEmpty(luaPath)? "main.lua":luaPath;
-
-        }
-        public static Object[] getArgs(Intent intent){
-            Object[] arg = (Object[]) intent.getSerializableExtra("arg");
-            if (arg == null)
-                arg = new Object[0];
-            return arg;
-        }
-    }
     /**
      * 截屏
      *
@@ -90,8 +76,6 @@ public class LuaUtil {
         return bitmap;
     }
 
-    //读取asset文件
-
     public static byte[] readAsset(Context context, String name) throws IOException {
         AssetManager am = context.getAssets();
         InputStream is = am.open(name);
@@ -100,6 +84,8 @@ public class LuaUtil {
         //am.close();
         return ret;
     }
+
+    //读取asset文件
 
     private static byte[] readAll(InputStream input) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream(4096);
@@ -155,7 +141,6 @@ public class LuaUtil {
 
     }
 
-
     public static void rmDir(File dir) {
         File[] fs = dir.listFiles();
         for (File f : fs) {
@@ -176,6 +161,21 @@ public class LuaUtil {
                 f.delete();
         }
         //dir.delete();
+    }
+
+    public static class IntentHelper {
+        public static String getLuaPath(Intent intent) {
+            String luaPath = intent.getStringExtra("luaPath");
+            return StringUtils.isEmpty(luaPath) ? "main.lua" : luaPath;
+
+        }
+
+        public static Object[] getArgs(Intent intent) {
+            Object[] arg = (Object[]) intent.getSerializableExtra("arg");
+            if (arg == null)
+                arg = new Object[0];
+            return arg;
+        }
     }
 
 }

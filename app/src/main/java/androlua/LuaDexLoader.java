@@ -15,6 +15,7 @@ import dalvik.system.DexClassLoader;
 
 public class LuaDexLoader {
     private static HashMap<String, LuaDexClassLoader> dexCache = new HashMap();
+    private final LuaManager luaManager;
     private ArrayList<ClassLoader> dexList = new ArrayList();
     private HashMap<String, String> libCache = new HashMap();
     private String luaDir;
@@ -24,10 +25,10 @@ public class LuaDexLoader {
     private Theme mTheme;
     private String odexDir;
 
-    public LuaDexLoader(LuaContext context) {
-        this.mContext = context;
-        this.luaDir = context.getLuaDir();
-        this.odexDir = LuaApplication.instance.getOdexDir();
+    public LuaDexLoader() {
+        luaManager = LuaManager.getInstance();
+        this.luaDir = luaManager.getLuaDir();
+        this.odexDir = luaManager.getOdexDir();
     }
 
     public Theme getTheme() {
@@ -39,7 +40,7 @@ public class LuaDexLoader {
     }
 
     public void loadLibs() throws LuaException {
-        File[] libs = new File(this.mContext.getLuaDir() + "/libs").listFiles();
+        File[] libs = new File(LuaManager.getInstance().getLuaExtDir() + "/libs").listFiles();
         if (libs != null) {
             for (File f : libs) {
                 if (f.getAbsolutePath().endsWith(".so")) {
@@ -52,23 +53,23 @@ public class LuaDexLoader {
     }
 
     public void loadLib(String name) throws LuaException {
-        String fn = name;
-        int i = name.indexOf(".");
-        if (i > 0) {
-            fn = name.substring(0, i);
-        }
-        if (fn.startsWith("lib")) {
-            fn = fn.substring(3);
-        }
-        String libPath = this.mContext.getContext().getDir(fn, 0).getAbsolutePath() + "/lib" + fn + ".so";
-        if (!new File(libPath).exists()) {
-            if (new File(this.luaDir + "/libs/lib" + fn + ".so").exists()) {
-                LuaUtil.copyFile(this.luaDir + "/libs/lib" + fn + ".so", libPath);
-            } else {
-                throw new LuaException("can not find lib " + name);
-            }
-        }
-        this.libCache.put(fn, libPath);
+//        String fn = name;
+//        int i = name.indexOf(".");
+//        if (i > 0) {
+//            fn = name.substring(0, i);
+//        }
+//        if (fn.startsWith("lib")) {
+//            fn = fn.substring(3);
+//        }
+//        String libPath = this.mContext.getContext().getDir(fn, 0).getAbsolutePath() + "/lib" + fn + ".so";
+//        if (!new File(libPath).exists()) {
+//            if (new File(this.luaDir + "/libs/lib" + fn + ".so").exists()) {
+//                LuaUtil.copyFile(this.luaDir + "/libs/lib" + fn + ".so", libPath);
+//            } else {
+//                throw new LuaException("can not find lib " + name);
+//            }
+//        }
+//        this.libCache.put(fn, libPath);
     }
 
     public HashMap<String, String> getLibrarys() {
@@ -78,42 +79,42 @@ public class LuaDexLoader {
     public DexClassLoader loadDex(String path) throws LuaException {
         String name = path;
         LuaDexClassLoader dex = (LuaDexClassLoader) dexCache.get(name);
-        if (dex == null) {
-            if (path.charAt(0) != '/') {
-                path = this.luaDir + "/" + path;
-            }
-            if (!new File(path).exists()) {
-                if (new File(path + ".dex").exists()) {
-                    path = path + ".dex";
-                } else if (new File(path + ".jar").exists()) {
-                    path = path + ".jar";
-                } else {
-                    throw new LuaException(path + " not found");
-                }
-            }
-            dex = new LuaDexClassLoader(path, this.odexDir, LuaApplication.instance.getApplicationInfo().nativeLibraryDir, this.mContext.getContext().getClassLoader());
-            dexCache.put(name, dex);
-        }
-        if (!this.dexList.contains(dex)) {
-            this.dexList.add(dex);
-            path = dex.getDexPath();
-            if (path.endsWith(".jar")) {
-                loadResources(path);
-            }
-        }
+//        if (dex == null) {
+//            if (path.charAt(0) != '/') {
+//                path = this.luaDir + "/" + path;
+//            }
+//            if (!new File(path).exists()) {
+//                if (new File(path + ".dex").exists()) {
+//                    path = path + ".dex";
+//                } else if (new File(path + ".jar").exists()) {
+//                    path = path + ".jar";
+//                } else {
+//                    throw new LuaException(path + " not found");
+//                }
+//            }
+//            dex = new LuaDexClassLoader(path, this.odexDir,luaManager.getContext().getApplicationInfo().nativeLibraryDir, this.mContext.getContext().getClassLoader());
+//            dexCache.put(name, dex);
+//        }
+//        if (!this.dexList.contains(dex)) {
+//            this.dexList.add(dex);
+//            path = dex.getDexPath();
+//            if (path.endsWith(".jar")) {
+//                loadResources(path);
+//            }
+//        }
         return dex;
     }
 
     public void loadResources(String path) {
         try {
-            AssetManager assetManager = (AssetManager) AssetManager.class.newInstance();
-            if (((Integer) assetManager.getClass().getMethod("addAssetPath", new Class[]{String.class}).invoke(assetManager, new Object[]{path})).intValue() != 0) {
-                this.mAssetManager = assetManager;
-                Resources superRes = this.mContext.getContext().getResources();
-                this.mResources = new Resources(this.mAssetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
-                this.mTheme = this.mResources.newTheme();
-                this.mTheme.setTo(this.mContext.getContext().getTheme());
-            }
+//            AssetManager assetManager = (AssetManager) AssetManager.class.newInstance();
+//            if (((Integer) assetManager.getClass().getMethod("addAssetPath", new Class[]{String.class}).invoke(assetManager, new Object[]{path})).intValue() != 0) {
+//                this.mAssetManager = assetManager;
+//                Resources superRes = this.mContext.getContext().getResources();
+//                this.mResources = new Resources(this.mAssetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
+//                this.mTheme = this.mResources.newTheme();
+//                this.mTheme.setTo(this.mContext.getContext().getTheme());
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

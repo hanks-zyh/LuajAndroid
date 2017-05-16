@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 
 import androlua.LuaActivity;
-import androlua.LuaApplication;
+import androlua.LuaManager;
 import dalvik.system.DexFile;
 
 /**
@@ -78,7 +78,7 @@ public final class MultiDex {
     }
 
     public static void installLibs(LuaActivity context) throws IllegalAccessException, IllegalArgumentException, IOException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
-        File d = new File(context.getLuaDir() + "/libs");
+        File d = new File(LuaManager.getInstance().getLuaDir() + "/libs");
         String dir = d.getAbsolutePath();
         if (!d.exists())
             return;
@@ -96,7 +96,7 @@ public final class MultiDex {
         }
         if (arr.isEmpty())
             return;
-        File odex = new File(((LuaApplication) context.getApplication()).getOdexDir());
+        File odex = new File(LuaManager.getInstance().getOdexDir());
         installDexes(context.getClass().getClassLoader(), odex, arr);
     }
 
@@ -351,7 +351,7 @@ public final class MultiDex {
      * Replace the value of a field containing a non null array, by a new array containing the
      * elements of the original array plus the elements of extraElements.
      *
-     * @param instance      the instance whose field is to be modified.
+     * @param instance      the context whose field is to be modified.
      * @param fieldName     the field to modify.
      * @param extraElements elements to append at the end of the array.
      */

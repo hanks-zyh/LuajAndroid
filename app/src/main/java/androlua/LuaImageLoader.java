@@ -17,7 +17,7 @@ import pub.hanks.luajandroid.R;
 public class LuaImageLoader {
 
     public static void load(ImageView imageView, String uri) {
-        load(LuaApplication.instance, imageView, uri);
+        load(LuaManager.getInstance().getContext(), imageView, uri);
     }
 
     public static void load(Context context, ImageView imageView, String uri) {
@@ -31,11 +31,11 @@ public class LuaImageLoader {
         if (imageView == null || uri == null) {
             return;
         }
-       if (!uri.startsWith("http://") && !uri.startsWith("https://")){
+        if (!uri.startsWith("http://") && !uri.startsWith("https://")) {
             if (uri.startsWith("/")) {
                 uri = "file://" + uri;
-            }else {
-                uri = "file://" + LuaApplication.instance.getLuaExtDir() + "/" + uri;
+            } else {
+                uri = "file://" + LuaManager.getInstance().getLuaExtDir() + "/" + uri;
             }
         }
         Glide.with(context)

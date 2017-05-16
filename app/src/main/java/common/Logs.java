@@ -16,25 +16,25 @@ public class Logs {
 
     public static void i(String s) {
         if (logOpen) {
-            Log.i(TAG, s==null?"null":s);
+            Log.i(TAG, s == null ? "null" : s);
         }
     }
 
     public static void w(String s) {
         if (logOpen) {
-            Log.w(TAG, s==null?"null":s);
+            Log.w(TAG, s == null ? "null" : s);
         }
     }
 
     public static void d(String s) {
         if (logOpen) {
-            Log.d(TAG, s==null?"null":s);
+            Log.d(TAG, s == null ? "null" : s);
         }
     }
 
     public static void e(String s) {
         if (logOpen) {
-            Log.e(TAG, s==null?"null":s);
+            Log.e(TAG, s == null ? "null" : s);
         }
     }
 

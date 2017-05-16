@@ -1230,7 +1230,7 @@ public class PageView extends ViewGroup {
         int childHeightSize = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
 
 		/*
-		 * Make sure all children have been properly measured. Decor views first.
+         * Make sure all children have been properly measured. Decor views first.
          * Right now we cheat and make this less complicated by assuming decor
          * views won't intersect. We will pin to edges based on gravity.
          */

@@ -16,11 +16,6 @@ public class LuaPagerAdapter extends PagerAdapter {
         this.adapter = adapter;
     }
 
-    public interface AdapterCreator {
-        long getCount();
-        View instantiateItem(ViewGroup container, int position);
-    }
-
     @Override
     public int getCount() {
         return (int) adapter.getCount();
@@ -41,6 +36,12 @@ public class LuaPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public interface AdapterCreator {
+        long getCount();
+
+        View instantiateItem(ViewGroup container, int position);
     }
 
 }

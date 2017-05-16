@@ -6,13 +6,16 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+
 import com.luajava.LuaException;
 import com.luajava.LuaFunction;
 import com.luajava.LuaObject;
 
+import common.Logs;
+
 public class LuaDrawable extends Drawable {
-    private final LuaContext mContext = this.mDraw.getLuaState().getContext();
     private LuaObject mDraw;
+    private final LuaContext mContext = this.mDraw.getLuaState().getContext();
     private LuaFunction mOnDraw;
     private Paint mPaint = new Paint();
 
@@ -32,7 +35,7 @@ public class LuaDrawable extends Drawable {
                 this.mOnDraw.call(p1);
             }
         } catch (LuaException e) {
-            this.mContext.toast(e.getMessage());
+            Logs.e(e);
         }
     }
 

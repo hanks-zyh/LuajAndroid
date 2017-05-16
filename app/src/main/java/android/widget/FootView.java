@@ -26,7 +26,7 @@ public class FootView extends RelativeLayout {
     }
 
     private void initView(Context context) {
-// TODO: Implement this method
+        // TODO: Implement this method
         dm = context.getResources().getDisplayMetrics();
         RelativeLayout layout = new RelativeLayout(context);
         layout.setPadding(0, dp(20), 0, dp(20));
@@ -40,24 +40,24 @@ public class FootView extends RelativeLayout {
         layout.addView(layout2, lp2);
 
         ImageView img1 = new ImageView(context);
-//        img1.setId(id.pullup_icon);
-//        img1.setBackgroundResource(R.drawable.pullup_icon_big);
+        //        img1.setId(id.pullup_icon);
+        //        img1.setBackgroundResource(R.drawable.pullup_icon_big);
         LayoutParams lp3 = new LayoutParams(dp(19), dp(31));
         lp3.setMargins(dp(60), 0, 0, 0);
         lp3.addRule(15);
         layout2.addView(img1, lp3);
 
         ImageView img2 = new ImageView(context);
-//        img2.setId(id.loading_icon);
+        //        img2.setId(id.loading_icon);
         img2.setVisibility(GONE);
-//        img2.setBackgroundResource(R.drawable.loading);
+        //        img2.setBackgroundResource(R.drawable.loading);
         LayoutParams lp4 = new LayoutParams(dp(16), dp(16));
         lp4.setMargins(dp(60), 0, 0, 0);
         lp4.addRule(15);
         layout2.addView(img2, lp4);
 
         TextView tv1 = new TextView(context);
-//        tv1.setId(id.loadstate_tv);
+        //        tv1.setId(id.loadstate_tv);
         tv1.setText(PullingLayout.string.pullup_to_load);
         tv1.setTextSize(16);
         LayoutParams lp5 = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -65,7 +65,7 @@ public class FootView extends RelativeLayout {
         layout2.addView(tv1, lp5);
 
         ImageView img3 = new ImageView(context);
-//        img3.setId(id.loadstate_iv);
+        //        img3.setId(id.loadstate_iv);
         img3.setVisibility(GONE);
         LayoutParams lp6 = new LayoutParams(dp(16), dp(16));
         lp6.setMargins(0, 0, dp(8), 0);
@@ -76,7 +76,7 @@ public class FootView extends RelativeLayout {
     }
 
     private int dp(float n) {
-// TODO: Implement this method
+        // TODO: Implement this method
         return (int) TypedValue.applyDimension(1, n, dm);
     }
 

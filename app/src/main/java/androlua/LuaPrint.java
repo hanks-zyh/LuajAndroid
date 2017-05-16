@@ -22,7 +22,7 @@ public class LuaPrint extends JavaFunction {
     @Override
     public int execute() throws LuaException {
         if (L.getTop() < 2) {
-            mLuaContext.toast("");
+            Logs.e("error print");
             return 0;
         }
         for (int i = 2; i <= L.getTop(); i++) {

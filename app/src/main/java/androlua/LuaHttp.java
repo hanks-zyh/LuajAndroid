@@ -22,7 +22,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * instance client for lua
+ * context client for lua
  * Created by hanks on 2017/5/15. Copyright (C) 2017 Hanks
  */
 

@@ -549,7 +549,7 @@ public class CardView extends FrameLayout implements CardViewDelegate {
                                 bounds.bottom - cornerRadius + 1f, bounds.right - cornerRadius + 1f,
                                 bounds.bottom, paint);
                     }
-////                center
+                    ////                center
                     canvas.drawRect(bounds.left, bounds.top + Math.max(0, cornerRadius - 1f),
                             bounds.right, bounds.bottom - cornerRadius + 1f, paint);
                 }

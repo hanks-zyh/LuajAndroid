@@ -8,10 +8,9 @@ local layout = require "main.layout_main"
 
 activity.setTitle('LuaFileActicity')
 
-
 function newActivity(luaPath)
-    local intent = Intent(activity,LuaActivity)
-    intent.putExtra("luaPath",luaPath)
+    local intent = Intent(activity, LuaActivity)
+    intent.putExtra("luaPath", luaPath)
     activity.startActivity(intent)
 end
 
@@ -46,9 +45,10 @@ function onCreate(savedInstanceState)
     btn_http.onClick = function()
         newActivity("http/activity_http.lua")
     end
+    print(_VERSION)
 end
 
-function  onCreateOptionsMenu(menu)
+function onCreateOptionsMenu(menu)
     menu.addSubMenu("setting")
     menu.addSubMenu("about")
 end

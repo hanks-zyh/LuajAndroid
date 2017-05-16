@@ -31,7 +31,7 @@ public class ExampleInstrumentedTest {
         linearLayout.animate().scaleX(2).scaleY(2).translationX(100).setDuration(3000).start();
     }
 
-    class MyAdapter extends BaseAdapter{
+    class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {

@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class StringUtils {
     public static final String EMPTY_CHAR = "\u200B";
-    
+
     public static boolean isEmpty(String s) {
         return s == null || s.length() == 0;
     }

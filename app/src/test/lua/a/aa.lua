@@ -4,6 +4,6 @@
 -- Date: 2017/5/12
 -- Time: 15:07
 -- 
-local me = require "b.ba" 
+local me = require "b.ba"
 
 print(me.name)

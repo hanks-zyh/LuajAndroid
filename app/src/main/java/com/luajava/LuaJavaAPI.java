@@ -228,7 +228,7 @@ public final class LuaJavaAPI {
                 field = objClass.getField(fieldName);
             } catch (NoSuchFieldException e) {
                 /*try
-				 {
+                 {
 				 field = objClass.getDeclaredField(fieldName);
 				 }
 				 catch (Exception e2)

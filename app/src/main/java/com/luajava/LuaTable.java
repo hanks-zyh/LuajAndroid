@@ -183,7 +183,7 @@ public class LuaTable<K, V> extends LuaObject implements Map<K, V> {
         return null;
     }
 
-    public  static class LuaEntry<K, V> implements Entry<K, V> {
+    public static class LuaEntry<K, V> implements Entry<K, V> {
 
         private K mKey;
 

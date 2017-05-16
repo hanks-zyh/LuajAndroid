@@ -26,7 +26,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import androlua.LuaApplication;
+import androlua.LuaManager;
 
 import static android.graphics.Bitmap.CompressFormat.JPEG;
 import static android.graphics.Bitmap.CompressFormat.PNG;
@@ -40,7 +40,7 @@ public class FileUtils {
     private static final String APP_DIR = "LLLLLua";
 
     private static Context getContext() {
-        return LuaApplication.instance;
+        return LuaManager.getInstance().getContext();
     }
 
     public static File convertViewToImage(View view, @NonNull String filePath) throws Exception {
@@ -363,7 +363,7 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             try {
-                if(br!=null)br.close();
+                if (br != null) br.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -436,18 +436,39 @@ public class FileUtils {
 
     public static String getAndroLuaDir() {
         File appDir;
-        if (sdCardAvaible()){
-            appDir = new File(Environment.getExternalStorageDirectory(),APP_DIR);
-        }else {
+        if (sdCardAvaible()) {
+            appDir = new File(Environment.getExternalStorageDirectory(), APP_DIR);
+        } else {
             appDir = getContext().getExternalFilesDir(APP_DIR);
         }
 
         if (appDir == null) {
-            appDir = new File(getContext().getFilesDir() , APP_DIR);
+            appDir = new File(getContext().getFilesDir(), APP_DIR);
         }
         appDir.mkdirs(); // dont need judge dir exits
 
         return appDir.getAbsolutePath();
+    }
+
+    public static byte[] readAsset(String name) throws IOException {
+        AssetManager am = getContext().getAssets();
+        InputStream is = am.open(name);
+        byte[] ret = readAll(is);
+        is.close();
+        //am.close();
+        return ret;
+    }
+
+    private static byte[] readAll(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream(4096);
+        byte[] buffer = new byte[4096];
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+        }
+        byte[] ret = output.toByteArray();
+        output.close();
+        return ret;
     }
 
     //复制asset文件到sd卡
@@ -516,26 +537,5 @@ public class FileUtils {
             zipEntry = zipInputStream.getNextEntry();
         }
         zipInputStream.close();
-    }
-
-    public static byte[] readAsset(String name) throws IOException {
-        AssetManager am = getContext().getAssets();
-        InputStream is = am.open(name);
-        byte[] ret = readAll(is);
-        is.close();
-        //am.close();
-        return ret;
-    }
-
-    private static byte[] readAll(InputStream input) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream(4096);
-        byte[] buffer = new byte[4096];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-        }
-        byte[] ret = output.toByteArray();
-        output.close();
-        return ret;
     }
 }

@@ -11,17 +11,10 @@ import android.widget.BaseAdapter;
 
 public class LuaAdapter extends BaseAdapter {
 
-   AdapterCreator adapterCreator;
+    AdapterCreator adapterCreator;
 
     public LuaAdapter(AdapterCreator adapterCreator) {
         this.adapterCreator = adapterCreator;
-    }
-
-    public interface AdapterCreator{
-        long getCount();
-        Object getItem(int position);
-        long getItemId(int position);
-        View getView(int position, View convertView, ViewGroup parent);
     }
 
     @Override
@@ -42,5 +35,15 @@ public class LuaAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return adapterCreator.getView(position, convertView, parent);
+    }
+
+    public interface AdapterCreator {
+        long getCount();
+
+        Object getItem(int position);
+
+        long getItemId(int position);
+
+        View getView(int position, View convertView, ViewGroup parent);
     }
 }

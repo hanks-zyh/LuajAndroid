@@ -8,4 +8,7 @@ local me = {
     name = "hanks"
 }
 
+require("c.json")
+
+print(json.decode(''))
 return me

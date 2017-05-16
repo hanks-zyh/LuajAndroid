@@ -59,7 +59,7 @@ public class FloatButton extends ImageView {
         //mCard.setCardBackgroundColor(0xff0000ff);
 
         mButton = new CircleImageView(context);
-//        mButton.setImageResource(R.drawable.icon);
+        //        mButton.setImageResource(R.drawable.icon);
         mRippleHelper = new RippleHelper(mButton);
         FrameLayout.LayoutParams lp2 = new FrameLayout.LayoutParams(dp(64), dp(64));
         layout.addView(mCard, lp);

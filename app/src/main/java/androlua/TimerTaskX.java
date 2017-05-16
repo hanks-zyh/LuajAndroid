@@ -1,22 +1,25 @@
 package androlua;
 
 public abstract class TimerTaskX implements Runnable {
+    final Object lock = new Object();
     boolean cancelled;
     boolean fixedRate;
-    final Object lock = new Object();
-    private boolean mEnabled;
     long period;
-    private long scheduledTime;
     long when;
+    private boolean mEnabled;
+    private long scheduledTime;
+
+    protected TimerTaskX() {
+    }
 
     public abstract void run();
 
-    public void setPeriod(long period) {
-        this.period = period;
-    }
-
     public long getPeriod() {
         return this.period;
+    }
+
+    public void setPeriod(long period) {
+        this.period = period;
     }
 
     long getWhen() {
@@ -41,9 +44,6 @@ public abstract class TimerTaskX implements Runnable {
         return z;
     }
 
-    protected TimerTaskX() {
-    }
-
     public boolean cancel() {
         boolean willRun = true;
         synchronized (this.lock) {
@@ -63,11 +63,11 @@ public abstract class TimerTaskX implements Runnable {
         return j;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.mEnabled = enabled;
-    }
-
     public boolean isEnabled() {
         return this.mEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.mEnabled = enabled;
     }
 }

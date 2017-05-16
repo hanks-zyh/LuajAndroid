@@ -40,7 +40,7 @@ import java.util.List;
  * the array. You can add lists or arrays of custom objects. Override the toString() method
  * of your objects to determine what text will be displayed for the item in the list.
  * <p>
- * <p>To use something other than TextViews for the array display, for instance, ImageViews,
+ * <p>To use something other than TextViews for the array display, for context, ImageViews,
  * or to have some of data besides toString() results fill the views,
  * override {@link #getView(int, View, ViewGroup)} to return the type of view you want.
  */

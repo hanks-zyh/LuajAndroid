@@ -3,12 +3,7 @@ package com.luajava;
 import androlua.LuaContext;
 
 public class LuaState {
-    private static Class<?> Byte_class = Byte.class;
-    private static Class<?> Double_class = Double.class;
-    private static Class<?> Float_class = Float.class;
-    private static Class<?> Integer_class = Integer.class;
     public static final int LUAI_MAXSTACK = 1000000;
-    private static final String LUAJAVA_LIB = "luajava";
     public static final int LUA_ERRERR = 6;
     public static final int LUA_ERRGCMM = 5;
     public static final int LUA_ERRMEM = 4;
@@ -41,11 +36,116 @@ public class LuaState {
     public static final int LUA_TTHREAD = 8;
     public static final int LUA_TUSERDATA = 7;
     public static final int LUA_YIELD = 1;
+    private static final String LUAJAVA_LIB = "luajava";
+    private static Class<?> Byte_class = Byte.class;
+    private static Class<?> Double_class = Double.class;
+    private static Class<?> Float_class = Float.class;
+    private static Class<?> Integer_class = Integer.class;
     private static Class<?> Long_class = Long.class;
     private static Class<?> Number_class = Number.class;
     private static Class<?> Short_class = Short.class;
+
+    static {
+        System.loadLibrary(LUAJAVA_LIB);
+    }
+
     private long luaState;
     private LuaContext mContext;
+
+    protected LuaState() {
+        this.luaState = _newstate();
+    }
+
+    protected LuaState(long luaState) {
+        this.luaState = luaState;
+        LuaStateFactory.insertLuaState(this);
+    }
+
+    public static Number convertLuaNumber(Double db, Class<?> retType) {
+        if (retType.isPrimitive()) {
+            if (retType == Integer.TYPE) {
+                return Integer.valueOf(db.intValue());
+            }
+            if (retType == Long.TYPE) {
+                return Long.valueOf(db.longValue());
+            }
+            if (retType == Float.TYPE) {
+                return Float.valueOf(db.floatValue());
+            }
+            if (retType == Double.TYPE) {
+                return Double.valueOf(db.doubleValue());
+            }
+            if (retType == Byte.TYPE) {
+                return Byte.valueOf(db.byteValue());
+            }
+            if (retType == Short.TYPE) {
+                return Short.valueOf(db.shortValue());
+            }
+        } else if (retType.isAssignableFrom(Number_class)) {
+            if (retType.isAssignableFrom(Integer_class)) {
+                return new Integer(db.intValue());
+            }
+            if (retType.isAssignableFrom(Long_class)) {
+                return new Long(db.longValue());
+            }
+            if (retType.isAssignableFrom(Float_class)) {
+                return new Float(db.floatValue());
+            }
+            if (retType.isAssignableFrom(Double_class)) {
+                return db;
+            }
+            if (retType.isAssignableFrom(Byte_class)) {
+                return new Byte(db.byteValue());
+            }
+            if (retType.isAssignableFrom(Short_class)) {
+                return new Short(db.shortValue());
+            }
+        }
+        return null;
+    }
+
+    public static Number convertLuaNumber(Long lg, Class<?> retType) {
+        if (retType.isPrimitive()) {
+            if (retType == Integer.TYPE) {
+                return Integer.valueOf(lg.intValue());
+            }
+            if (retType == Long.TYPE) {
+                return Long.valueOf(lg.longValue());
+            }
+            if (retType == Float.TYPE) {
+                return Float.valueOf(lg.floatValue());
+            }
+            if (retType == Double.TYPE) {
+                return Double.valueOf(lg.doubleValue());
+            }
+            if (retType == Byte.TYPE) {
+                return Byte.valueOf(lg.byteValue());
+            }
+            if (retType == Short.TYPE) {
+                return Short.valueOf(lg.shortValue());
+            }
+        } else if (retType.isAssignableFrom(Number_class)) {
+            if (retType.isAssignableFrom(Integer_class)) {
+                return new Integer(lg.intValue());
+            }
+            if (retType.isAssignableFrom(Long_class)) {
+                return new Long(lg.longValue());
+            }
+            if (retType.isAssignableFrom(Float_class)) {
+                return new Float(lg.floatValue());
+            }
+            if (retType.isAssignableFrom(Double_class)) {
+                return lg;
+            }
+            if (retType.isAssignableFrom(Byte_class)) {
+                return new Byte(lg.byteValue());
+            }
+            if (retType.isAssignableFrom(Short_class)) {
+                return new Short(lg.shortValue());
+            }
+        }
+        return null;
+    }
 
     private native synchronized int _LargError(long j, int i, String str);
 
@@ -278,19 +378,6 @@ public class LuaState {
     private native synchronized void _xmove(long j, long j2, int i);
 
     private native synchronized int _yield(long j, int i);
-
-    static {
-        System.loadLibrary(LUAJAVA_LIB);
-    }
-
-    protected LuaState() {
-        this.luaState = _newstate();
-    }
-
-    protected LuaState(long luaState) {
-        this.luaState = luaState;
-        LuaStateFactory.insertLuaState(this);
-    }
 
     public synchronized void close() {
         LuaStateFactory.removeLuaState(this.luaState);
@@ -879,92 +966,6 @@ public class LuaState {
             return new LuaTable(this, index);
         }
         return new LuaObject(this, index);
-    }
-
-    public static Number convertLuaNumber(Double db, Class<?> retType) {
-        if (retType.isPrimitive()) {
-            if (retType == Integer.TYPE) {
-                return Integer.valueOf(db.intValue());
-            }
-            if (retType == Long.TYPE) {
-                return Long.valueOf(db.longValue());
-            }
-            if (retType == Float.TYPE) {
-                return Float.valueOf(db.floatValue());
-            }
-            if (retType == Double.TYPE) {
-                return Double.valueOf(db.doubleValue());
-            }
-            if (retType == Byte.TYPE) {
-                return Byte.valueOf(db.byteValue());
-            }
-            if (retType == Short.TYPE) {
-                return Short.valueOf(db.shortValue());
-            }
-        } else if (retType.isAssignableFrom(Number_class)) {
-            if (retType.isAssignableFrom(Integer_class)) {
-                return new Integer(db.intValue());
-            }
-            if (retType.isAssignableFrom(Long_class)) {
-                return new Long(db.longValue());
-            }
-            if (retType.isAssignableFrom(Float_class)) {
-                return new Float(db.floatValue());
-            }
-            if (retType.isAssignableFrom(Double_class)) {
-                return db;
-            }
-            if (retType.isAssignableFrom(Byte_class)) {
-                return new Byte(db.byteValue());
-            }
-            if (retType.isAssignableFrom(Short_class)) {
-                return new Short(db.shortValue());
-            }
-        }
-        return null;
-    }
-
-    public static Number convertLuaNumber(Long lg, Class<?> retType) {
-        if (retType.isPrimitive()) {
-            if (retType == Integer.TYPE) {
-                return Integer.valueOf(lg.intValue());
-            }
-            if (retType == Long.TYPE) {
-                return Long.valueOf(lg.longValue());
-            }
-            if (retType == Float.TYPE) {
-                return Float.valueOf(lg.floatValue());
-            }
-            if (retType == Double.TYPE) {
-                return Double.valueOf(lg.doubleValue());
-            }
-            if (retType == Byte.TYPE) {
-                return Byte.valueOf(lg.byteValue());
-            }
-            if (retType == Short.TYPE) {
-                return Short.valueOf(lg.shortValue());
-            }
-        } else if (retType.isAssignableFrom(Number_class)) {
-            if (retType.isAssignableFrom(Integer_class)) {
-                return new Integer(lg.intValue());
-            }
-            if (retType.isAssignableFrom(Long_class)) {
-                return new Long(lg.longValue());
-            }
-            if (retType.isAssignableFrom(Float_class)) {
-                return new Float(lg.floatValue());
-            }
-            if (retType.isAssignableFrom(Double_class)) {
-                return lg;
-            }
-            if (retType.isAssignableFrom(Byte_class)) {
-                return new Byte(lg.byteValue());
-            }
-            if (retType.isAssignableFrom(Short_class)) {
-                return new Short(lg.shortValue());
-            }
-        }
-        return null;
     }
 
     public void pushPrimitive() {

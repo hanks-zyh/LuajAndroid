@@ -228,7 +228,7 @@ public abstract class PageAdapter {
     public abstract boolean isViewFromObject(View view, Object object);
 
     /**
-     * Save any instance state associated with this adapter and its pages that should be
+     * Save any context state associated with this adapter and its pages that should be
      * restored if the current UI state needs to be reconstructed.
      *
      * @return Saved state for this adapter
@@ -238,7 +238,7 @@ public abstract class PageAdapter {
     }
 
     /**
-     * Restore any instance state associated with this adapter and its pages
+     * Restore any context state associated with this adapter and its pages
      * that was previously saved by {@link #saveState()}.
      *
      * @param state  State previously saved by a call to {@link #saveState()}
