@@ -61,7 +61,6 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
             Object[] arg = LuaUtil.IntentHelper.getArgs(getIntent());
             luaManager = LuaManager.getInstance();
             String luaFile = LuaUtil.IntentHelper.getLuaPath(getIntent());
-            luaManager.appendLuaDir(luaFile); // main/list.lua
 
             L = LuaStateFactory.newLuaState();
             L.openLibs();
@@ -87,7 +86,7 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
 
             L.pop(1);
 
-            JavaFunction print = new LuaPrint(this, L);
+            JavaFunction print = new LuaPrint(L);
             print.register("print");
 
             L.getGlobal("package");
@@ -111,7 +110,6 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
             if (mOnTouchEvent.isNil())
                 mOnTouchEvent = null;
 
-            Toast.makeText(this,"load:"+luaFile,Toast.LENGTH_LONG).show();
             luaDexLoader = new LuaDexLoader();
             luaDexLoader.loadLibs();
             if (!luaFile.startsWith("/")){

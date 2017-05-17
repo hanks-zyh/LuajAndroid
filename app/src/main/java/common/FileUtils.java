@@ -437,12 +437,8 @@ public class FileUtils {
     public static String getAndroLuaDir() {
         File appDir;
         if (sdCardAvaible()) {
-            appDir = new File(Environment.getExternalStorageDirectory(), APP_DIR);
-        } else {
             appDir = getContext().getExternalFilesDir(APP_DIR);
-        }
-
-        if (appDir == null) {
+        }else {
             appDir = new File(getContext().getFilesDir(), APP_DIR);
         }
         appDir.mkdirs(); // dont need judge dir exits

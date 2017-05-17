@@ -1,5 +1,7 @@
 package androlua;
 
+import android.support.annotation.NonNull;
+
 import com.luajava.LuaException;
 import com.luajava.LuaObject;
 import com.luajava.LuaTable;
@@ -20,6 +22,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * context client for lua
@@ -32,7 +35,13 @@ public class LuaHttp {
     private final OkHttpClient httpClient;
 
     private LuaHttp() {
-        httpClient = new OkHttpClient();
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpClient = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
     }
 
     public static LuaHttp getInstance() {
@@ -47,6 +56,52 @@ public class LuaHttp {
     }
 
     public static void request(final LuaTable options, final LuaObject callback) {
+        getInstance().httpClient.newCall(buildRequest(options))
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        try {
+                            callback.call(e);
+                        } catch (LuaException e1) {
+                            Logs.e(e1);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        try {
+                            if (options.get("outputFile") != null) {
+                                InputStream inputStream = response.body().byteStream();
+                                String outputFile = FileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
+                                callback.call(null, response.code(), outputFile);
+                                return;
+                            }
+                            callback.call(null, response.code(), response.body().string());
+                        } catch (LuaException e) {
+                            e.printStackTrace();
+                            Logs.e(e);
+                        }
+                    }
+                });
+    }
+
+    public static void requestSync(final LuaTable options, final LuaObject callback) {
+        try {
+            Response response = getInstance().httpClient.newCall(buildRequest(options)).execute();
+            if (options.get("outputFile") != null) {
+                InputStream inputStream = response.body().byteStream();
+                String outputFile = FileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
+                callback.call(null, response.code(), outputFile);
+                return;
+            }
+            callback.call(null, response.code(), response.body().string());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @NonNull
+    private static Request buildRequest(LuaTable options) {
         Request.Builder builder = new Request.Builder();
         String url = (String) options.get("url");
         builder.url(url);
@@ -83,34 +138,7 @@ public class LuaHttp {
                 builder.header(header[0].trim(), header[1].trim());
             }
         }
-
-        getInstance().httpClient.newCall(builder.build())
-                .enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        try {
-                            callback.call(e);
-                        } catch (LuaException e1) {
-                            Logs.e(e1);
-                        }
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        try {
-                            if (options.get("outputFile") != null) {
-                                InputStream inputStream = response.body().byteStream();
-                                String outputFile = FileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
-                                callback.call(null, response.code(), outputFile);
-                                return;
-                            }
-                            callback.call(null, response.code(), response.body().string());
-                        } catch (LuaException e) {
-                            e.printStackTrace();
-                            Logs.e(e);
-                        }
-                    }
-                });
+        return builder.build();
     }
 
     private static RequestBody getRequestBody(LuaTable options) {

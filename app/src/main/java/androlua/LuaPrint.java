@@ -10,13 +10,11 @@ import common.Logs;
 public class LuaPrint extends JavaFunction {
 
     private LuaState L;
-    private LuaContext mLuaContext;
     private StringBuilder output = new StringBuilder();
 
-    public LuaPrint(LuaContext luaContext, LuaState L) {
+    public LuaPrint(LuaState L) {
         super(L);
         this.L = L;
-        mLuaContext = luaContext;
     }
 
     @Override
@@ -44,7 +42,6 @@ public class LuaPrint extends JavaFunction {
             output.append(val);
             output.append("\t");
         }
-        //mLuaContext.toast(output.toString().substring(1, output.length() - 1));
         Logs.e(output.toString().substring(1, output.length() - 1));
         output.setLength(0);
         return 0;

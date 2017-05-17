@@ -2,9 +2,11 @@ package androlua;
 
 import android.content.Context;
 
+import com.luajava.JavaFunction;
 import com.luajava.LuaException;
 import com.luajava.LuaObject;
 import com.luajava.LuaState;
+import com.luajava.LuaStateFactory;
 
 import java.io.File;
 
@@ -62,6 +64,7 @@ public class LuaManager {
     }
 
     public Object doFile(LuaState L, String filePath, Object[] args) throws LuaException {
+        appendLuaDir(L,filePath);
         int ok = 0;
         L.setTop(0);
         ok = L.LloadFile(filePath);
@@ -192,7 +195,7 @@ public class LuaManager {
         luaCpath += newPath;
     }
 
-    public void appendLuaDir(String dir) {
+    public void appendLuaDir(LuaState L,String dir) {
         if (!dir.startsWith("/")) {
             dir = getLuaExtDir() + "/" + dir;
         }
@@ -204,6 +207,7 @@ public class LuaManager {
             return;
         }
         luaLpath += newPath;
+        initLuaPath(L);
     }
 
     public Context getContext() {
@@ -235,6 +239,57 @@ public class LuaManager {
     }
 
 
+    public LuaState initLua() {
+        try {
+            LuaState L = LuaStateFactory.newLuaState();
+            L.openLibs();
+
+//            // push 一个 context
+//            L.pushJavaObject(getContext());
+//            // pop 并赋值给 activity
+//            L.setGlobal("activity");
+//
+//            // 把全局变量 activity 的值 push 进栈
+//            L.getGlobal("activity");
+//            // pop 并赋值给 this
+//            L.setGlobal("this");
+//
+////            L.pushJavaObject(this);
+////            L.getGlobal("luajava");
+//
+//            L.pushString(getLuaExtDir());
+//            L.setField(-2, "luaextdir");
+//
+//            L.pushString(getLuaDir());
+//            L.setField(-2, "luadir");
+//
+//
+//            L.pushString(getLuaLpath());
+//            L.setField(-2, "luapath");
+//
+//            // 彈出一个元素
+//            L.pop(1);
+
+            // 注册全局函数 print
+            JavaFunction print = new LuaPrint(L);
+            print.register("print");
+
+            initLuaPath(L);
+            L.pop(1);
+            return  L;
+        } catch (LuaException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void initLuaPath(LuaState L) {
+        L.getGlobal("package");
+        L.pushString(getLuaLpath());
+        L.setField(-2, "path");
+        L.pushString(getLuaCpath());
+        L.setField(-2, "cpath");
+    }
 }
 
 
