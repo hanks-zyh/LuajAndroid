@@ -186,8 +186,8 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
     protected void onDestroy() {
         try {
             luaManager.runFunc(L, "onDestroy");
-            System.gc();
             L.close();
+            System.gc();
         } catch (Exception e) {
             Logs.e(e);
         }

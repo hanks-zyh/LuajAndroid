@@ -42,10 +42,9 @@ public class LuaManager {
 
     public void init(Context context) {
         this.context = context;
-        context = context.getApplicationContext();
         // 注册crashHandler
         CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(context);
+        crashHandler.init(context.getApplicationContext());
 
         //初始化AndroLua工作目录
         luaExtDir = FileUtils.getAndroLuaDir();
