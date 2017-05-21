@@ -5,7 +5,7 @@ import com.luajava.JavaFunction;
 import com.luajava.LuaException;
 import com.luajava.LuaState;
 
-import common.Logs;
+import common.LuaLog;
 
 public class LuaPrint extends JavaFunction {
 
@@ -20,7 +20,7 @@ public class LuaPrint extends JavaFunction {
     @Override
     public int execute() throws LuaException {
         if (L.getTop() < 2) {
-            Logs.e("error print");
+            LuaLog.e("error print");
             return 0;
         }
         for (int i = 2; i <= L.getTop(); i++) {
@@ -42,7 +42,7 @@ public class LuaPrint extends JavaFunction {
             output.append(val);
             output.append("\t");
         }
-        Logs.e(output.toString().substring(1, output.length() - 1));
+        LuaLog.e(output.toString().substring(1, output.length() - 1));
         output.setLength(0);
         return 0;
     }

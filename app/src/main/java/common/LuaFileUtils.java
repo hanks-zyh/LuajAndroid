@@ -32,10 +32,10 @@ import static android.graphics.Bitmap.CompressFormat.JPEG;
 import static android.graphics.Bitmap.CompressFormat.PNG;
 
 /**
- * FileUtils
+ * LuaFileUtils
  * Created by hanks on 16/6/28.
  */
-public class FileUtils {
+public class LuaFileUtils {
 
     private static final String APP_DIR = "LLLLLua";
 
@@ -132,7 +132,7 @@ public class FileUtils {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), APP_DIR);
         if (!file.mkdirs()) {
-            Logs.e("Directory not created");
+            LuaLog.e("Directory not created");
         }
         return file.getAbsolutePath() + "/" + fileName;
     }

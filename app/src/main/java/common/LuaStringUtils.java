@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by hanks on 2016/11/29.
  */
 
-public class StringUtils {
+public class LuaStringUtils {
     public static final String EMPTY_CHAR = "\u200B";
 
     public static boolean isEmpty(String s) {

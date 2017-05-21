@@ -11,7 +11,7 @@ import com.luajava.LuaException;
 import com.luajava.LuaFunction;
 import com.luajava.LuaObject;
 
-import common.Logs;
+import common.LuaLog;
 
 public class LuaDrawable extends Drawable {
     private LuaObject mDraw;
@@ -35,7 +35,7 @@ public class LuaDrawable extends Drawable {
                 this.mOnDraw.call(p1);
             }
         } catch (LuaException e) {
-            Logs.e(e);
+            LuaLog.e(e);
         }
     }
 

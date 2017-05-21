@@ -10,8 +10,8 @@ import com.luajava.LuaStateFactory;
 
 import java.io.File;
 
-import common.FileUtils;
-import common.Logs;
+import common.LuaFileUtils;
+import common.LuaLog;
 import dalvik.system.DexClassLoader;
 
 public class LuaManager {
@@ -24,6 +24,7 @@ public class LuaManager {
     private String luaExtDir; // 外部 lua 文件路径
     private String luaCpath; // 相当于 LUA_CPATH
     private String luaLpath; // 相当于 LUA_PATH
+    private boolean debugable = true;
 
     private LuaManager() {
 
@@ -47,7 +48,7 @@ public class LuaManager {
         crashHandler.init(context.getApplicationContext());
 
         //初始化AndroLua工作目录
-        luaExtDir = FileUtils.getAndroLuaDir();
+        luaExtDir = LuaFileUtils.getAndroLuaDir();
         //定义文件夹
         odexDir = context.getDir("odex", Context.MODE_PRIVATE).getAbsolutePath();
         libDir = context.getDir("lib", Context.MODE_PRIVATE).getAbsolutePath();
@@ -56,6 +57,14 @@ public class LuaManager {
         luaLpath = luaDir + "/?.lua;" + luaDir + "/lua/?.lua;" + luaDir + "/?/initEnv.lua;" + luaExtDir + "/?.lua;";
     }
 
+    public LuaManager setDebugable(boolean debugable) {
+        this.debugable = debugable;
+        return this;
+    }
+
+    public boolean isDebugable() {
+        return debugable;
+    }
 
     //运行lua脚本
     public Object doFile(LuaState L, String filePath) throws LuaException {
@@ -106,7 +115,7 @@ public class LuaManager {
                 throw new LuaException(errorReason(ok) + ": " + L.toString(-1));
             }
         } catch (LuaException e) {
-            Logs.e(e);
+            LuaLog.e(e);
         }
         return null;
     }

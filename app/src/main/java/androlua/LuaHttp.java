@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import common.FileUtils;
-import common.Logs;
+import common.LuaFileUtils;
+import common.LuaLog;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -63,7 +63,7 @@ public class LuaHttp {
                         try {
                             callback.call(e);
                         } catch (LuaException e1) {
-                            Logs.e(e1);
+                            LuaLog.e(e1);
                         }
                     }
 
@@ -72,14 +72,14 @@ public class LuaHttp {
                         try {
                             if (options.get("outputFile") != null) {
                                 InputStream inputStream = response.body().byteStream();
-                                String outputFile = FileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
+                                String outputFile = LuaFileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
                                 callback.call(null, response.code(), outputFile);
                                 return;
                             }
                             callback.call(null, response.code(), response.body().string());
                         } catch (LuaException e) {
                             e.printStackTrace();
-                            Logs.e(e);
+                            LuaLog.e(e);
                         }
                     }
                 });
@@ -90,7 +90,7 @@ public class LuaHttp {
             Response response = getInstance().httpClient.newCall(buildRequest(options)).execute();
             if (options.get("outputFile") != null) {
                 InputStream inputStream = response.body().byteStream();
-                String outputFile = FileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
+                String outputFile = LuaFileUtils.saveToFile(inputStream, (String) options.get("outputFile"));
                 callback.call(null, response.code(), outputFile);
                 return;
             }

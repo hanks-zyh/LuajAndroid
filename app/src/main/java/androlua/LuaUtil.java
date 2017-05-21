@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import common.StringUtils;
+import common.LuaStringUtils;
 
 public class LuaUtil {
 
@@ -166,7 +166,7 @@ public class LuaUtil {
     public static class IntentHelper {
         public static String getLuaPath(Intent intent) {
             String luaPath = intent.getStringExtra("luaPath");
-            return StringUtils.isEmpty(luaPath) ? "main.lua" : luaPath;
+            return LuaStringUtils.isEmpty(luaPath) ? "main.lua" : luaPath;
 
         }
 
