@@ -21,8 +21,8 @@ local Gravity = bindClass("android.view.Gravity")
 local OnClickListener = bindClass("android.view.View$OnClickListener")
 local TypedValue = bindClass("android.util.TypedValue")
 local BitmapDrawable = bindClass("android.graphics.drawable.BitmapDrawable")
-local ArrayListAdapter = bindClass("android.widget.ArrayListAdapter")
-local ArrayPageAdapter = bindClass("android.widget.ArrayPageAdapter")
+--local ArrayListAdapter = bindClass("android.widget.ArrayListAdapter")
+--local ArrayPageAdapter = bindClass("android.widget.ArrayPageAdapter")
 local ScaleType = bindClass("android.widget.ImageView$ScaleType")
 local TruncateAt = bindClass("android.text.TextUtils$TruncateAt")
 local DisplayMetrics = bindClass("android.util.DisplayMetrics")
@@ -415,8 +415,8 @@ local function setattribute(root, view, params, k, v, ids)
     elseif rules[k] then
         params.addRule(rules[k], ids[v])
     elseif k == "items" and type(v) == "table" then --创建列表项目
-        local adapter = ArrayListAdapter(context, android_R.layout.simple_list_item_1, String(v))
-        view.setAdapter(adapter)
+--        local adapter = ArrayListAdapter(context, android_R.layout.simple_list_item_1, String(v))
+--        view.setAdapter(adapter)
     elseif k == "pages" and type(v) == "table" then --创建页项目
         local ps = {}
         for n, o in ipairs(v) do
@@ -427,8 +427,8 @@ local function setattribute(root, view, params, k, v, ids)
                 table.insert(ps, o)
             end
         end
-        local adapter = ArrayPageAdapter(View(ps))
-        view.setAdapter(adapter)
+--        local adapter = ArrayPageAdapter(View(ps))
+--        view.setAdapter(adapter)
     elseif k == "textSize" then
         if tonumber(v) then
             view.setTextSize(tonumber(v))
