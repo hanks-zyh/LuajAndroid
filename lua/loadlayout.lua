@@ -21,6 +21,7 @@ local Gravity = bindClass("android.view.Gravity")
 local OnClickListener = bindClass("android.view.View$OnClickListener")
 local TypedValue = bindClass("android.util.TypedValue")
 local BitmapDrawable = bindClass("android.graphics.drawable.BitmapDrawable")
+local NineBitmapDrawable = bindClass("androlua.NineBitmapDrawable")
 --local ArrayListAdapter = bindClass("android.widget.ArrayListAdapter")
 --local ArrayPageAdapter = bindClass("android.widget.ArrayPageAdapter")
 local ScaleType = bindClass("android.widget.ImageView$ScaleType")
@@ -368,8 +369,10 @@ local function checkattr(s)
     return nil
 end
 
-local function getIdentifier(name)
-    return context.getResources().getIdentifier(name, null, null)
+
+-- 获取类似 @drawable/ic_back 的资源
+local function getIdentifier(type, name) -- drawable  ic_back
+    return context.getResources().getIdentifier(name, type, context.getPackageName())
 end
 
 local function dump2(t)
@@ -449,8 +452,9 @@ local function setattribute(root, view, params, k, v, ids)
     elseif k == "url" then
         view.loadUrl(url)
     elseif k == "src" then
-        if v:find("^%?") then
-            view.setImageResource(getIdentifier(v:sub(2, -1)))
+        if v:find('^@')  then -- @drawable/ic_back
+            local index = v:find('/')
+            view.setImageResource(getIdentifier(v:sub(2,index-1),v:sub(index+1,-1)))
         else
             ImageLoader.load(view, v)
         end
@@ -458,13 +462,14 @@ local function setattribute(root, view, params, k, v, ids)
         view.setScaleType(scaleTypes[scaleType[v]])
     elseif k == "background" then
         if type(v) == "string" then
-            if v:find("^%?") then
-                view.setBackgroundResource(getIdentifier(v:sub(2, -1)))
+            if v:find('^@') then
+                local index = v:find('/')
+                view.setBackgroundResource(getIdentifier(v:sub(2,index-1),v:sub(index+1,-1)))
             elseif v:find("^#") then
                 view.setBackgroundColor(checkNumber(v))
             elseif rawget(root, v) or rawget(_G, v) then
                 v = rawget(root, v) or rawget(_G, v)
-                if type(v) == "function" then
+                if type(v) == "function" then -- 自定义 drawable
                     setBackground(view, LuaDrawable(v))
                 elseif type(v) == "userdata" then
                     setBackground(view, v)
@@ -538,8 +543,9 @@ local function loadlayout(t, root, group)
     local view, style
 
     if t.style then
-        if t.style:find("^%?") then
-            style = getIdentifier(t.style:sub(2, -1))
+        if t.style:find('^@') then
+            local index = t.style:find('/')
+            style = getIdentifier(t.style:sub(2,index-1), t.style:sub(index+1,-1))
         else
             local st, sty = pcall(require, t.style)
             if st then

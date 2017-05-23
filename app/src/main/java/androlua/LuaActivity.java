@@ -54,13 +54,13 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            View decorView = getWindow().getDecorView();
-//            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-//            decorView.setSystemUiVisibility(option);
-//            getWindow().setStatusBarColor(0x00000000);
-//        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            setStatusBarColor(0xff000000);
+        }
 
         handler = new MainHandler(this);
 
@@ -68,6 +68,12 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
         initErrorLayout();
 
         initLua(savedInstanceState);
+    }
+
+    public void setStatusBarColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(color);
+        }
     }
 
     private void initLua(Bundle savedInstanceState) {

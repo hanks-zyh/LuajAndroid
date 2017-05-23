@@ -11,6 +11,18 @@ return {
         },
         {
             ImageView,
+            layout_width="100dp",
+            layout_height="100dp",
+            src="@drawable/pull_icon_big",
+        },
+        {
+            ImageView,
+            layout_width="100dp",
+            layout_height="100dp",
+            src="@mipmap/ic_launcher_round",
+        },
+        {
+            ImageView,
             layout_width="180dp",
             layout_height="80dp",
             scaleType="centerInside",
