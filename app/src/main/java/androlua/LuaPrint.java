@@ -1,6 +1,8 @@
 package androlua;
 
 
+import android.util.Log;
+
 import com.luajava.JavaFunction;
 import com.luajava.LuaException;
 import com.luajava.LuaState;
@@ -42,7 +44,7 @@ public class LuaPrint extends JavaFunction {
             output.append(val);
             output.append("\t");
         }
-        LuaLog.e(output.toString().substring(1, output.length() - 1));
+        Log.e("Luandroid",output.toString().substring(1, output.length() - 1));
         output.setLength(0);
         return 0;
     }
