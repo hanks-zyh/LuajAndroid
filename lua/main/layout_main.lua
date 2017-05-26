@@ -1,92 +1,42 @@
 return {
-    ScrollView,
+    LinearLayout,
     layout_width = "fill",
+    layout_height = "fill",
+    gravity = "center",
+    background = "#FFFFFF",
+    fitsSystemWindows = true,
+    orientation = 1,
+    paddingLeft = "16dp",
+    paddingRight = "16dp",
+    focusable = true,
+    focusableInTouchMode = true,
     {
-        LinearLayout,
-        orientation = 1,
+        TextView,
+        text = "Quark",
+        textSize = "36sp",
+        textColor = "#2979FB",
+    },
+    {
+        TextView,
+        id = "tv_add_plugin",
+        layout_height = "48dp",
         layout_width = "fill",
-        padding = 20,
-        focusable=true,
-        focusableInTouchMode=true,
-        {
-            TextView,
-            text = "用户名"
-        },
-        {
-            EditText,
-            id = "luaPath",
-            textSize="12sp",
-            hint = "手机号/邮箱",
-            layout_width = "fill",
-            singleLine = true
-        },
-        {
-            TextView,
-            text = "密码"
-        },
-        {
-            EditText,
-            id = "packageName",
-            hint="6-20位数字或字母",
-            layout_width = "fill",
-            singleLine = true,
-            textSize="12sp",
-            inputType="textPassword"
-        },
-        {
-            TextView,
-            text = "程序名称"
-        },
-        {
-            EditText,
-            id = "appName",
-            textSize="12sp",
-            layout_width = "fill",
-            singleLine = true
-        },
-
-
-        {
-            Button,
-            layout_width = "fill",
-            text = "Text",
-            id = "btn_text"
-        },
-        {
-            Button,
-            layout_width = "fill",
-            text = "Image",
-            id = "btn_image"
-        },
-        {
-            Button,
-            layout_width = "fill",
-            text = "List",
-            id = "btn_list"
-        },
-        {
-            Button,
-            layout_width = "fill",
-            text = "pager",
-            id = "btn_pager"
-        },
-        {
-            Button,
-            layout_width = "fill",
-            text = "webview",
-            id = "btn_webview"
-        },
-        {
-            Button,
-            layout_width = "fill",
-            text = "animation",
-            id = "btn_animation"
-        },
-        {
-            Button,
-            layout_width = "fill",
-            text = "http",
-            id = "btn_http"
-        },
-    }
+        layout_marginLeft = "40dp",
+        layout_marginTop = "64dp",
+        layout_marginBottom = "40dp",
+        layout_marginRight = "40dp",
+        gravity = "center",
+        text = "URL | AGC | NEWS | CODE",
+        textColor = "#9DAEBF",
+        textSize = "12sp",
+        background = "#F4F4F4",
+    },
+    {
+        GridView,
+        id = "gridView",
+        layout_width = "fill",
+        numColumns = 5,
+        layout_marginLeft = "40dp",
+        layout_marginRight = "40dp",
+    },
 }

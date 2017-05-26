@@ -418,8 +418,8 @@ local function setattribute(root, view, params, k, v, ids)
     elseif rules[k] then
         params.addRule(rules[k], ids[v])
     elseif k == "items" and type(v) == "table" then --创建列表项目
---        local adapter = ArrayListAdapter(context, android_R.layout.simple_list_item_1, String(v))
---        view.setAdapter(adapter)
+        --        local adapter = ArrayListAdapter(context, android_R.layout.simple_list_item_1, String(v))
+        --        view.setAdapter(adapter)
     elseif k == "pages" and type(v) == "table" then --创建页项目
         local ps = {}
         for n, o in ipairs(v) do
@@ -430,8 +430,8 @@ local function setattribute(root, view, params, k, v, ids)
                 table.insert(ps, o)
             end
         end
---        local adapter = ArrayPageAdapter(View(ps))
---        view.setAdapter(adapter)
+        --        local adapter = ArrayPageAdapter(View(ps))
+        --        view.setAdapter(adapter)
     elseif k == "textSize" then
         if tonumber(v) then
             view.setTextSize(tonumber(v))
@@ -452,9 +452,9 @@ local function setattribute(root, view, params, k, v, ids)
     elseif k == "url" then
         view.loadUrl(url)
     elseif k == "src" then
-        if v:find('^@')  then -- @drawable/ic_back
+        if v:find('^@') then -- @drawable/ic_back
             local index = v:find('/')
-            view.setImageResource(getIdentifier(v:sub(2,index-1),v:sub(index+1,-1)))
+            view.setImageResource(getIdentifier(v:sub(2, index - 1), v:sub(index + 1, -1)))
         else
             ImageLoader.load(view, v)
         end
@@ -464,7 +464,7 @@ local function setattribute(root, view, params, k, v, ids)
         if type(v) == "string" then
             if v:find('^@') then
                 local index = v:find('/')
-                view.setBackgroundResource(getIdentifier(v:sub(2,index-1),v:sub(index+1,-1)))
+                view.setBackgroundResource(getIdentifier(v:sub(2, index - 1), v:sub(index + 1, -1)))
             elseif v:find("^#") then
                 view.setBackgroundColor(checkNumber(v))
             elseif rawget(root, v) or rawget(_G, v) then
@@ -545,7 +545,7 @@ local function loadlayout(t, root, group)
     if t.style then
         if t.style:find('^@') then
             local index = t.style:find('/')
-            style = getIdentifier(t.style:sub(2,index-1), t.style:sub(index+1,-1))
+            style = getIdentifier(t.style:sub(2, index - 1), t.style:sub(index + 1, -1))
         else
             local st, sty = pcall(require, t.style)
             if st then
