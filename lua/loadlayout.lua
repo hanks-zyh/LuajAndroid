@@ -400,6 +400,12 @@ function setBackground(view, bg)
     end
 end
 
+function setElevation(view, v)
+    if ver >= 21 then
+        view.setElevation(checkValue(v))
+    end
+end
+
 local function setattribute(root, view, params, k, v, ids)
     if k == "layout_x" then
         params.x = checkValue(v)
@@ -458,6 +464,8 @@ local function setattribute(root, view, params, k, v, ids)
         else
             ImageLoader.load(view, v)
         end
+    elseif k == "elevation" then
+        setElevation(view,v)
     elseif k == "scaleType" then
         view.setScaleType(scaleTypes[scaleType[v]])
     elseif k == "background" then

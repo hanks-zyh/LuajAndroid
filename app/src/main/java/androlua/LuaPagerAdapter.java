@@ -1,5 +1,6 @@
 package androlua;
 
+import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +39,15 @@ public class LuaPagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return adapter.getPageTitle(position);
+    }
+
     public interface AdapterCreator {
         long getCount();
-
         View instantiateItem(ViewGroup container, int position);
+        String getPageTitle(int position);
     }
 
 }

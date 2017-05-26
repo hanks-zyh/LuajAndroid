@@ -73,6 +73,11 @@ function onCreate(savedInstanceState)
         launchPage = 'http/activity_http.lua'
     }
 
+    data[8] ={
+        text = 'news',
+        launchPage = 'news/activity_news.lua'
+    }
+
     local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data end,
         getItem = function(position) return nil end,

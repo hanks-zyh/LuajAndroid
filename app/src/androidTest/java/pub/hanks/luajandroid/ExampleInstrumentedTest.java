@@ -1,6 +1,7 @@
 package pub.hanks.luajandroid;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
@@ -42,6 +43,9 @@ public class ExampleInstrumentedTest {
 
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            gridLayout.setElevation(20);
+        }
 
     }
 
