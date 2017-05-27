@@ -2,15 +2,20 @@ package pub.hanks.luajandroid;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.design.widget.TabLayout;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +51,11 @@ public class ExampleInstrumentedTest {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             gridLayout.setElevation(20);
         }
+
+        ListView listView = new ListView(appContext);
+        TabLayout tabLayout = new TabLayout(appContext);
+        WebView webView = new WebView(appContext);
+        webView.setWebChromeClient(new WebChromeClient());
 
     }
 

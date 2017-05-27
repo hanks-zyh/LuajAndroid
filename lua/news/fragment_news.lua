@@ -13,8 +13,67 @@ import "android.content.*"
 local Adapter = luajava.bindClass("androlua.LuaAdapter")
 local ImageLoader = luajava.bindClass("androlua.LuaImageLoader")
 local LuaFragment = luajava.bindClass("androlua.LuaFragment")
+local Http = luajava.bindClass("androlua.LuaHttp")
+local ITHomeUtils = luajava.bindClass("pub.hanks.sample.ITHomeUtils")
 
-function newInstance()
+
+function readContent(str, pattern, defalut)
+    for content in string.gmatch(str, pattern) do
+        return content
+    end
+    return defalut
+end
+
+
+function runOnUiThread(activity, f)
+    activity.runOnUiThread(luajava.createProxy('java.lang.Runnable', {
+        run = f
+    }))
+end
+
+
+
+function getData(path, data, adapter, fragment)
+    --  http://api.ithome.com/xml/newslist/news.xml  news_3213df6f23a21dfa.xml
+    --  http://api.ithome.com/xml/slide/news.xml
+    -- <cid>166</cid> 的是广告  含有 live 的是直播
+    local id = ''
+    if #data > 0 then
+        id = '_' .. ITHomeUtils.desEncode(data[#data].newsid)
+    end
+    local url = string.format('http://api.ithome.com/xml/newslist/'.. path , id)
+    Http.request({ url = url }, function(error, code, body)
+        for item in string.gmatch(body, '<item.->(.-)</item>') do
+            local news = {}
+            news.cid = readContent(item, '<cid>(.-)</cid>')
+            if news.cid ~= '166' then
+                news.newsid = readContent(item, '<newsid>(.-)</newsid>', 0)
+                news.title = readContent(item, '<title>%s*<!%[CDATA%[(.-)]]>%s*</title>', 'errorTitle')
+                news.url = readContent(item, '<url>(.-)</url>', 'http://hanks.pub')
+                news.postdate = readContent(item, '<postdate>(.-)</postdate>')
+                news.image = readContent(item, '<image>(.-)</image>')
+                news.description = readContent(item, '<description>%s*<!%[CDATA%[(.-)]]>%s*</description>')
+                news.hitcount = readContent(item, '<hitcount>(.-)</hitcount>')
+                news.commentcount = readContent(item, '<commentcount>(.-)</commentcount>')
+                news.forbidcomment = readContent(item, '<forbidcomment>(.-)</forbidcomment>')
+                data[1 + #data] = news
+            end
+        end
+        runOnUiThread(fragment.getActivity(), function()
+            adapter.notifyDataSetChanged()
+        end)
+    end)
+end
+
+function launchDetail(fragment, newsid)
+    local activity = fragment.getActivity()
+    local intent = Intent(activity, LuaActivity)
+    intent.putExtra("luaPath", 'news/activity_news_detail.lua')
+    intent.putExtra("url", string.format('http://wap.ithome.com/html/%s.htm',newsid))
+    activity.startActivity(intent)
+end
+
+function newInstance(path)
 
     -- create view table
     local layout = {
@@ -25,32 +84,46 @@ function newInstance()
     }
 
     local item_view = {
-        LinearLayout,
+        FrameLayout,
         layout_widht = "fill",
         layout_height = "wrap",
-        orientation = "horizontal",
-        gravity = "center_vertical",
-        padding = "8dp",
+        padding = "12dp",
         {
             ImageView,
-            id = "icon",
-            layout_width = "80dp",
-            layout_height = "150dp",
+            id = "iv_image",
+            layout_gravity = "center_vertical",
+            layout_width = "56dp",
+            layout_height = "56dp",
         },
         {
             TextView,
-            id = "text",
+            id = "tv_title",
+            layout_marginLeft = "68dp",
             layout_widht = "fill",
-            layout_margin = "8dp",
+            maxLines = "2",
+            lineSpacingMultiplier = '1.2',
+            layout_gravity = "top",
+            textSize = "13sp",
+            textColor = "#222222",
+        },
+        {
+            TextView,
+            id = "tv_date",
+            layout_gravity = "bottom",
+            layout_marginLeft = "68dp",
+            layout_widht = "fill",
+            textSize = "12sp",
+            textColor = "#aaaaaa",
         }
     }
 
+    local lastId
     local data = {}
     local ids = {}
     local contentView = loadlayout(layout, ids)
 
     local fragment = LuaFragment.newInstance()
-
+    local adapter
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
         onDestroyView = function() end,
         onDestroy = function() end,
@@ -58,18 +131,16 @@ function newInstance()
             return contentView
         end,
         onViewCreated = function(view, savedInstanceState)
-            for i = 1, 59 do
-                data[i] = {
-                    url = string.format("http://i.meizitu.net/2017/05/07a%02d.jpg", i),
-                    text = "this is item : " .. (i - 1)
-                }
-            end
-            local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
+            adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
                 getCount = function() return #data end,
                 getItem = function(position) return nil end,
                 getItemId = function(position) return position end,
                 getView = function(position, convertView, parent)
                     position = position + 1 -- lua 索引从 1开始
+                    if position == #data then
+                        print('load more')
+                        getData(path, data, adapter, fragment)
+                    end
                     if convertView == nil then
                         local views = {} -- store views
                         convertView = loadlayout(item_view, views, ListView)
@@ -82,24 +153,21 @@ function newInstance()
                     local views = convertView.getTag()
                     local item = data[position]
                     if item then
-                        ImageLoader.load(views.icon, item.url)
-                        views.text.setText(item.text)
+                        ImageLoader.load(views.iv_image, item.image)
+                        views.tv_date.setText(item.postdate)
+                        views.tv_title.setText(item.title)
                     end
                     return convertView
                 end
             }))
-
             ids.listview.setAdapter(adapter)
             ids.listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
                 onItemClick = function(adapter, view, position, id)
-                    activity.toast('click item:' .. position)
+                    local newsid = data[position + 1].newsid
+                    launchDetail(fragment,newsid)
                 end,
             }))
-            ids.listview.setOnItemLongClickListener(luajava.createProxy("android.widget.AdapterView$OnItemLongClickListener", {
-                onItemLongClick = function(adapter, view, position, id)
-                    activity.toast('long click item:' .. position)
-                end,
-            }))
+            getData(path , data, adapter, fragment)
         end,
     }))
     return fragment

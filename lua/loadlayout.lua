@@ -406,6 +406,12 @@ function setElevation(view, v)
     end
 end
 
+function setLineSpacing(textView, v)
+    if ver >= 16 then
+        textView.setLineSpacing(textView.getLineSpacingExtra(),v);
+    end
+end
+
 local function setattribute(root, view, params, k, v, ids)
     if k == "layout_x" then
         params.x = checkValue(v)
@@ -453,6 +459,8 @@ local function setattribute(root, view, params, k, v, ids)
         end
     elseif k == "textAppearance" then
         view.setTextAppearance(context, checkattr(v))
+    elseif k == "lineSpacingMultiplier" then
+        setLineSpacing(view, tonumber(v))
     elseif k == "ellipsize" then
         view.setEllipsize(TruncateAt[string.upper(v)])
     elseif k == "url" then
