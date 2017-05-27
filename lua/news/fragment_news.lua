@@ -41,7 +41,7 @@ function getData(path, data, adapter, fragment)
     if #data > 0 then
         id = '_' .. ITHomeUtils.desEncode(data[#data].newsid)
     end
-    local url = string.format('http://api.ithome.com/xml/newslist/'.. path , id)
+    local url = string.format('http://api.ithome.com/xml/newslist/' .. path, id)
     Http.request({ url = url }, function(error, code, body)
         for item in string.gmatch(body, '<item.->(.-)</item>') do
             local news = {}
@@ -69,7 +69,7 @@ function launchDetail(fragment, newsid)
     local activity = fragment.getActivity()
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", 'news/activity_news_detail.lua')
-    intent.putExtra("url", string.format('http://wap.ithome.com/html/%s.htm',newsid))
+    intent.putExtra("url", string.format('http://wap.ithome.com/html/%s.htm', newsid))
     activity.startActivity(intent)
 end
 
@@ -87,30 +87,33 @@ function newInstance(path)
         FrameLayout,
         layout_widht = "fill",
         layout_height = "wrap",
-        padding = "12dp",
+        paddingLeft = "16dp",
+        paddingRight = "12dp",
+        paddingTop = "12dp",
+        paddingBottom = "12dp",
         {
             ImageView,
             id = "iv_image",
             layout_gravity = "center_vertical",
-            layout_width = "56dp",
-            layout_height = "56dp",
+            layout_width = "72dp",
+            layout_height = "72dp",
         },
         {
             TextView,
             id = "tv_title",
-            layout_marginLeft = "68dp",
+            layout_marginLeft = "84dp",
             layout_widht = "fill",
             maxLines = "2",
             lineSpacingMultiplier = '1.2',
             layout_gravity = "top",
-            textSize = "13sp",
+            textSize = "14sp",
             textColor = "#222222",
         },
         {
             TextView,
             id = "tv_date",
             layout_gravity = "bottom",
-            layout_marginLeft = "68dp",
+            layout_marginLeft = "84dp",
             layout_widht = "fill",
             textSize = "12sp",
             textColor = "#aaaaaa",
@@ -164,10 +167,10 @@ function newInstance(path)
             ids.listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
                 onItemClick = function(adapter, view, position, id)
                     local newsid = data[position + 1].newsid
-                    launchDetail(fragment,newsid)
+                    launchDetail(fragment, newsid)
                 end,
             }))
-            getData(path , data, adapter, fragment)
+            getData(path, data, adapter, fragment)
         end,
     }))
     return fragment

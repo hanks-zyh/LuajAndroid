@@ -54,6 +54,7 @@ public class ExampleInstrumentedTest {
 
         ListView listView = new ListView(appContext);
         TabLayout tabLayout = new TabLayout(appContext);
+        tabLayout.setVisibility(View.VISIBLE);
         WebView webView = new WebView(appContext);
         webView.setWebChromeClient(new WebChromeClient());
 

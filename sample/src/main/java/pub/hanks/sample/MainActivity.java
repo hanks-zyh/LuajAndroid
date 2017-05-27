@@ -12,7 +12,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        startActivity(new Intent(this, LuaActivity.class));
+        finish();
+//        setContentView(R.layout.activity_main);
     }
 
     public void loadLua(View view){

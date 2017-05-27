@@ -8,7 +8,6 @@ require "import"
 import "android.widget.*"
 import "android.content.*"
 
-local ImageLoader = luajava.bindClass("androlua.LuaImageLoader")
 import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
 local LuaFragmentPageAdapter = luajava.bindClass("androlua.LuaFragmentPageAdapter")
@@ -36,13 +35,6 @@ local layout = {
         layout_width = "fill",
         layout_height = "fill",
     },
-}
-
-local page = {
-    TextView,
-    id = "listView",
-    text = "pagekkkkkk",
-    textSize = "50sp",
 }
 
 local data = {
@@ -112,10 +104,11 @@ local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
     }))
 
 function onCreate(savedInstanceState)
+    activity.setStatusBarColor(0xffd22222)
     activity.setContentView(loadlayout(layout))
     viewPager.setAdapter(adapter)
     tab.setSelectedTabIndicatorColor(0xffffffff)
-    tab.setTabTextColors(0xffffffff, 0xffeeeeee)
+    tab.setTabTextColors(0x88ffffff, 0xffffffff)
     tab.setTabMode(TabLayout.MODE_SCROLLABLE)
     tab.setTabGravity(TabLayout.GRAVITY_CENTER)
     tab.setupWithViewPager(viewPager)

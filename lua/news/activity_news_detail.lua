@@ -7,9 +7,7 @@
 require "import"
 import "android.widget.*"
 import "android.content.*"
-import("android.webkit.WebView")
-import("android.webkit.WebViewClient")
-import("android.webkit.WebSettings")
+import("androlua.LuaWebView")
 
 -- create view table
 local layout = {
@@ -25,19 +23,24 @@ local layout = {
         layout_height = "56dp",
         background = "#D22222",
         gravity = "center_vertical",
+        elevation = "2dp",
         {
             ImageView,
             id = "back",
             layout_width = "40dp",
             layout_height = "40dp",
-            layout_marginLeft = "12dp",
-            scaleType="centerInside",
+            layout_marginLeft = "8dp",
+            scaleType = "centerInside",
             src = "@drawable/ic_menu_back",
         },
         {
             TextView,
             layout_height = "56dp",
             layout_width = "fill",
+            paddingRight = "16dp",
+            maxLines = 1,
+            textIsSelectable = true,
+            ellipsize = "end",
             id = "tv_title",
             gravity = "center_vertical",
             paddingLeft = "8dp",
@@ -46,69 +49,65 @@ local layout = {
         },
     },
     {
-        WebView,
-        id = "webview",
+        FrameLayout,
         layout_width = "fill",
         layout_height = "fill",
-    },
+        {
+            LuaWebView,
+            id = "webview",
+            layout_width = "fill",
+            layout_height = "fill",
+        },
+        {
+            ProgressBar,
+            layout_gravity="center",
+            id = "progressBar",
+            layout_width = "40dp",
+            layout_height = "40dp",
+        },
+    }
 }
 
 
 function onCreate(savedInstanceState)
+    activity.setStatusBarColor(0xffd22222)
     activity.setContentView(loadlayout(layout))
     back.onClick = function()
         activity.finish()
     end
     local url = activity.getIntent().getStringExtra('url')
-    if url == nil then url = "http:-- hanks.pub" end
-    print('.....................' .. url)
+    if url == nil then url = "http://hanks.pub" end
+    tv_title.setText(url)
+    webview.setVisibility(8)
+    progressBar.setVisibility(0)
     webview.loadUrl(url)
-    webview.setWebViewClient(WebViewClient())
-    -- 设置是否支持缩放，我这里为false，默认为true。
-    local setting = webview.getSettings()
-    setting.setSupportZoom(false)
-
-    -- 设置是否显示缩放工具，默认为false
-    setting.setBuiltInZoomControls(false)
-
-    -- 设置默认的字体大小，默认为16，有效值区间在1-72之间
-    setting.setDefaultFontSize(18)
-
-    -- 首先阻塞图片，让图片不显示
-    setting.setBlockNetworkImage(true)
-
-    -- 页面加载好以后，在放开图片
-    setting.setBlockNetworkImage(false)
-
-    -- 设置自适应屏幕
-    setting.setUseWideViewPort(true)
-    --  缩放至屏幕的大小
-    setting.setLoadWithOverviewMode(true)
-
-    -- 支持插件
-    setting.setPluginsEnabled(true)
-
-    -- 提高渲染等级
-    setting.setRenderPriority(WebSettings.RenderPriority.HIGH)
-
-    -- 禁止webview上面控件获取焦点(黄色边框)
-    setting.setNeedInitialFocus(false)
-
-    -- 关闭webview中缓存
-    setting.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK)
-
-    -- 设置可以访问文件
-    setting.setAllowFileAccess(true)
-
-    -- 支持自动加载图片
-    setting.setLoadsImagesAutomatically(true)
-    setting.setJavaScriptEnabled(true)
-
-    webview.setWebChromeClient(luajava.createProxy('android.webkit.WebChromeClient',{
-        onReceivedTitle = function(webview, title)
-            tv_title.setText(title)
+    webview.setWebViewClientListener(luajava.createProxy('androlua.LuaWebView$WebViewClientListener', {
+        onPageFinished = function(view, url)
+            view.loadUrl([[
+                    javascript:(function(){
+                        var rec = document.getElementsByClassName('rc2');
+                        for(var i=0;i<rec.length;i++) rec[i].style.display = 'none';
+                        document.getElementById('hd_float').style.display = 'none';
+                        document.getElementById("ft").style.display = 'none';
+                        document.getElementById('ruanmei-apps').style.display = 'none';
+                        document.getElementById('downapp').style.display = 'none';
+                        document.getElementsByClassName('newsgrade')[0].style.display = 'none';
+                        document.getElementsByClassName('nav')[0].style.display = 'none';
+                        document.getElementsByClassName('shareto')[0].style.display = 'none';
+                        document.getElementsByClassName('current_nav')[0].style.display = 'none';
+                    })()
+              ]]);
+            webview.setVisibility(0)
+            progressBar.setVisibility(8)
         end
     }))
 end
 
 
+function onDestroy()
+    if webview then
+        webview.getParent().removeView(webview)
+        webview.destroy()
+        webview = nil
+    end
+end
