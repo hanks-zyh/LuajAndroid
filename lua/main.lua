@@ -74,8 +74,13 @@ function onCreate(savedInstanceState)
     }
 
     data[8] ={
-        text = 'news',
+        text = 'IT 之家',
         launchPage = 'news/activity_news.lua'
+    }
+
+    data[9] ={
+        text = '知乎日报',
+        launchPage = 'zhihudaliy/activity_zhihu_daliy.lua'
     }
 
     local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
