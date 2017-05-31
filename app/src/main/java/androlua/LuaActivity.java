@@ -76,6 +76,17 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
         }
     }
 
+    public void setLightStatusBar(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            decorView.setSystemUiVisibility(option);
+            setStatusBarColor(0x00000000);
+        }
+    }
+
     private void initLua(Bundle savedInstanceState) {
         try {
             Object[] arg = LuaUtil.IntentHelper.getArgs(getIntent());

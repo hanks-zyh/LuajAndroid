@@ -1,10 +1,13 @@
 package androlua;
 
 
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import com.luajava.LuaException;
@@ -53,5 +56,12 @@ public class LuaDrawable extends Drawable {
 
     public Paint getPaint() {
         return this.mPaint;
+    }
+
+    public static Drawable create(String filePath){
+        if (!filePath.startsWith("/")) {
+            filePath = LuaManager.getInstance().getLuaExtDir() + "/" + filePath;
+        }
+        return new BitmapDrawable(LuaManager.getInstance().getContext().getResources(),BitmapFactory.decodeFile(filePath));
     }
 }

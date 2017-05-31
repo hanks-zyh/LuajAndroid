@@ -83,6 +83,11 @@ function onCreate(savedInstanceState)
         launchPage = 'zhihudaliy/activity_zhihu_daliy.lua'
     }
 
+    data[10] ={
+        text = '即刻',
+        launchPage = 'jike/main.lua'
+    }
+
     local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data end,
         getItem = function(position) return nil end,

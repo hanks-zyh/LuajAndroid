@@ -63,11 +63,11 @@ local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
 function getData()
     Http.request({url="http://news-at.zhihu.com/api/4/themes"}, function ( error,code,body )
         local themes  =  JSON.decode(body).others
-        for i=1,#themes do
-          table.insert(data.titles, themes[i].name)
-          table.insert(data.fragments, fragment.newInstance(themes[i].id))
-        end
         runOnUiThread(activity,function ()
+            for i=1,#themes do
+            table.insert(data.titles, themes[i].name)
+            table.insert(data.fragments, fragment.newInstance(themes[i].id))
+            end
           adapter.notifyDataSetChanged()
         end)
     end)

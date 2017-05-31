@@ -1,10 +1,14 @@
 package pub.hanks.luajandroid;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -16,9 +20,13 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androlua.LuaBitmap;
+import androlua.LuaDrawable;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,7 +41,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() throws Exception {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-
         LinearLayout linearLayout = new LinearLayout(appContext);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         assertEquals("pub.hanks.luajandroid", appContext.getPackageName());
@@ -53,10 +60,28 @@ public class ExampleInstrumentedTest {
         }
 
         ListView listView = new ListView(appContext);
+        TextView textView = new TextView(appContext);
+        textView.setMaxLines(1);
+        textView.setSingleLine(true);
         TabLayout tabLayout = new TabLayout(appContext);
         tabLayout.setVisibility(View.VISIBLE);
         WebView webView = new WebView(appContext);
         webView.setWebChromeClient(new WebChromeClient());
+
+        final BottomNavigationView bottomView = new BottomNavigationView(appContext);
+        ColorStateList textColor = ColorStateList.valueOf(0xFFFF0000);
+        bottomView.setItemTextColor(textColor);
+        bottomView.getMenu().add("");
+        bottomView.getMenu().add("");
+        bottomView.getMenu().add("");
+        bottomView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item.getTitle();
+                item.setChecked(true);
+                return true;
+            }
+        });
 
     }
 

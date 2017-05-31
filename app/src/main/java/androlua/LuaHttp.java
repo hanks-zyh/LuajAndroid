@@ -134,7 +134,14 @@ public class LuaHttp {
         if (headers != null) {
             for (Object key : headers.keySet()) {
                 String value = (String) headers.get(key);
-                String[] header = value.split(":");
+                int i = value.indexOf(":");
+                if (i == -1){
+                    continue;
+                }
+                String[] header = new String[]{
+                        value.substring(0,i).trim(),
+                        value.substring(i+1).trim()
+                };
                 builder.header(header[0].trim(), header[1].trim());
             }
         }
@@ -174,7 +181,7 @@ public class LuaHttp {
             }
             return bodyBuilder.build();
         }
-        return null;
+        return new FormBody.Builder().build();
     }
 
 }

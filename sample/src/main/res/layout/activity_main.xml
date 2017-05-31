@@ -16,6 +16,7 @@
 
     <Button
         android:layout_width="wrap_content"
+        android:textColor="#658EAA"
         android:layout_height="wrap_content"
         android:onClick="loadLua"
         android:text="load lua"
