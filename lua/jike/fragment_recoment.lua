@@ -22,9 +22,15 @@ import "androlua.adapter.LuaNineGridViewAdapter"
 
 local function fetchData(data, adapter, fragment)
     local url = 'http://app.jike.ruguoapp.com/1.0/recommendFeed/list'
+    local postBody = {trigger='user'}
+    if data.loadMoreKey then
+        postBody.loadMoreKey = data.loadMoreKey
+        postBody.trigger = 'auto'
+    end
     local options = {
         url = url,
         method = 'POST',
+        body = JSON.encode(postBody),
         headers = {
             "Cookie:io=0_Djvr_i0yLPqdsuFnzY; jike:sess.sig=d-IvFa3n5DhxWNim_0gVasNfTP0; jike:feed:latestNormalMessageId=592e495c7a27e200117d35b3; jike:recommendfeed:latestRecCreatedAt=2017-05-31T06:16:06.797Z; jike:sess=eyJfdWlkIjoiNTdmYjc2YTJhNzViY2ExMzAwZjYyMzkyIiwiX3Nlc3Npb25Ub2tlbiI6IkdRTUU0RmNkTHZhNTZlcExXR1BaYURDaDQifQ==; jikeSocketSticky=33b938e0c7b12816f8f2e027067ee82d69975eb2; jike:feed:latestFeedItemId=592e495c7a27e200117d35b3; jike:feed:noContentPullCount=0"
         }
@@ -34,10 +40,11 @@ local function fetchData(data, adapter, fragment)
             print(' ================== get data error')
             return
         end
-        local json = JSON.decode(body).data
-        for i = 1, #json do
-            if json[i].type == 'MESSAGE_RECOMMENDATION' then
-                data[#data + 1] = json[i]
+        local json = JSON.decode(body)
+        data.loadMoreKey = json.loadMoreKey
+        for i = 1, #json.data do
+            if json.data[i].type == 'MESSAGE_RECOMMENDATION' then
+                data.msg[#data.msg + 1] = json.data[i]
             end
         end
         uihelper.runOnUiThread(fragment.getActivity(), function()
@@ -73,7 +80,7 @@ function newInstance()
 
     local item_view = require('jike.item_msg')
 
-    local data = {}
+    local data = {msg={}}
     local ids = {}
     local fragment = LuaFragment.newInstance()
     local adapter
@@ -85,7 +92,7 @@ function newInstance()
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
-                getItemCount = function() return #data end,
+                getItemCount = function() return #data.msg end,
                 getItemViewType = function(position) return 0 end,
                 onCreateViewHolder = function(parent, viewType)
                     local views = {}
@@ -99,7 +106,11 @@ function newInstance()
                 end,
                 onBindViewHolder = function(holder, position)
                     position = position + 1
-                    local msg = data[position]
+                    if(position == #data.msg) then
+                        fetchData(data, adapter, fragment) -- getdata may call ther lua files
+                    end
+
+                    local msg = data.msg[position]
                     local views = holder.itemView.getTag()
                     views.tv_title.setText(msg.item.title or 'error title')
                     views.tv_content.setText(msg.item.content or '')
@@ -119,7 +130,7 @@ function newInstance()
                         local pictures = msg.item.pictureUrls
                         local urls = {}
                         for i = 1, #pictures do
-                            urls[i] = pictures[i].middlePicUrl
+                            urls[i] = pictures[i].picUrl
                         end
                         views.iv_nine_grid.setVisibility(0)
                         views.iv_nine_grid.setAdapter(LuaNineGridViewAdapter(luajava.createProxy('androlua.adapter.LuaNineGridViewAdapter$AdapterCreator', {

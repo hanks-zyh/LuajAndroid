@@ -149,6 +149,13 @@ public class LuaHttp {
     }
 
     private static RequestBody getRequestBody(LuaTable options) {
+
+        String body = (String) options.get("body");
+        if (body != null) {
+            return RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
+        }
+
+
         Map formData = (Map) options.get("formData");
         if (formData != null) {
             FormBody.Builder bodyBuilder = new FormBody.Builder();

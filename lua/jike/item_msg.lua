@@ -77,7 +77,6 @@ return {
             ImageView,
             id = "iv_video",
             layout_widht = "fill",
-            layout_widht = "fill",
             scaleType="centerCrop"
         },
         {
@@ -89,8 +88,8 @@ return {
         {
             ImageView,
             layout_gravity="center",
-            layout_widht = "56dp",
-            layout_widht = "56dp",
+            layout_widht = "40dp",
+            layout_height = "40dp",
             src="jike/img/ic_video_play.png",
         },
     },
