@@ -37,7 +37,7 @@ return {
             layout_widht = "fill",
             maxLines = "1",
             textSize = "11sp",
-            textColor = "#e1e1e1",
+            textColor = "#999999",
         },
     },
     -- content
@@ -58,7 +58,7 @@ return {
         id = "iv_nine_grid",
         layout_width = "match",
         layout_height = "wrap",
-        gap = "wrap",
+        gap = "2dp",
         maxSize = 9,
         showStyle = 1,
         layout_marginTop = "12dp",

@@ -42,6 +42,8 @@ end
 
 
 function onCreate(savedInstanceState)
+    activity.setLightStatusBar()
+
     activity.setContentView(loadlayout(layout))
 
     data[1] = {

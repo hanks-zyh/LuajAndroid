@@ -63,6 +63,8 @@ function newInstance()
             {
                 RecyclerView,
                 id = "recyclerView",
+                paddingTop="25dp",
+                clipToPadding = false,
                 layout_width = "fill",
                 layout_height = "fill",
             },
@@ -101,7 +103,7 @@ function newInstance()
                     local views = holder.itemView.getTag()
                     views.tv_title.setText(msg.item.title or 'error title')
                     views.tv_content.setText(msg.item.content or '')
-                    views.tv_date.setText(msg.item.updatedAt or '')
+                    views.tv_date.setText(msg.item.updatedAt:sub(1,10) or '')
                     views.tv_collect.setText(string.format('%s', msg.item.collectCount))
                     views.tv_comment.setText(string.format('%s', msg.item.commentCount))
                     ImageLoader.load(views.iv_icon_url, msg.item.iconUrl)
@@ -119,15 +121,15 @@ function newInstance()
                         for i = 1, #pictures do
                             urls[i] = pictures[i].middlePicUrl
                         end
-                        views.iv_nine_grid.setImagesData(urls)
                         views.iv_nine_grid.setVisibility(0)
-                        views.iv_nine_grid.setAdapter(LuaNineGridView(luajava.createProxy('androlua.adapter.LuaNineGridViewAdapter$AdapterCreator', {
+                        views.iv_nine_grid.setAdapter(LuaNineGridViewAdapter(luajava.createProxy('androlua.adapter.LuaNineGridViewAdapter$AdapterCreator', {
                             onDisplayImage = function(context, imageView, url)
                                 ImageLoader.load(imageView, url)
                             end,
                             onItemImageClick = function(context, imageView, index, list)
                             end
                         })))
+                        views.iv_nine_grid.setImagesData(urls)
                     else
                         views.iv_nine_grid.setVisibility(8)
                     end
