@@ -27,7 +27,7 @@ local function clearTable(t)
 end
 
 local function fetchData(refreshLayout, data, adapter, fragment, reload)
-    local url = string.format('http://app.jike.ruguoapp.com/1.0/newsFeed/list')
+    local url = string.format('http://app.jike.ruguoapp.com/1.0/recommendFeed/list')
     print(url)
     local postBody = { trigger = 'user' }
     if data.loadMoreKey and not reload then
@@ -54,7 +54,7 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
         end
         for i = 1, #json.data do
             local type = json.data[i].type
-            if type == 'MESSAGE' then
+            if type == 'MESSAGE_RECOMMENDATION' then
                 data.msg[#data.msg + 1] = json.data[i]
             end
         end
@@ -76,7 +76,9 @@ local function launchDetail(fragment, msg)
     activity.startActivity(intent)
 end
 
-  -- create view table
+function newInstance()
+
+    -- create view table
     local layout = {
         LinearLayout,
         layout_widht = "match",
@@ -108,10 +110,6 @@ end
             layout_height = "32dp",
         },
     }
-
-
-function newInstance()
-
     local data = { msg = {} }
     local ids = {}
     local fragment = LuaFragment.newInstance()
@@ -161,6 +159,7 @@ function newInstance()
                     end
                     local msg = data.msg[position]
                     local views = holder.itemView.getTag()
+                    if views == nil then return end
                     views.tv_title.setText(msg.item.title or 'error title')
                     views.tv_content.setText(msg.item.content or '')
                     views.tv_date.setText(msg.item.updatedAt:sub(1, 10) or '')
@@ -173,7 +172,6 @@ function newInstance()
                     else
                         views.layout_video.setVisibility(8)
                     end
-
                     if msg.item.pictureUrls and #msg.item.pictureUrls > 0 then
                         local pictures = msg.item.pictureUrls
                         local urls = {}

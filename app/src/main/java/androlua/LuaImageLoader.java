@@ -51,9 +51,7 @@ public class LuaImageLoader {
         }
         Glide.with(context)
                 .load(uri)
-                .placeholder(placeholderDrawable)
-                .error(errorDrawable)
-                .crossFade()
+                .dontAnimate()
                 .into(imageView);
     }
 }

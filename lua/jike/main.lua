@@ -6,8 +6,9 @@ import "androlua.widget.viewpager.NoScrollViewPager"
 import "androlua.utils.ColorStateListFactory"
 import "androlua.LuaDrawable"
 local uihelper = require("common.uihelper")
-local recommendFragment = require("jike.fragment_recoment")
+local recommendFragment = require("jike.fragment_recomend")
 local feedFragment = require("jike.fragment_feed")
+local hotFragment = require("jike.fragment_hot")
 
 local layout = {
     LinearLayout,
@@ -64,7 +65,7 @@ local TYPE = {
 }
 
     table.insert(data.fragments, recommendFragment.newInstance())
-    table.insert(data.fragments, recommendFragment.newInstance())
+    table.insert(data.fragments, hotFragment.newInstance())
     table.insert(data.fragments, feedFragment.newInstance())
     table.insert(data.titles, "推荐")
     table.insert(data.titles, "热门")

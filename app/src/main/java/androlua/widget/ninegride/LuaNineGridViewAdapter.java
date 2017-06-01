@@ -1,12 +1,9 @@
-package androlua.adapter;
+package androlua.widget.ninegride;
 
 import android.content.Context;
 import android.widget.ImageView;
 
-
 import java.util.List;
-
-import androlua.widget.ninegride.NineGridImageViewAdapter;
 
 /**
  * Created by hanks on 2017/5/31. Copyright (C) 2017 Hanks
