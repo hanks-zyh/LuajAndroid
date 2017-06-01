@@ -78,29 +78,29 @@ function onCreate(savedInstanceState)
     local url = activity.getIntent().getStringExtra('url')
     if url == nil then url = "http://hanks.pub" end
     tv_title.setText(url)
-    webview.setVisibility(8)
-    progressBar.setVisibility(0)
+    webview.setVisibility(0)
+    progressBar.setVisibility(8)
     webview.loadUrl(url)
-    webview.setWebViewClientListener(luajava.createProxy('androlua.LuaWebView$WebViewClientListener', {
-        onPageFinished = function(view, url)
-            view.loadUrl([[
-                    javascript:(function(){
-                        var rec = document.getElementsByClassName('rc2');
-                        for(var i=0;i<rec.length;i++) rec[i].style.display = 'none';
-                        document.getElementById('hd_float').style.display = 'none';
-                        document.getElementById("ft").style.display = 'none';
-                        document.getElementById('ruanmei-apps').style.display = 'none';
-                        document.getElementById('downapp').style.display = 'none';
-                        document.getElementsByClassName('newsgrade')[0].style.display = 'none';
-                        document.getElementsByClassName('nav')[0].style.display = 'none';
-                        document.getElementsByClassName('shareto')[0].style.display = 'none';
-                        document.getElementsByClassName('current_nav')[0].style.display = 'none';
-                    })()
-              ]]);
-            webview.setVisibility(0)
-            progressBar.setVisibility(8)
-        end
-    }))
+    -- webview.setWebViewClientListener(luajava.createProxy('androlua.LuaWebView$WebViewClientListener', {
+    --     onPageFinished = function(view, url)
+    --         view.loadUrl([[
+    --                 javascript:(function(){
+    --                     var rec = document.getElementsByClassName('rc2');
+    --                     for(var i=0;i<rec.length;i++) rec[i].style.display = 'none';
+    --                     document.getElementById('hd_float').style.display = 'none';
+    --                     document.getElementById("ft").style.display = 'none';
+    --                     document.getElementById('ruanmei-apps').style.display = 'none';
+    --                     document.getElementById('downapp').style.display = 'none';
+    --                     document.getElementsByClassName('newsgrade')[0].style.display = 'none';
+    --                     document.getElementsByClassName('nav')[0].style.display = 'none';
+    --                     document.getElementsByClassName('shareto')[0].style.display = 'none';
+    --                     document.getElementsByClassName('current_nav')[0].style.display = 'none';
+    --                 })()
+    --           ]]);
+    --         -- webview.setVisibility(0)
+    --         -- progressBar.setVisibility(8)
+    --     end
+    -- }))
 end
 
 

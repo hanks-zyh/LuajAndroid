@@ -27,7 +27,7 @@ local function clearTable(t)
 end
 
 local function fetchData(refreshLayout, data, adapter, fragment, reload)
-    local url = string.format('http://app.jike.ruguoapp.com/1.0/recommendFeed/list')
+    local url = string.format('http://app.jike.ruguoapp.com/1.0/newsFeed/list')
     print(url)
     local postBody = { trigger = 'user' }
     if data.loadMoreKey and not reload then
@@ -54,7 +54,7 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
         end
         for i = 1, #json.data do
             local type = json.data[i].type
-            if type == 'MESSAGE_RECOMMENDATION'then
+            if type == 'MESSAGE' then
                 data.msg[#data.msg + 1] = json.data[i]
             end
         end
@@ -76,9 +76,7 @@ local function launchDetail(fragment, msg)
     activity.startActivity(intent)
 end
 
-function newInstance()
-
-    -- create view table
+  -- create view table
     local layout = {
         LinearLayout,
         layout_widht = "match",
@@ -110,6 +108,10 @@ function newInstance()
             layout_height = "32dp",
         },
     }
+
+
+function newInstance()
+
     local data = { msg = {} }
     local ids = {}
     local fragment = LuaFragment.newInstance()

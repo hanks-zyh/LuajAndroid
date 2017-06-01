@@ -75,19 +75,20 @@ table.insert(data.fragments, fragmentNews.newInstance("news%s.xml"))
 table.insert(data.titles, '最新')
 
 table.insert(data.fragments, fragmentNews.newInstance("android%s.xml"))
-table.insert(data.titles, 'Android')
+table.insert(data.titles, '安卓')
+
+table.insert(data.fragments, fragmentNews.newInstance("ios%s.xml"))
+table.insert(data.titles, '苹果')
 
 table.insert(data.fragments, fragmentNews.newInstance("windows%s.xml"))
 table.insert(data.titles, 'Windows')
 
 table.insert(data.fragments, fragmentNews.newInstance("game%s.xml"))
-table.insert(data.titles, '游戏电竞')
+table.insert(data.titles, '游戏')
 
 table.insert(data.fragments, fragmentNews.newInstance("it%s.xml"))
 table.insert(data.titles, '行业前沿')
 
-table.insert(data.fragments, fragmentNews.newInstance("phone%s.xml"))
-table.insert(data.titles, '手机')
 
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),

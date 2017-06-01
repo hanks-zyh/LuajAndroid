@@ -2,17 +2,18 @@ require "import"
 import "android.widget.*"
 import "android.content.*"
 import "android.support.design.widget.BottomNavigationView"
-import "android.support.v4.view.ViewPager"
+import "androlua.widget.viewpager.NoScrollViewPager"
 import "androlua.utils.ColorStateListFactory"
 import "androlua.LuaDrawable"
 local uihelper = require("common.uihelper")
-local fragment = require("jike.fragment_recoment")
+local recommendFragment = require("jike.fragment_recoment")
+local feedFragment = require("jike.fragment_feed")
 
 local layout = {
     LinearLayout,
     orientation = "vertical",
     {
-        ViewPager,
+        NoScrollViewPager,
         id = "viewPager",
         layout_width = "fill",
         layout_weight = 1,
@@ -21,9 +22,10 @@ local layout = {
     {
         BottomNavigationView,
         id = "bottomView",
+        elevation="3dp",
         layout_width = "fill",
         layout_height = "56dp",
-        background = "#f1f1f1",
+        background = "#ffffff",
     }
 }
 
@@ -49,9 +51,21 @@ function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x33000000)
     activity.setContentView(loadlayout(layout))
 
-    table.insert(data.fragments, fragment.newInstance())
-    table.insert(data.fragments, fragment.newInstance())
-    table.insert(data.fragments, fragment.newInstance())
+
+local TYPE = {
+    -- post
+    recommendFeed = '/1.0/recommendFeed/list',
+    newsFeed = '/1.0/newsFeed/list',
+    -- hot get
+    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=ALL',
+    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=VIDEO',
+    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=GIF',
+    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=MUSIC',
+}
+
+    table.insert(data.fragments, recommendFragment.newInstance())
+    table.insert(data.fragments, recommendFragment.newInstance())
+    table.insert(data.fragments, feedFragment.newInstance())
     table.insert(data.titles, "推荐")
     table.insert(data.titles, "热门")
     table.insert(data.titles, "订阅")

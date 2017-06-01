@@ -3,7 +3,6 @@ package androlua.widget.ninegride;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.jaeger.ninegridimageview.NineGridImageView;
 import com.luajava.LuaTable;
 
 import java.util.ArrayList;

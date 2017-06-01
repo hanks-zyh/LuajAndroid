@@ -5,10 +5,8 @@
 -- Time: 10:44
 --
 
-module('log')
-
 -- print table content
-function print_r(sth)
+local function print_r(sth)
     if type(sth) ~= "table" then
         print(sth)
         return
@@ -47,3 +45,7 @@ function print_r(sth)
     _dump(sth)
     print(string.format("}"))
 end
+
+local log = {}
+log.print_r = print_r
+return log

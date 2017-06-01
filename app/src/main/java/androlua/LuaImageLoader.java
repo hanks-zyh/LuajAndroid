@@ -1,6 +1,7 @@
 package androlua;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
@@ -22,8 +23,8 @@ public class LuaImageLoader {
 
     public static void load(Context context, ImageView imageView, String uri) {
         load(context, imageView, uri,
-                ContextCompat.getDrawable(context, R.drawable.loading),
-                ContextCompat.getDrawable(context, R.drawable.loading));
+                ContextCompat.getDrawable(context, R.drawable.ic_loading),
+                ContextCompat.getDrawable(context, R.drawable.ic_loading));
     }
 
     public static void load(Context context, ImageView imageView, String uri,
@@ -31,17 +32,28 @@ public class LuaImageLoader {
         if (imageView == null || uri == null) {
             return;
         }
+        boolean loadLocal = false;
+        if (uri.startsWith("#")) { // load local file
+            uri = uri.substring(1);
+            loadLocal = true;
+        }
+
         if (!uri.startsWith("http://") && !uri.startsWith("https://")) {
-            if (uri.startsWith("/")) {
-                uri = "file://" + uri;
-            } else {
-                uri = "file://" + LuaManager.getInstance().getLuaExtDir() + "/" + uri;
+            String path = uri;
+            if (!uri.startsWith("/")) {
+                path = LuaManager.getInstance().getLuaExtDir() + "/" + uri;
             }
+            if (loadLocal) {
+                imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+                return;
+            }
+            uri = "file://" + path;
         }
         Glide.with(context)
                 .load(uri)
                 .placeholder(placeholderDrawable)
                 .error(errorDrawable)
+                .crossFade()
                 .into(imageView);
     }
 }

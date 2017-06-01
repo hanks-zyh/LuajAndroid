@@ -3,9 +3,10 @@ package androlua.adapter;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
 
 import java.util.List;
+
+import androlua.widget.ninegride.NineGridImageViewAdapter;
 
 /**
  * Created by hanks on 2017/5/31. Copyright (C) 2017 Hanks

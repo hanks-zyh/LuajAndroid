@@ -58,9 +58,9 @@ return {
         id = "iv_nine_grid",
         layout_width = "match",
         layout_height = "wrap",
-        gap = "2dp",
+        gap = "4dp",
         maxSize = 9,
-        showStyle = 1,
+        visibility = "gone",
         layout_marginTop = "12dp",
         layout_marginLeft = "16dp",
         layout_marginRight = "16dp",
@@ -73,6 +73,8 @@ return {
         layout_width = "match",
         layout_height = "240dp",
         layout_marginTop = "12dp",
+        layout_marginLeft = "16dp",
+        layout_marginRight = "16dp",
         {
             ImageView,
             id = "iv_video",
@@ -83,14 +85,14 @@ return {
             View,
             layout_height = "fill",
             layout_width = "fill",
-            background = "#88000000",
+            background = "#66000000",
         },
         {
             ImageView,
             layout_gravity="center",
             layout_widht = "40dp",
             layout_height = "40dp",
-            src="jike/img/ic_video_play.png",
+            src="#jike/img/ic_video_play.png",
         },
     },
     -- foot
@@ -106,7 +108,7 @@ return {
             ImageView,
             layout_width = "20dp",
             layout_height = "20dp",
-            src="jike/img/ic_like_border.png",
+            src="#jike/img/ic_like_border.png",
         },
         {
             TextView,
@@ -120,7 +122,7 @@ return {
             ImageView,
             layout_width = "20dp",
             layout_height = "20dp",
-            src="jike/img/ic_comment.png"
+            src="#jike/img/ic_comment.png"
         },
         {
             TextView,
@@ -134,9 +136,8 @@ return {
             ImageView,
             layout_width = "20dp",
             layout_height = "20dp",
-            src="jike/img/ic_share.png"
+            src="#jike/img/ic_share.png"
         },
-
     },
     {
         View,
