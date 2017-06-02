@@ -10,7 +10,7 @@ import "android.content.*"
 
 import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
-local LuaFragmentPageAdapter = luajava.bindClass("androlua.LuaFragmentPageAdapter")
+import "androlua.adapter.LuaFragmentPageAdapter"
 
 local fragmentNews = require "news/fragment_news"
 
@@ -92,7 +92,7 @@ table.insert(data.titles, '行业前沿')
 
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
-    luajava.createProxy("androlua.LuaFragmentPageAdapter$AdapterCreator", {
+    luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
         getCount = function() return #data.fragments end,
         getItem = function(position)
             position = position + 1

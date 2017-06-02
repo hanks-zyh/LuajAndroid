@@ -27,7 +27,7 @@
 -keep class android.**{*;}
 -keep class androlua.**{*;}
 -keep class com.**{*;}
--keep class common.**{*;}
+-keep class androlua.common.**{*;}
 -keep class pub.**{*;}
 
 # Glide

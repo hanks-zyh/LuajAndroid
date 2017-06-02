@@ -1,4 +1,4 @@
-package common;
+package androlua.common;
 
 import android.content.Context;
 import android.content.res.AssetManager;

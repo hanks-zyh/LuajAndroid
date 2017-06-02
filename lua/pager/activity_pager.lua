@@ -3,6 +3,7 @@ require "import"
 import "android.widget.*"
 import "android.content.*"
 import "android.support.v4.view.ViewPager"
+import "androlua.adapter.LuaPagerAdapter"
 
 local layout = {
   ViewPager,
@@ -31,20 +32,10 @@ local data = {
   }),
 }
 
-
-local Adapter = luajava.bindClass("androlua.LuaPagerAdapter")
-local adapter = Adapter(luajava.createProxy("androlua.LuaPagerAdapter$AdapterCreator", {
-     getCount = function() return #data end,
-     instantiateItem = function(container,position)
-        position = position + 1
-        return data[position]
-     end
-}))
-
-
 function onCreate(savedInstanceState)
     activity.setTitle('Test Pager')
     activity.setContentView(loadlayout(layout))
+    local adapter = LuaPagerAdapter(data)
     pageview.setAdapter(adapter)
 end
 

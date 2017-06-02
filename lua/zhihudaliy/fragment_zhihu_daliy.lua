@@ -14,10 +14,8 @@ local Adapter = luajava.bindClass("androlua.LuaAdapter")
 local ImageLoader = luajava.bindClass("androlua.LuaImageLoader")
 local LuaFragment = luajava.bindClass("androlua.LuaFragment")
 local Http = luajava.bindClass("androlua.LuaHttp")
-local ITHomeUtils = luajava.bindClass("pub.hanks.sample.ITHomeUtils")
 
 local function fetchData(id, data, adapter, fragment)
-    --  http://api.ithome.com/xml/newslist/news.xml  news_3213df6f23a21dfa.xml
     local url
     if id then url = string.format('http://news-at.zhihu.com/api/4/theme/%d',id)
     else

@@ -19,6 +19,7 @@ import "android.view.View"
 import "android.support.v4.widget.Space"
 import "androlua.widget.ninegride.LuaNineGridView"
 import "androlua.widget.ninegride.LuaNineGridViewAdapter"
+import "androlua.widget.picture.PicturePreviewActivity"
 
 local function clearTable(t)
     for k in pairs(t) do
@@ -65,7 +66,7 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
     end)
 end
 
--- local log = require("common.log")
+-- local log = require("androlua.common.log")
 
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()
@@ -74,6 +75,18 @@ local function launchDetail(fragment, msg)
     -- log.print_r(msg)
     intent.putExtra("url", msg.item.linkUrl)
     activity.startActivity(intent)
+end
+
+local function launchPicturePreview(fragment,msg,index)
+    local urls = {}
+    for i=1,# msg.item.pictureUrls do
+        urls[i] =  msg.item.pictureUrls[i].picUrl
+    end
+    local data = {
+        uris=urls,
+        currentIndex=index
+    }
+   PicturePreviewActivity.start(fragment.getActivity(), JSON.encode(data))
 end
 
 function newInstance()
@@ -178,7 +191,7 @@ function newInstance()
                         local len = #pictures
                         for i = 1, len do
                             if len == 1 then
-                                urls[i] = pictures[i].picUrl
+                                urls[i] = pictures[i].middlePicUrl
                                 views.iv_nine_grid.setSingleImgSize(pictures[i].width, pictures[i].height)
                             else urls[i] = pictures[i].thumbnailUrl
                             end
@@ -191,7 +204,7 @@ function newInstance()
                                     ImageLoader.load(imageView, url)
                                 end,
                                 onItemImageClick = function(context, imageView, index, list)
-                                    print(list.get(index))
+                                    launchPicturePreview(fragment,msg,index)
                                 end
                             })))
                         end

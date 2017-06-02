@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import common.LuaStringUtils;
+import androlua.common.LuaStringUtils;
 
 public class LuaUtil {
 

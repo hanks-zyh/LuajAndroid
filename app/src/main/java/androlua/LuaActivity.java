@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -30,9 +28,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import common.LuaLog;
+import androlua.base.BaseActivity;
+import androlua.common.LuaLog;
 
-public class LuaActivity extends AppCompatActivity implements LuaContext {
+public class LuaActivity extends BaseActivity implements LuaContext {
 
     public Handler handler;
     public TextView status;
@@ -45,22 +44,15 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
     private LuaDexLoader luaDexLoader;
     private LuaManager luaManager;
 
-    public static void start(Context context,String luaPath) {
+    public static void start(Context context, String luaPath) {
         Intent starter = new Intent(context, LuaActivity.class);
-        starter.putExtra("luaPath",luaPath);
+        starter.putExtra("luaPath", luaPath);
         context.startActivity(starter);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            setStatusBarColor(0xff000000);
-        }
 
         handler = new MainHandler(this);
 
@@ -68,25 +60,6 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
         initErrorLayout();
 
         initLua(savedInstanceState);
-    }
-
-    public void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(color);
-        }
-    }
-
-    public void setLightStatusBar(){
-        if (Build.VERSION.SDK_INT >= 23) {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            decorView.setSystemUiVisibility(option);
-            setStatusBarColor(0x00000000);
-        }else if (Build.VERSION.SDK_INT >= 21) {
-            setStatusBarColor(0x33000000);
-        }
     }
 
     private void initLua(Bundle savedInstanceState) {
@@ -145,7 +118,7 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
 
             luaDexLoader = new LuaDexLoader();
             luaDexLoader.loadLibs();
-            if (!luaFile.startsWith("/")){
+            if (!luaFile.startsWith("/")) {
                 luaFile = luaManager.getLuaExtDir() + "/" + luaFile;
             }
             luaManager.doFile(L, luaFile, arg);
@@ -325,7 +298,6 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
         return getResources().getDisplayMetrics().heightPixels;
     }
 
-
     public void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -367,21 +339,21 @@ public class LuaActivity extends AppCompatActivity implements LuaContext {
                     luaActivity.setContentView(luaActivity.errorLayout);
                 }
                 break;
-//                case 1: {
-//                    Bundle data = msg.getData();
-//                    luaActivity.setField(data.getString("data"), ((Object[]) data.getSerializable("args"))[0]);
-//                }
-//                break;
-//                case 2: {
-//                    String src = msg.getData().getString("data");
-//                    luaActivity.luaManager.runFunc(L, src);
-//                }
-//                break;
-//                case 3: {
-//                    String src = msg.getData().getString("data");
-//                    Serializable args = msg.getData().getSerializable("args");
-//                    luaActivity.luaManager.runFunc(L, src, (Object[]) args);
-//                }
+                //                case 1: {
+                //                    Bundle data = msg.getData();
+                //                    luaActivity.setField(data.getString("data"), ((Object[]) data.getSerializable("args"))[0]);
+                //                }
+                //                break;
+                //                case 2: {
+                //                    String src = msg.getData().getString("data");
+                //                    luaActivity.luaManager.runFunc(L, src);
+                //                }
+                //                break;
+                //                case 3: {
+                //                    String src = msg.getData().getString("data");
+                //                    Serializable args = msg.getData().getSerializable("args");
+                //                    luaActivity.luaManager.runFunc(L, src, (Object[]) args);
+                //                }
             }
         }
     }

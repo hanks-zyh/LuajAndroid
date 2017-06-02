@@ -7,7 +7,7 @@ import com.luajava.JavaFunction;
 import com.luajava.LuaException;
 import com.luajava.LuaState;
 
-import common.LuaLog;
+import androlua.common.LuaLog;
 
 public class LuaPrint extends JavaFunction {
 

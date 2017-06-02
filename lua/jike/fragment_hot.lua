@@ -39,7 +39,7 @@ local function fetchData(refreshLayout, data, adapter, fragment)
     end)
 end
 
--- local log = require("common.log")
+-- local log = require("androlua.common.log")
 
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()

@@ -1,7 +1,6 @@
 package androlua;
 
 
-import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -14,7 +13,7 @@ import com.luajava.LuaException;
 import com.luajava.LuaFunction;
 import com.luajava.LuaObject;
 
-import common.LuaLog;
+import androlua.common.LuaLog;
 
 public class LuaDrawable extends Drawable {
     private LuaObject mDraw;

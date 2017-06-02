@@ -5,6 +5,8 @@ import "android.support.design.widget.BottomNavigationView"
 import "androlua.widget.viewpager.NoScrollViewPager"
 import "androlua.utils.ColorStateListFactory"
 import "androlua.LuaDrawable"
+import "androlua.adapter.LuaFragmentPageAdapter"
+
 local uihelper = require("common.uihelper")
 local recommendFragment = require("jike.fragment_recomend")
 local feedFragment = require("jike.fragment_feed")
@@ -31,12 +33,13 @@ local layout = {
 }
 
 local data = {
-    titles = {},
-    fragments = {},
+    titles = {"推荐","热门","订阅"},
+    fragments = {recommendFragment.newInstance(), hotFragment.newInstance(), feedFragment.newInstance()},
 }
 
+
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
-    luajava.createProxy("androlua.LuaFragmentPageAdapter$AdapterCreator", {
+    luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
         getCount = function() return #data.fragments end,
         getItem = function(position)
             position = position + 1
@@ -52,29 +55,7 @@ function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x33000000)
     activity.setContentView(loadlayout(layout))
 
-
-local TYPE = {
-    -- post
-    recommendFeed = '/1.0/recommendFeed/list',
-    newsFeed = '/1.0/newsFeed/list',
-    -- hot get
-    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=ALL',
-    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=VIDEO',
-    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=GIF',
-    hotFeedAll = '/1.0/users/messages/listPopularByTag?tag=MUSIC',
-}
-
-    table.insert(data.fragments, recommendFragment.newInstance())
-    table.insert(data.fragments, hotFragment.newInstance())
-    table.insert(data.fragments, feedFragment.newInstance())
-    table.insert(data.titles, "推荐")
-    table.insert(data.titles, "热门")
-    table.insert(data.titles, "订阅")
-    uihelper.runOnUiThread(activity, function()
-        adapter.notifyDataSetChanged()
-    end)
-
-    viewPager.setAdapter(adapter)
+   -- bottomView
     bottomView.setItemTextColor(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
     bottomView.setItemIconTintList(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
     local recommentDrawable = LuaDrawable.create('jike/img/recoment.png')
@@ -92,4 +73,7 @@ local TYPE = {
             return true
         end
     }))
+
+    -- viewpager
+    viewPager.setAdapter(adapter)
 end

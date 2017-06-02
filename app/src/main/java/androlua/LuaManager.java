@@ -10,8 +10,8 @@ import com.luajava.LuaStateFactory;
 
 import java.io.File;
 
-import common.LuaFileUtils;
-import common.LuaLog;
+import androlua.common.LuaFileUtils;
+import androlua.common.LuaLog;
 import dalvik.system.DexClassLoader;
 
 public class LuaManager {

@@ -9,9 +9,9 @@ import "android.widget.*"
 import "android.content.*"
 import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
-local LuaFragmentPageAdapter = luajava.bindClass("androlua.LuaFragmentPageAdapter")
+import "androlua.adapter.LuaFragmentPageAdapter"
+
 local JSON = require("common.json")
-local uihelper = require("common.uihelper")
 local Http = luajava.bindClass("androlua.LuaHttp")
 
 local fragment = require "zhihudaliy/fragment_zhihu_daliy"
@@ -48,7 +48,7 @@ table.insert(data.fragments, fragment.newInstance())
 table.insert(data.titles, '首页')
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
-    luajava.createProxy("androlua.LuaFragmentPageAdapter$AdapterCreator", {
+    luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
         getCount = function() return #data.fragments end,
         getItem = function(position)
             position = position + 1

@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import common.LuaFileUtils;
-import common.LuaLog;
+import androlua.common.LuaFileUtils;
+import androlua.common.LuaLog;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;

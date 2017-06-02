@@ -67,10 +67,8 @@ public final class LuaJavaAPI {
 
     private static Class<?> Character_class = Character.class;
 
-
     private LuaJavaAPI() {
     }
-
 
     /**
      * Java implementation of the metamethod __index
@@ -1051,7 +1049,6 @@ public final class LuaJavaAPI {
         }
     }
 
-
     private static Object createArray(LuaState L, Class<?> type, int idx) throws LuaException {
         synchronized (L) {
             try {
@@ -1135,7 +1132,6 @@ public final class LuaJavaAPI {
             return 1;
         }
     }
-
 
     private static Object createList(LuaState L, Class<?> type, int idx) throws LuaException {
         synchronized (L) {

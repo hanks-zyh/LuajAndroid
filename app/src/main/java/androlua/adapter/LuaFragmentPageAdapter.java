@@ -1,4 +1,4 @@
-package androlua;
+package androlua.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class LuaFragmentPageAdapter extends FragmentPagerAdapter {
+
     private AdapterCreator creator;
 
     public LuaFragmentPageAdapter(FragmentManager fm, AdapterCreator creator) {

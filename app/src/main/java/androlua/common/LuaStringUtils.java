@@ -1,4 +1,4 @@
-package common;
+package androlua.common;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
