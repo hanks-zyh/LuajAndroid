@@ -60,6 +60,7 @@ public class ExampleInstrumentedTest {
         }
 
         ListView listView = new ListView(appContext);
+        listView.setDividerHeight(0);
         TextView textView = new TextView(appContext);
         textView.setMaxLines(1);
         textView.setSingleLine(true);

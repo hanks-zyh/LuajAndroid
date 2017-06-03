@@ -3,8 +3,10 @@ package androlua.widget.video;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -16,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import androlua.base.BaseActivity;
+import pub.hanks.luajandroid.R;
 
 /**
  * Created by hanks on 2017/6/2. Copyright (C) 2017 Hanks
@@ -23,19 +26,8 @@ import androlua.base.BaseActivity;
 
 public class VideoPlayerActivity extends BaseActivity {
 
+    private String data = "<html><head><title></title><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><meta content=\"width=device-width,user-scalable=no\" name=\"viewport\"><style>      *{margin:0;padding:0;}      body { background-color: #000000; display: flex; align-items: center;}video { width: 100%; display: block; background: transparent url('{poster}') 50% 50% / cover no-repeat ; }</style></head><body><video controls=\"controls\"  preload=\"none\"  id=\"lua_video\" webkit-playsinline=\"true\" playsinline=\"true\"  poster=\"1.jpg\" src=\"{url}\"></video></body></html>";
     private WebView mWebView;
-    private static String data = "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head>\n" +
-            "\t<title></title>\n" +
-            "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n" +
-            "\t<meta name=\"viewport\" content=\"width=device-width; initial-scale=1; minimum-scale=1; maximum-scale=2\">\n" +
-            "\t<meta content=\"width=device-width,user-scalable=no\" name=\"viewport\">\n" +
-            "</head>\n" +
-            "<body>\n" +
-            "\t <video id=\"lua_video\" webkit-playsinline=\"true\" playsinline=\"true\" style=\"width: 100%; height: 100%; display: block; position: relative;\" poster=\"{poster}\" src=\"{url}\"></video>\n" +
-            "</body>\n" +
-            "</html>";
 
     public static void start(Context context, String json) {
         Intent starter = new Intent(context, VideoPlayerActivity.class);
@@ -46,16 +38,17 @@ public class VideoPlayerActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWebView = new WebView(this);
-        setContentView(mWebView);
+        setContentView(R.layout.activity_video);
+        mWebView = (WebView) findViewById(R.id.webview);
         initWebView();
         try {
             String extra = getIntent().getStringExtra("json");
             JSONObject json = new JSONObject(extra);
             String url = json.getString("url");
             String poster = json.getString("poster");
-            data = data.replace("{poster}",poster).replace("{url}", url);
-            mWebView.loadData(data,"text/html","utf-8");
+            data = data.replace("{poster}", poster).replace("{url}", url);
+            Log.e("xxxxxxxx", "onCreate: " + data);
+            mWebView.loadData(data, "text/html", "utf-8");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -70,23 +63,12 @@ public class VideoPlayerActivity extends BaseActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mWebView.setWebContentsDebuggingEnabled(true);
+        }
         InsideWebViewClient mInsideWebViewClient = new InsideWebViewClient();
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(mInsideWebViewClient);
-    }
-
-    private class InsideWebViewClient extends WebViewClient {
-
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return true;
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-        }
-
     }
 
     @Override
@@ -129,6 +111,19 @@ public class VideoPlayerActivity extends BaseActivity {
     public void onDestroy() {
         mWebView.destroy();
         super.onDestroy();
+    }
+
+    private class InsideWebViewClient extends WebViewClient {
+
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+        }
+
     }
 
 }

@@ -45,7 +45,7 @@ public class PicturePreviewActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewPager = new ViewPager(this);
-        viewPager.setBackgroundColor(0xAA000000);
+        viewPager.setBackgroundColor(0xFF000000);
         viewPager.setId(R.id.transition_current_scene);
         setContentView(viewPager);
         adapter = new LuaFragmentPageAdapter(getSupportFragmentManager(), new LuaFragmentPageAdapter.AdapterCreator() {

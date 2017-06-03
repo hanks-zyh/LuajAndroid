@@ -20,6 +20,7 @@ import "android.support.v4.widget.Space"
 import "androlua.widget.ninegride.LuaNineGridView"
 import "androlua.widget.ninegride.LuaNineGridViewAdapter"
 import "androlua.widget.picture.PicturePreviewActivity"
+import "androlua.widget.webview.WebViewActivity"
 
 local function clearTable(t)
     for k in pairs(t) do
@@ -70,11 +71,7 @@ end
 
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()
-    local intent = Intent(activity, LuaActivity)
-    intent.putExtra("luaPath", 'news/activity_news_detail.lua')
-    -- log.print_r(msg)
-    intent.putExtra("url", msg.item.linkUrl)
-    activity.startActivity(intent)
+    WebViewActivity.start(activity,msg.item.linkUrl, 0xFF2979FB)
 end
 
 local function launchPicturePreview(fragment,msg,index)

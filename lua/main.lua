@@ -55,8 +55,8 @@ function onCreate(savedInstanceState)
         launchPage = 'image/activity_image.lua'
     }
     data[3] ={
-        text = 'list',
-        launchPage = 'list/activity_list.lua'
+        text = '开眼',
+        launchPage = 'eyepetizer/main.lua'
     }
     data[4] ={
         text = 'pager',
