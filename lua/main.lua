@@ -55,26 +55,25 @@ function onCreate(savedInstanceState)
         launchPage = 'image/activity_image.lua'
     }
     data[3] ={
-        text = '开眼',
-        launchPage = 'eyepetizer/main.lua'
-    }
-    data[4] ={
         text = 'pager',
         launchPage = 'pager/activity_pager.lua'
     }
-    data[5] ={
+    data[4] ={
         text = 'webview',
         launchPage = 'webview/activity_webview.lua'
     }
-    data[6] ={
+    data[5] ={
         text = 'animation',
         launchPage = 'animation/activity_animation.lua'
     }
-    data[7] ={
+    data[6] ={
         text = 'http',
         launchPage = 'http/activity_http.lua'
     }
-
+    data[7] ={
+        text = '开眼',
+        launchPage = 'eyepetizer/main.lua'
+    }
     data[8] ={
         text = 'IT 之家',
         launchPage = 'news/activity_news.lua'
@@ -88,6 +87,11 @@ function onCreate(savedInstanceState)
     data[10] ={
         text = '即刻',
         launchPage = 'jike/main.lua'
+    }
+
+    data[11] ={
+        text = '天气',
+        launchPage = 'weather/main.lua'
     }
 
     local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {

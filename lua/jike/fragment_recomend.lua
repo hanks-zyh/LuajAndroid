@@ -195,16 +195,14 @@ function newInstance()
                         end
 
                         views.iv_nine_grid.setVisibility(0)
-                        if views.iv_nine_grid.getAdapter() == nil then
-                            views.iv_nine_grid.setAdapter(LuaNineGridViewAdapter(luajava.createProxy('androlua.widget.ninegride.LuaNineGridViewAdapter$AdapterCreator', {
-                                onDisplayImage = function(context, imageView, url)
-                                    ImageLoader.load(imageView, url)
-                                end,
-                                onItemImageClick = function(context, imageView, index, list)
-                                    launchPicturePreview(fragment,msg,index)
-                                end
-                            })))
-                        end
+                        views.iv_nine_grid.setAdapter(LuaNineGridViewAdapter(luajava.createProxy('androlua.widget.ninegride.LuaNineGridViewAdapter$AdapterCreator', {
+                            onDisplayImage = function(context, imageView, url)
+                                ImageLoader.load(imageView, url)
+                            end,
+                            onItemImageClick = function(context, imageView, index, list)
+                                launchPicturePreview(fragment,msg,index)
+                            end
+                        })))
                         views.iv_nine_grid.setImagesData(urls)
                     else
                         views.iv_nine_grid.setVisibility(8)

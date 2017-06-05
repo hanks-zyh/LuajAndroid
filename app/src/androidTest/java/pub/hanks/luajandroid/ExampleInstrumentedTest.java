@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ public class ExampleInstrumentedTest {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         assertEquals("pub.hanks.luajandroid", appContext.getPackageName());
         linearLayout.animate().scaleX(2).scaleY(2).translationX(100).setDuration(3000).start();
+        VectorDrawableCompat.createFromPath("");
 
         GridView gridLayout = new GridView(appContext);
         gridLayout.setNumColumns(5);
@@ -59,6 +62,8 @@ public class ExampleInstrumentedTest {
             gridLayout.setElevation(20);
         }
 
+        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(appContext);
+        horizontalScrollView.setHorizontalScrollBarEnabled(false);
         ListView listView = new ListView(appContext);
         listView.setDividerHeight(0);
         TextView textView = new TextView(appContext);

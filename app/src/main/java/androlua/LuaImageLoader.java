@@ -18,7 +18,7 @@ import pub.hanks.luajandroid.R;
 public class LuaImageLoader {
 
     public static void load(ImageView imageView, String uri) {
-        load(LuaManager.getInstance().getContext(), imageView, uri);
+        load(imageView.getContext(), imageView, uri);
     }
 
     public static void load(Context context, ImageView imageView, String uri) {
