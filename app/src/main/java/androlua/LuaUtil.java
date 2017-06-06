@@ -178,4 +178,21 @@ public class LuaUtil {
         }
     }
 
+    public static Context getContext(){
+        return LuaManager.getInstance().getContext();
+    }
+
+    public static float getDensity(){
+        return getContext().getResources().getDisplayMetrics().density;
+    }
+
+    public static int dp2px(float dp) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        return (int) (0.5F + dp * density);
+    }
+
+    public static int getScreenWidth() {
+        return getContext().getResources().getDisplayMetrics().widthPixels;
+    }
+
 }

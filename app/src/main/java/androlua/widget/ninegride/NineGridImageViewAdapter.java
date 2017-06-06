@@ -11,10 +11,10 @@ import java.util.List;
  * Email: chjie.jaeger@gmail.com
  * GitHub: https://github.com/laobie
  */
-public abstract class NineGridImageViewAdapter<T> {
-    protected abstract void onDisplayImage(Context context, ImageView imageView, T t);
+public abstract class NineGridImageViewAdapter {
+    protected abstract void onDisplayImage(Context context, ImageView imageView, String t);
 
-    protected void onItemImageClick(Context context, ImageView imageView, int index, List<T> list) {
+    protected void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
     }
 
     protected ImageView generateImageView(Context context) {

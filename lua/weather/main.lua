@@ -10,7 +10,10 @@ import "android.content.*"
 import "android.view.View"
 import "androlua.LuaHttp"
 import "androlua.LuaImageLoader"
-import "android.support.graphics.drawable.VectorDrawableCompat"
+import "androlua.LuaDrawable"
+import "androlua.LuaView"
+import "android.graphics.Paint"
+import "androlua.LuaUtil"
 
 local uihelper = require("common.uihelper")
 local JSON = require("common.json")
@@ -27,24 +30,24 @@ local item_hour = {
     {
         TextView,
         textSize = "13sp",
-        textColor = "#444444",
+        textColor = "#666666",
         text = "00:00",
     },
     {
         ImageView,
         layout_width = "match",
-        layout_height = "30dp",
+        layout_height = "24dp",
         layout_marginBottom = "4dp",
         layout_marginTop = "12dp",
     },
     {
         TextView,
         textSize = "12sp",
-        textColor = "#444444",
+        textColor = "#666666",
         text = "0°",
     },
 }
-local item_week ={
+local item_week = {
     LinearLayout,
     layout_weight = 1,
     orientation = "vertical",
@@ -54,49 +57,34 @@ local item_week ={
     {
         TextView,
         textSize = "13sp",
-        textColor = "#444444",
+        textColor = "#666666",
         text = "今天",
     },
     {
         ImageView,
         layout_width = "match",
-        layout_height = "50dp",
+        layout_height = "24dp",
         layout_marginBottom = "4dp",
-        layout_marginTop = "12dp",
+        layout_marginTop = "16dp",
     },
     {
         TextView,
-        textSize = "12sp",
-        textColor = "#444444",
+        textSize = "10sp",
+        textColor = "#666666",
         text = "多云",
     },
 }
 
 -- create view table
 local layout = {
-    -- FrameLayout,
-    -- layout_width = "match",
-    -- layout_height = "match",
-    -- {
-    --     ImageView,
-    --     id = "iv_bg",
-    --     layout_width = "match",
-    --     layout_height = "match",
-    --     scaleType = "centerCrop",
-    -- },
-    -- {
-    --     ImageView,
-    --     background = "#11000000",
-    --     layout_width = "match",
-    --     layout_height = "match",
-    -- },
     ScrollView,
+    scrollbarSize = 0,
     {
         LinearLayout,
         orientation = "vertical",
         {
             LinearLayout,
-            background = "#009688",
+            background = "#8CCACE",
             layout_width = "fill",
             layout_height = "wrap",
             orientation = "vertical",
@@ -106,7 +94,7 @@ local layout = {
                 layout_width = "fill",
                 layout_height = "wrap",
                 layout_marginTop = "25dp",
-                padding="16dp",
+                padding = "16dp",
                 {
                     TextView,
                     id = "tv_city",
@@ -128,8 +116,8 @@ local layout = {
                 layout_width = "fill",
                 orientation = "vertical",
                 gravity = "center_horizontal",
-                paddingBottom = "80dp",
-                paddingTop = "32dp",
+                paddingBottom = "72dp",
+                paddingTop = "24dp",
                 {
                     TextView,
                     id = "tv_weather",
@@ -139,8 +127,8 @@ local layout = {
                 {
                     TextView,
                     id = "tv_temp",
-                    layout_marginTop="8dp",
-                    layout_marginBottom="12dp",
+                    layout_marginTop = "8dp",
+                    layout_marginBottom = "12dp",
                     textSize = "82sp",
                     textColor = "#f1ffffff",
                 },
@@ -165,6 +153,12 @@ local layout = {
             item_week,
         },
         {
+            LuaView,
+            id = "line_view",
+            layout_width = "fill",
+            layout_height = "80dp",
+        },
+        {
             LinearLayout,
             id = "layout_24h",
             layout_width = "fill",
@@ -180,38 +174,42 @@ local layout = {
 }
 
 -- bg http://i.tq121.com.cn/i/wap2016/news/d11.jpg
+local weekTemp = {}
 
-function fillBaseInfo( body )
-    local json = JSON.decode(string.match( body,'{.*}' ))
+function fillBaseInfo(body)
+    local json = JSON.decode(string.match(body, '{.*}'))
     tv_city.setText(json.cityname)
     tv_temp.setText(json.temp .. '°')
     tv_update.setText(json.time .. ' 更新')
     tv_weather.setText(json.weather)
-    tv_wind.setText(string.format('空气指数 %s  •  %s  •  湿度 %s', json.aqi_pm25, json.WD .. ' ' .. json.WS, json.SD) )
+    tv_wind.setText(string.format('空气指数 %s  •  %s  •  湿度 %s', json.aqi_pm25, json.WD .. ' ' .. json.WS, json.SD))
     -- local bgUrl = string.format( "http://i.tq121.com.cn/i/wap2016/news/%s.jpg", json.weathercode )
     -- print(bgUrl)
     -- LuaImageLoader.load(iv_bg, bgUrl)
 end
 
-function fillWeekInfo( body )
-    local json = JSON.decode(string.match( body,'{.*}' ))
-    for i=1,#json.f do
-         local child = layout_week.getChildAt(i-1)
-         child.getChildAt(0).setText(json.f[i].fj)
-         local xmlPath = string.format('%s/weather/img/ic_%s.xml', luajava.luaextdir , json.f[i].fa)
-         print(xmlPath)
-         child.getChildAt(1).setImageDrawable(VectorDrawableCompat.createFromPath(xmlPath))
-         child.getChildAt(2).setText(weather['_' .. json.f[i].fa])
+function fillWeekInfo(body)
+    local json = JSON.decode(string.match(body, '{.*}'))
+    for i = 1, #json.f do
+        local child = layout_week.getChildAt(i - 1)
+        child.getChildAt(0).setText(json.f[i].fj)
+        local xmlPath = string.format('%s/weather/img/line_%s.png', luajava.luaextdir, json.f[i].fa)
+        child.getChildAt(1).setImageDrawable(LuaDrawable.create(xmlPath))
+        child.getChildAt(2).setText(weather['_' .. json.f[i].fa])
+        weekTemp[i] = { json.f[i].fc, json.f[i].fd }
     end
+    line_view.invalidate()
 end
 
-function fill24HInfo( body )
-    local json = JSON.decode(string.match(body,'fc1h_24 =(.*)' ))
+function fill24HInfo(body)
+    local json = JSON.decode(string.match(body, 'fc1h_24 =(.*)'))
     local j = 0
-    for i=1, #json.jh, 3 do
+    for i = 1, #json.jh, 3 do
         local child = layout_24h.getChildAt(j)
         if child then
-            child.getChildAt(0).setText(json.jh[i].jf:sub(9,10) .. ':00')
+            child.getChildAt(0).setText(json.jh[i].jf:sub(9, 10) .. ':00')
+            local xmlPath = string.format('%s/weather/img/line_%s.png', luajava.luaextdir, json.jh[i].ja)
+            child.getChildAt(1).setImageDrawable(LuaDrawable.create(xmlPath))
             child.getChildAt(2).setText(json.jh[i].jb .. '°')
         end
         j = j + 1
@@ -240,9 +238,69 @@ end
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
+    local paint = Paint(1)
+    paint.setColor(0xFF666666)
+    paint.setTextSize(uihelper.dp2px(10))
+    paint.setStrokeWidth(uihelper.dp2px(1.5))
+    local linePaint1 = Paint(paint)
+    linePaint1.setColor(0xFFFFD139)
+    local linePaint2 = Paint(paint)
+    linePaint2.setColor(0xFF7FDCEF)
+
+    local radius = uihelper.dp2px(2.5)
+    local texWidth = uihelper.dp2px(6)
+
+    line_view.setCreator(luajava.createProxy('androlua.LuaView$Creator', {
+        onDraw = function(canvas)
+            local count = #weekTemp
+            local max = -999
+            local min = 999
+            for i = 1, count do
+                if tonumber(weekTemp[i][1]) > max then max = tonumber(weekTemp[i][1]) end
+                if tonumber(weekTemp[i][2]) < min then min = tonumber(weekTemp[i][2]) end
+            end
+            local dx = line_view.getWidth() / count
+            local startY = uihelper.dp2px(18)
+            local dy = (line_view.getHeight() -line_view.getPaddingTop() - line_view.getPaddingBottom() - startY - startY) / (max - min)
+            local lastPoint1 = {}
+            local lastPoint2 = {}
+            for i = 1, count do
+                local maxT = weekTemp[i][1]
+                local minT = weekTemp[i][2]
+                local x = dx * (i-0.5)
+                local y1 = startY + (max - maxT) * dy
+                local y2 = startY + (max - minT) * dy
+                canvas.drawText(maxT .. '°', x - texWidth, y1 - texWidth, paint)
+                canvas.drawText(minT .. '°', x - texWidth, y2 + texWidth + texWidth, paint)
+                canvas.drawCircle(x,y1,radius,linePaint1)
+                canvas.drawCircle(x,y2,radius,linePaint2)
+                if lastPoint1[1] and lastPoint1[2] then
+                    canvas.drawLine(lastPoint1[1],lastPoint1[2], x, y1,linePaint1)
+                end
+
+                if lastPoint2[1] and lastPoint2[2] then
+                    canvas.drawLine(lastPoint2[1],lastPoint2[2], x, y2,linePaint2)
+                end
+
+
+                lastPoint1[1] = x
+                lastPoint1[2] = y1
+
+                lastPoint2[1] = x
+                lastPoint2[2] = y2
+            end
+        end,
+    }))
+
+    tv_city.onClick = function ( v )
+        local intent = Intent(activity, LuaActivity)
+        intent.putExtra("luaPath", 'weather/list_city.lua')
+        activity.startActivity(intent)
+    end
     getData('http://d1.weather.com.cn/sk_2d/101010300.html', fillBaseInfo)
     getData('http://d1.weather.com.cn/weixinfc/101010300.html', fillWeekInfo)
     getData('http://d1.weather.com.cn/wap_40d/101010300.html', fill24HInfo)
+
 end
 
 

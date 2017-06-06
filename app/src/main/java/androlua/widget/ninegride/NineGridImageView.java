@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androlua.LuaImageLoader;
+
 /**
  * Created by Jaeger on 16/2/24.
  * <p>
@@ -32,8 +34,8 @@ public class NineGridImageView<T> extends ViewGroup {
     private int mGridSize;   // 宫格大小,即图片大小
 
     private List<ImageView> mImageViewList = new ArrayList<>();
-    private List<T> mImgDataList = new ArrayList<>();
-    private NineGridImageViewAdapter<T> mAdapter;
+    private List<String> mImgDataList = new ArrayList<>();
+    private NineGridImageViewAdapter mAdapter;
     private int totalWidth;
 
     public NineGridImageView(Context context) {
@@ -105,7 +107,7 @@ public class NineGridImageView<T> extends ViewGroup {
 
     }
 
-    public NineGridImageViewAdapter<T> getAdapter() {
+    public NineGridImageViewAdapter getAdapter() {
         return mAdapter;
     }
 
@@ -191,7 +193,7 @@ public class NineGridImageView<T> extends ViewGroup {
      *
      * @param lists 图片数据集合
      */
-    public void setImagesData(List<T> lists) {
+    public void setImagesData(List<String> lists) {
         if (lists == null || lists.isEmpty()) {
             this.setVisibility(GONE);
             return;
@@ -214,6 +216,7 @@ public class NineGridImageView<T> extends ViewGroup {
                 iv.setScaleType(ImageView.ScaleType.FIT_XY);
             }
             addView(iv, generateDefaultLayoutParams());
+            LuaImageLoader.load(iv, mImgDataList.get(i));
             final int finalI = i;
             iv.setOnClickListener(new OnClickListener() {
                 @Override

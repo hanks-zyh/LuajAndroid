@@ -14,7 +14,9 @@
         <activity android:name="androlua.LuaActivity"/>
         <activity android:name="androlua.widget.picture.PicturePreviewActivity"/>
         <activity android:name="androlua.widget.webview.WebViewActivity"/>
-        <activity android:name="androlua.widget.video.VideoPlayerActivity" android:configChanges="orientation|screenSize|keyboardHidden"  android:hardwareAccelerated="true"/>
+        <activity android:name="androlua.widget.video.VideoPlayerActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:hardwareAccelerated="true"/>
         <meta-data
             android:name="androlua.widget.glide.LuaGlideModule"
             android:value="GlideModule" />

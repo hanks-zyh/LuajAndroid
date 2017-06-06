@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import com.luajava.LuaTable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hanks on 2017/5/31. Copyright (C) 2017 Hanks
@@ -22,10 +23,10 @@ public class LuaNineGridView extends NineGridImageView {
     }
 
     public void setImagesData(LuaTable lists) {
-        ArrayList<String> data = new ArrayList<>();
-        for (Object key : lists.keySet()) {
-            String v = (String) lists.get(key);
-            data.add(v);
+        List<String> data = new ArrayList<>();
+        int size = lists.size();
+        for (int i = 1; i <= size; i++) {
+            data.add((String) lists.get(i));
         }
         setImagesData(data);
     }

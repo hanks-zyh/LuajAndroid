@@ -9,7 +9,7 @@ import java.util.List;
  * Created by hanks on 2017/5/31. Copyright (C) 2017 Hanks
  */
 
-public class LuaNineGridViewAdapter extends NineGridImageViewAdapter<String> {
+public class LuaNineGridViewAdapter extends NineGridImageViewAdapter {
     AdapterCreator adapterCreator;
 
     public LuaNineGridViewAdapter(AdapterCreator adapterCreator) {

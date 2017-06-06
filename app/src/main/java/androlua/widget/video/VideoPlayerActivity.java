@@ -3,10 +3,12 @@ package androlua.widget.video;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -39,6 +41,7 @@ public class VideoPlayerActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+        this.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         mWebView = (WebView) findViewById(R.id.webview);
         initWebView();
         try {
@@ -122,6 +125,7 @@ public class VideoPlayerActivity extends BaseActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            mWebView.setVisibility(View.VISIBLE);
         }
 
     }
