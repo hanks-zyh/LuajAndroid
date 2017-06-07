@@ -70,12 +70,18 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
     end)
 end
 
-local log = require("common.log")
+-- local log = require("common.log")
 
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()
-    log.print_r(msg)
-    WebViewActivity.start(activity,msg.item.linkUrl, 0xF12979FB)
+    -- log.print_r(msg)
+    if msg and msg.item and msg.item.linkUrl then
+        WebViewActivity.start(activity,msg.item.linkUrl, 0xF12979FB)
+        return
+    end
+
+    activity.toast('没有 url 可以打开')
+
 end
 
 local function launchPicturePreview(fragment,msg,index)

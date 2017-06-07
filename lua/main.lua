@@ -5,7 +5,7 @@ import "android.support.v4.view.ViewPager"
 import "android.support.v7.widget.Toolbar"
 import "androlua.LuaActivity"
 local layout = require "main.layout_main"
-local Adapter = luajava.bindClass("androlua.LuaAdapter")
+import ("androlua.LuaAdapter")
 
 
 local item_view = {
@@ -94,7 +94,7 @@ function onCreate(savedInstanceState)
         launchPage = 'weather/main.lua'
     }
 
-    local adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
+    local adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data end,
         getItem = function(position) return nil end,
         getItemId = function(position) return position end,
@@ -103,7 +103,7 @@ function onCreate(savedInstanceState)
             position = position + 1 -- lua 索引从 1开始
             if convertView == nil then
                 local views = {} -- store views
-                convertView = loadlayout(item_view, views)
+                convertView = loadlayout(item_view, views, GridView)
                 convertView.getLayoutParams().width = 171
                 convertView.setTag(views)
             end
