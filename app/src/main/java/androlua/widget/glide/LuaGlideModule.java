@@ -17,8 +17,6 @@ import com.bumptech.glide.module.GlideModule;
 public class LuaGlideModule implements GlideModule {
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
-        int maxMemory = (int) Runtime.getRuntime().maxMemory();//获取系统分配给应用的总内存大小
-        Log.e("xxxxx", "maxMemory: " + maxMemory );
         int memoryCacheSize = 1024 * 1024 * 10;//设置图片内存缓存占用八分之一
         //设置内存缓存大小
         builder.setMemoryCache(new LruResourceCache(memoryCacheSize));

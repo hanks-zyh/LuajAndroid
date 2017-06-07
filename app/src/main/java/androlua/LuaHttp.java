@@ -139,8 +139,8 @@ public class LuaHttp {
                     continue;
                 }
                 String[] header = new String[]{
-                        value.substring(0,i).trim(),
-                        value.substring(i+1).trim()
+                        value.substring(0,i),
+                        value.substring(i+1)
                 };
                 builder.header(header[0].trim(), header[1].trim());
             }
@@ -161,7 +161,14 @@ public class LuaHttp {
             FormBody.Builder bodyBuilder = new FormBody.Builder();
             for (Object key : formData.keySet()) {
                 String value = (String) formData.get(key);
-                String[] params = value.split(":");
+                int i = value.indexOf(":");
+                if (i == -1){
+                    continue;
+                }
+                String[] params = new String[]{
+                        value.substring(0,i),
+                        value.substring(i+1)
+                };
                 bodyBuilder.add(params[0].trim(), params[1].trim());
             }
             return bodyBuilder.build();
@@ -173,7 +180,14 @@ public class LuaHttp {
                     .setType(MultipartBody.FORM);
             for (Object key : multipart.keySet()) {
                 String value = (String) multipart.get(key);
-                String[] params = value.split(":");
+                int i = value.indexOf(":");
+                if (i == -1){
+                    continue;
+                }
+                String[] params = new String[]{
+                        value.substring(0,i),
+                        value.substring(i+1)
+                };
                 String itemKey = params[0].trim();
                 String itemValue = params[1].trim();
                 if (itemValue.startsWith("/")) {

@@ -61,6 +61,12 @@ public class ExampleInstrumentedTest {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             gridLayout.setElevation(20);
         }
+        gridLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        },1000);
 
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(appContext);
         horizontalScrollView.setHorizontalScrollBarEnabled(false);

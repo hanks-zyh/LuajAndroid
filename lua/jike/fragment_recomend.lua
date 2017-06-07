@@ -5,11 +5,10 @@
 -- Time: 00:01
 -- To change this template use File | Settings | File Templates.
 --
-local JSON = require("common.json")
-local ImageLoader = import "androlua.LuaImageLoader"
-local LuaFragment = import("androlua.LuaFragment")
-local Http = import "androlua.LuaHttp"
-local uihelper = require("common.uihelper")
+
+import "androlua.LuaImageLoader"
+import "androlua.LuaFragment"
+import "androlua.LuaHttp"
 import "android.support.v7.widget.RecyclerView"
 import "android.support.v4.widget.SwipeRefreshLayout"
 import "androlua.adapter.LuaRecyclerAdapter"
@@ -21,6 +20,10 @@ import "androlua.widget.ninegride.LuaNineGridView"
 import "androlua.widget.ninegride.LuaNineGridViewAdapter"
 import "androlua.widget.picture.PicturePreviewActivity"
 import "androlua.widget.webview.WebViewActivity"
+
+local JSON = require("common.json")
+local uihelper = require("common.uihelper")
+
 
 local function clearTable(t)
     for k in pairs(t) do
@@ -44,7 +47,7 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
             "Cookie:io=0_Djvr_i0yLPqdsuFnzY; jike:sess.sig=d-IvFa3n5DhxWNim_0gVasNfTP0; jike:feed:latestNormalMessageId=592e495c7a27e200117d35b3; jike:recommendfeed:latestRecCreatedAt=2017-05-31T06:16:06.797Z; jike:sess=eyJfdWlkIjoiNTdmYjc2YTJhNzViY2ExMzAwZjYyMzkyIiwiX3Nlc3Npb25Ub2tlbiI6IkdRTUU0RmNkTHZhNTZlcExXR1BaYURDaDQifQ==; jikeSocketSticky=33b938e0c7b12816f8f2e027067ee82d69975eb2; jike:feed:latestFeedItemId=592e495c7a27e200117d35b3; jike:feed:noContentPullCount=0"
         }
     }
-    Http.request(options, function(error, code, body)
+    LuaHttp.request(options, function(error, code, body)
         if error or code ~= 200 then
             print(' ================== get data error')
             return
@@ -67,11 +70,12 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
     end)
 end
 
--- local log = require("androlua.common.log")
+local log = require("common.log")
 
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()
-    WebViewActivity.start(activity,msg.item.linkUrl, 0xFF2979FB)
+    log.print_r(msg)
+    WebViewActivity.start(activity,msg.item.linkUrl, 0xF12979FB)
 end
 
 local function launchPicturePreview(fragment,msg,index)
@@ -175,9 +179,9 @@ function newInstance()
                     views.tv_date.setText(msg.item.updatedAt:sub(1, 10) or '')
                     views.tv_collect.setText(string.format('%s', msg.item.collectCount))
                     views.tv_comment.setText(string.format('%s', msg.item.commentCount))
-                    ImageLoader.load(views.iv_image, msg.item.topic.thumbnailUrl)
+                    LuaImageLoader.load(views.iv_image, msg.item.topic.thumbnailUrl)
                     if msg.item.video then
-                        ImageLoader.load(views.iv_video, msg.item.video.thumbnailUrl)
+                        LuaImageLoader.load(views.iv_video, msg.item.video.thumbnailUrl)
                         views.layout_video.setVisibility(0)
                     else
                         views.layout_video.setVisibility(8)
@@ -197,7 +201,7 @@ function newInstance()
                         views.iv_nine_grid.setVisibility(0)
                         views.iv_nine_grid.setAdapter(LuaNineGridViewAdapter(luajava.createProxy('androlua.widget.ninegride.LuaNineGridViewAdapter$AdapterCreator', {
                             onDisplayImage = function(context, imageView, url)
-                                ImageLoader.load(imageView, url)
+                                LuaImageLoader.load(imageView, url)
                             end,
                             onItemImageClick = function(context, imageView, index, list)
                                 launchPicturePreview(fragment,msg,index)

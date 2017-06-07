@@ -207,6 +207,15 @@ public class LuaActivity extends BaseActivity implements LuaContext {
     }
 
     @Override
+    public void onBackPressed() {
+        Object ret = luaManager.runFunc(L, "onBackPressed");
+        if (ret != null && ret.getClass() == Boolean.class && (Boolean) ret) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (mOnKeyDown != null) {
             try {

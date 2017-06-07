@@ -18,6 +18,7 @@ import "androlua.LuaUtil"
 local uihelper = require("common.uihelper")
 local JSON = require("common.json")
 local log = require('common.log')
+local filehelper = require("common.filehelper")
 local weather = require("weather.weather")
 
 local item_hour = {
@@ -78,7 +79,6 @@ local item_week = {
 -- create view table
 local layout = {
     ScrollView,
-    scrollbarSize = 0,
     {
         LinearLayout,
         orientation = "vertical",
@@ -92,18 +92,22 @@ local layout = {
             {
                 RelativeLayout,
                 layout_width = "fill",
-                layout_height = "wrap",
+                layout_height = "56dp",
                 layout_marginTop = "25dp",
-                padding = "16dp",
                 {
                     TextView,
                     id = "tv_city",
+                    layout_height = "match",
+                    gravity = "center",
                     layout_centerVertical = true,
                     textSize = "16sp",
                     textColor = "#ffffff",
+                    paddingLeft = "16dp",
+                    paddingRight = "16dp",
                 },
                 {
                     TextView,
+                    layout_marginRight = "16dp",
                     id = "tv_update",
                     layout_alignParentRight = true,
                     layout_centerVertical = true,
@@ -234,6 +238,14 @@ function getData(url, successFunc)
     end)
 end
 
+local filePath = luajava.luaextdir..'/weather/id'
+
+function fetchData( id )
+    if id == nil then return end
+    getData( string.format('http://d1.weather.com.cn/sk_2d/%s.html',id), fillBaseInfo)
+    getData(string.format('http://d1.weather.com.cn/weixinfc/%s.html',id), fillWeekInfo)
+    getData(string.format('http://d1.weather.com.cn/wap_40d/%s.html',id), fill24HInfo)
+end
 
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
@@ -297,10 +309,68 @@ function onCreate(savedInstanceState)
         intent.putExtra("luaPath", 'weather/list_city.lua')
         activity.startActivity(intent)
     end
-    getData('http://d1.weather.com.cn/sk_2d/101010300.html', fillBaseInfo)
-    getData('http://d1.weather.com.cn/weixinfc/101010300.html', fillWeekInfo)
-    getData('http://d1.weather.com.cn/wap_40d/101010300.html', fill24HInfo)
 
 end
+
+
+function findCityCode( province,city )
+    local id = '101010100'
+    local China  = require("weather.city")
+    for k,v in pairs(China) do
+        if province == k then
+            for k2,v2 in pairs(v) do
+              if k2 == city then
+                id = v2[1][1]:sub(2)
+                return id
+              end
+            end
+        end
+    end
+    return id
+end
+
+function locateMe(  )
+    local id = '101010100'
+    local options = {
+        url = 'http://ip.taobao.com/service/getIpInfo2.php',
+        method = "POST",
+        formData = {
+            "ip:myip"
+        }
+    }
+    LuaHttp.request(options, function ( error,code ,body )
+        if error or code ~= 200 then
+            print('locate failure')
+            return
+        end
+        local json = JSON.decode(body)
+        local province = json.data.region
+        local city = json.data.city
+        local county = json.data.county
+        local p = string.match(province,'(.*)省')
+        if p then  province = p
+        else
+            p = string.match(province,'(.*)市')
+             if p then  province = p  end
+        end
+
+        local c = string.match(province,'(.*)市')
+        if c then  city = c end
+
+        local id = findCityCode(province, city)
+        filehelper.writefile(filePath,id)
+        fetchData(id)
+    end)
+end
+
+function onResume()
+    local id = filehelper.readfile(filePath)
+    if id == nil then
+        locateMe()
+    else
+        fetchData(id)
+    end
+end
+
 
 

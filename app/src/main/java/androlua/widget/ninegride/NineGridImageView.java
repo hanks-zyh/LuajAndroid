@@ -214,6 +214,8 @@ public class NineGridImageView<T> extends ViewGroup {
             }
             if (newShowCount == 1) {
                 iv.setScaleType(ImageView.ScaleType.FIT_XY);
+            }else {
+                iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
             addView(iv, generateDefaultLayoutParams());
             LuaImageLoader.load(iv, mImgDataList.get(i));

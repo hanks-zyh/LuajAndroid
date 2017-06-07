@@ -9,8 +9,8 @@ import "androlua.adapter.LuaFragmentPageAdapter"
 
 local uihelper = require("common.uihelper")
 local recommendFragment = require("jike.fragment_recomend")
-local feedFragment = require("jike.fragment_feed")
-local hotFragment = require("jike.fragment_hot")
+-- local feedFragment = require("jike.fragment_feed")
+-- local hotFragment = require("jike.fragment_hot")
 
 local layout = {
     LinearLayout,
@@ -22,21 +22,13 @@ local layout = {
         layout_weight = 1,
         background = "#ffffff",
     },
-    {
-        BottomNavigationView,
-        id = "bottomView",
-        elevation="3dp",
-        layout_width = "fill",
-        layout_height = "56dp",
-        background = "#ffffff",
-    }
 }
 
 local data = {
     titles = {"推荐","热门","订阅"},
-    fragments = {recommendFragment.newInstance(), hotFragment.newInstance(), feedFragment.newInstance()},
+    -- fragments = {recommendFragment.newInstance(), hotFragment.newInstance(), feedFragment.newInstance()},
+    fragments = {recommendFragment.newInstance()},
 }
-
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
     luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
@@ -54,25 +46,24 @@ local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x33000000)
     activity.setContentView(loadlayout(layout))
-
    -- bottomView
-    bottomView.setItemTextColor(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
-    bottomView.setItemIconTintList(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
-    local recommentDrawable = LuaDrawable.create('jike/img/recoment.png')
-    local hotDrawable = LuaDrawable.create('jike/img/hot.png')
-    local feedDrawable = LuaDrawable.create('jike/img/feed.png')
-    bottomView.getMenu().add("推荐").setIcon(recommentDrawable)
-    bottomView.getMenu().add("热门").setIcon(hotDrawable)
-    bottomView.getMenu().add("订阅").setIcon(feedDrawable)
-    bottomView.setOnNavigationItemSelectedListener(luajava.createProxy('android.support.design.widget.BottomNavigationView$OnNavigationItemSelectedListener', {
-        onNavigationItemSelected = function(item)
-            local title = item.getTitle()
-            if title == "推荐" then viewPager.setCurrentItem(0, false) end
-            if title == "热门" then viewPager.setCurrentItem(1, false) end
-            if title == "订阅" then viewPager.setCurrentItem(2, false) end
-            return true
-        end
-    }))
+    -- bottomView.setItemTextColor(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
+    -- bottomView.setItemIconTintList(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
+    -- local recommentDrawable = LuaDrawable.create('jike/img/recoment.png')
+    -- local hotDrawable = LuaDrawable.create('jike/img/hot.png')
+    -- local feedDrawable = LuaDrawable.create('jike/img/feed.png')
+    -- bottomView.getMenu().add("推荐").setIcon(recommentDrawable)
+    -- bottomView.getMenu().add("热门").setIcon(hotDrawable)
+    -- bottomView.getMenu().add("订阅").setIcon(feedDrawable)
+    -- bottomView.setOnNavigationItemSelectedListener(luajava.createProxy('android.support.design.widget.BottomNavigationView$OnNavigationItemSelectedListener', {
+    --     onNavigationItemSelected = function(item)
+    --         local title = item.getTitle()
+    --         if title == "推荐" then viewPager.setCurrentItem(0, false) end
+    --         if title == "热门" then viewPager.setCurrentItem(1, false) end
+    --         if title == "订阅" then viewPager.setCurrentItem(2, false) end
+    --         return true
+    --     end
+    -- }))
 
     -- viewpager
     viewPager.setAdapter(adapter)
