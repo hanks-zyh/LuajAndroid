@@ -81,7 +81,7 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                etUrl.setText(title);
+                etUrl.setText(title); 
             }
 
         });
