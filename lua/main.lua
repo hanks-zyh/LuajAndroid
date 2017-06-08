@@ -59,16 +59,16 @@ function onCreate(savedInstanceState)
         launchPage = 'pager/activity_pager.lua'
     }
     data[4] ={
-        text = 'webview',
-        launchPage = 'webview/activity_webview.lua'
+        text = '奇趣百科',
+        launchPage = 'qiqu/main.lua'
     }
     data[5] ={
         text = 'animation',
         launchPage = 'animation/activity_animation.lua'
     }
     data[6] ={
-        text = 'http',
-        launchPage = 'http/activity_http.lua'
+        text = '豆瓣电影',
+        launchPage = 'doubanmovie/main.lua'
     }
     data[7] ={
         text = '开眼',
