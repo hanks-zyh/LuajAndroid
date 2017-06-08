@@ -2,9 +2,12 @@ package androlua.widget.picture;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +47,10 @@ public class PicturePreviewActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewPager = new ViewPager(this);
-        viewPager.setBackgroundColor(0xFF000000);
-        viewPager.setId(R.id.transition_current_scene);
-        setContentView(viewPager);
+        setContentView(R.layout.activity_picture);
+        setStatusBarColor(Color.TRANSPARENT);
+        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new LuaFragmentPageAdapter(getSupportFragmentManager(), new LuaFragmentPageAdapter.AdapterCreator() {
             @Override
             public long getCount() {
@@ -110,7 +113,9 @@ public class PicturePreviewActivity extends BaseActivity {
             super.onViewCreated(view, savedInstanceState);
             String uri = getArguments().getString("uri", "");
             ImageView imageView = (ImageView) view;
-            LuaImageLoader.load(imageView, uri);
+            LuaImageLoader.load(getActivity(), imageView, uri,
+                    ContextCompat.getDrawable(getActivity(), R.drawable.bg_circle),
+                    ContextCompat.getDrawable(getActivity(), R.drawable.bg_circle));
         }
     }
 

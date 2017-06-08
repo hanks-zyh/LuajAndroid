@@ -54,7 +54,7 @@ local layout = {
       layout_gravity = "bottom",
       layout_marginRight = "16dp",
       layout_marginLeft = "136dp",
-      layout_marginBottom = "6dp",
+      layout_marginBottom = "4dp",
       {
         TextView,
         id = "tv_title",
@@ -82,8 +82,9 @@ local layout = {
         TextView,
         id = "tv_genres",
         layout_width = "fill",
-        layout_marginTop = "8dp",
+        layout_marginTop = "6dp",
         textSize = "14sp",
+        textColor = "#8a8a8a"
       },
       {
         TextView,
@@ -91,6 +92,15 @@ local layout = {
         layout_marginTop = "8dp",
         layout_width = "fill",
         textSize = "14sp",
+        textColor = "#8a8a8a"
+      },
+      {
+        TextView,
+        id = "tv_year",
+        layout_marginTop = "8dp",
+        layout_width = "fill",
+        textSize = "14sp",
+        textColor = "#8a8a8a"
       },
     },
   },
@@ -169,18 +179,21 @@ function getData(id)
     uihelper.runOnUiThread(activity, function()
         LuaImageLoader.load(iv_bg,json.images.small)
         LuaImageLoader.load(iv_cover,json.images.large)
+        local rate = json.rating.average
+        if rate == '0' or rate == 0 then rate = '暂无' end
         tv_title.setText(json.title)
-        tv_rate.setText('评分：' .. json.rating.average )
-        tv_summary.setText(json.summary)
-        tv_genres.setText('分类：' .. table.concat( json.genres or {'无'},',') )
+        tv_rate.setText('评分:  ' ..  rate)
+        tv_summary.setText(json.summary or '暂无简介')
+        tv_year.setText('年份:  ' .. json.year or '')
+        tv_genres.setText('分类:  ' .. table.concat( json.genres or {'无'},',') )
         tv_duration.setText( string.format('%s/%s', table.concat( json.countries or {'未知'} ,',') ,
-              table.concat( json.durations or {},',') ) )
+              table.concat( json.durations or {'0'},',') ) )
 
         local directors = {}
         if json.directors then
           for i = 1, #json.directors do directors[i] = json.directors[i].name end
         end
-        tv_directors.setText('导演：'.. table.concat(directors,','))
+        tv_directors.setText('导演:  '.. table.concat(directors,','))
         if json.casts then
           layout_casts.removeAllViews()
           for i = 1, #json.casts do

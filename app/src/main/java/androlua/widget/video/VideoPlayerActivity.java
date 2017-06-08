@@ -50,7 +50,6 @@ public class VideoPlayerActivity extends BaseActivity {
             String url = json.getString("url");
             String poster = json.getString("poster");
             data = data.replace("{poster}", poster).replace("{url}", url);
-            Log.e("xxxxxxxx", "onCreate: " + data);
             mWebView.loadData(data, "text/html", "utf-8");
         } catch (JSONException e) {
             e.printStackTrace();

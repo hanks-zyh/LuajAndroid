@@ -9,7 +9,7 @@
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="#ffffff"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal">
@@ -17,36 +17,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/iv_more"
             android:background="@drawable/bg_rect_radius"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="8dp">
-
-                <ProgressBar
-                    android:id="@+id/loading"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:alpha="0.3"
-                    android:progressTint="#666666"/>
-
-                <ImageView
-                    android:id="@+id/iv_finish"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_circle"
-                    android:padding="2.5dp"
-                    android:src="@drawable/ic_finish"
-                    android:tint="#20b55e"/>
-
-            </FrameLayout>
 
             <EditText
                 android:id="@+id/et_url"
@@ -57,19 +34,36 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
-                android:paddingLeft="4dp"
+                android:paddingLeft="12dp"
                 android:singleLine="true"
-                android:textColor="#f1ffffff"
+                android:text="为哦波"
+                android:textColor="#aaffffff"
                 android:textColorHint="#44ffffff"
-                android:textSize="14sp"/>
+                android:textSize="13sp"/>
 
-            <ImageView
-                android:id="@+id/iv_refresh"
+            <FrameLayout
                 android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:alpha="0.3"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_refresh"/>
+                android:layout_height="30dp">
+
+                <android.support.v4.widget.ContentLoadingProgressBar
+                    android:id="@+id/loading"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.6"
+                    android:indeterminateDrawable="@drawable/loading_shap"/>
+
+                <ImageView
+                    android:id="@+id/iv_refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:alpha="0.4"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_refresh"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
         </LinearLayout>
 
         <ImageView
@@ -78,7 +72,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:scaleType="centerInside"
+            android:padding="4dp"
             android:src="@drawable/ic_more"/>
     </RelativeLayout>
 

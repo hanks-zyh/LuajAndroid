@@ -36,6 +36,7 @@ local layout = {
         text = "豆瓣-热映电影",
         textColor = "#42BD52",
         textSize = "18sp",
+        elevation = "2dp",
     },
     {
         RecyclerView,

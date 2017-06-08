@@ -38,7 +38,7 @@ public class BaseActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             decorView.setSystemUiVisibility(option);
-            setStatusBarColor(0x00000000);
+            setStatusBarColor(0xFFFFFFFF);
         }else if (Build.VERSION.SDK_INT >= 21) {
             setStatusBarColor(0x33000000);
         }
