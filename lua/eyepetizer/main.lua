@@ -11,38 +11,34 @@ import "android.view.View"
 import "androlua.LuaHttp"
 import "androlua.LuaAdapter"
 import "androlua.widget.video.VideoPlayerActivity"
-import ("androlua.LuaImageLoader")
+import("androlua.LuaImageLoader")
 
 local uihelper = require("common.uihelper")
 local JSON = require("common.json")
 
 -- create view table
 local layout = {
-    FrameLayout,
+    LinearLayout,
+    orientation = "vertical",
     layout_width = "fill",
     layout_height = "fill",
     fitsSystemWindows = true,
     {
-        ListView,
-        id = "listview",
-        paddingTop = "48dp",
-        clipToPadding = false,
-        dividerHeight = 0,
-        layout_width = "fill",
-        layout_height = "fill",
-    },
-    {
-        LinearLayout,
+        TextView,
         layout_width = "fill",
         layout_height = "48dp",
         background = "#F0000000",
         gravity = "center",
-        {
-            TextView,
-            text="Eyepetizer",
-            textColor="#FFFFFF",
-            textSize="14sp",
-        }
+        text = "Eyepetizer",
+        textColor = "#FFFFFF",
+        textSize = "18sp",
+    },
+    {
+        ListView,
+        id = "listview",
+        dividerHeight = 0,
+        layout_width = "fill",
+        layout_height = "fill",
     },
 }
 
@@ -78,7 +74,7 @@ local item_view = {
 
 
 local data = {
-    dailyList={}
+    dailyList = {}
 }
 local adapter
 
@@ -92,20 +88,21 @@ function getData()
             return
         end
         local str = JSON.decode(body)
-        data.nextPageUrl = str.nextPageUrl
-        local list = str.dailyList[1].videoList
-        for i=1, #list do
-            data.dailyList[#data.dailyList+1] = list[i]
-        end
         uihelper = runOnUiThread(activity, function()
+            data.nextPageUrl = str.nextPageUrl
+            local list = str.dailyList[1].videoList
+            for i = 1, #list do
+                data.dailyList[#data.dailyList + 1] = list[i]
+            end
             adapter.notifyDataSetChanged()
         end)
     end)
 end
+
 local log = require('common.log')
 function launchDetail(item)
-    local json = { url = item.playInfo[#item.playInfo].url, poster = item.coverForDetail}
-    VideoPlayerActivity.start(activity,JSON.encode(json))
+    local json = { url = item.playInfo[#item.playInfo].url, poster = item.coverForDetail }
+    VideoPlayerActivity.start(activity, JSON.encode(json))
 end
 
 

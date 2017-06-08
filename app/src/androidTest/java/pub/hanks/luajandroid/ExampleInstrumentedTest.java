@@ -9,15 +9,14 @@ import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -26,9 +25,6 @@ import android.widget.TextView;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androlua.LuaBitmap;
-import androlua.LuaDrawable;
 
 import static org.junit.Assert.assertEquals;
 
@@ -67,6 +63,9 @@ public class ExampleInstrumentedTest {
 
             }
         },1000);
+
+
+        new GridLayoutManager(appContext,3);
 
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(appContext);
         horizontalScrollView.setHorizontalScrollBarEnabled(false);
