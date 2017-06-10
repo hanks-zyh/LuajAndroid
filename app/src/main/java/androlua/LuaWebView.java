@@ -2,6 +2,7 @@ package androlua;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.webkit.WebChromeClient;
@@ -39,6 +40,9 @@ public class LuaWebView extends WebView {
         setting.setJavaScriptEnabled(true);
         setWebChromeClient(new LuaWebChromeClient());
         setWebViewClient(new LuaWebViewClient());
+        if (Build.VERSION.SDK_INT >= 19) {
+           setWebContentsDebuggingEnabled(true);
+        }
     }
 
     private WebChromeClientListener webChromeClientListener;

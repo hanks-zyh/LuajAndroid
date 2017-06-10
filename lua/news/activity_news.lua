@@ -114,5 +114,3 @@ function onCreate(savedInstanceState)
     tab.setTabGravity(TabLayout.GRAVITY_CENTER)
     tab.setupWithViewPager(viewPager)
 end
-
-

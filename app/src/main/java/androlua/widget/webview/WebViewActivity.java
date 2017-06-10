@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -65,6 +67,10 @@ public class WebViewActivity extends BaseActivity {
         settings.setSupportMultipleWindows(true);
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            mWebView.setWebContentsDebuggingEnabled(true);
+        }
 
         url = getIntent().getStringExtra("url");
         color = getIntent().getIntExtra("color", 0);
@@ -129,8 +135,7 @@ public class WebViewActivity extends BaseActivity {
     private Canvas canvas;
 
     private boolean canAsBgColor(int i) {
-//        return Color.red(i) < 200 && Color.green(i) < 200 && Color.blue(i) < 200;
-        return true;
+        return Color.red(i) < 220 || Color.green(i) < 220 || Color.blue(i) < 220;
     }
 
     private void fetchColor() {
@@ -158,5 +163,25 @@ public class WebViewActivity extends BaseActivity {
         }
         super.onBackPressed();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            if (mWebView != null) {
+                if (mWebView.getParent() instanceof ViewGroup) {
+                    ((ViewGroup) mWebView.getParent()).removeAllViews();
+                }
+                mWebView.stopLoading();
+                mWebView.setWebChromeClient(null);
+                mWebView.setWebViewClient(null);
+                mWebView.removeAllViews();
+                mWebView.destroy();
+                mWebView = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

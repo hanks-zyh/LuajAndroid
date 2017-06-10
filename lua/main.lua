@@ -46,50 +46,48 @@ function onCreate(savedInstanceState)
 
     activity.setContentView(loadlayout(layout))
 
-    data[1] = {
-        text = 'text',
-        launchPage = 'text/activity_text.lua'
+    data[#data + 1 ] ={
+        text = '动漫资讯',
+        launchPage = 'tv005/main.lua'
     }
-    data[2] = {
+
+    data[#data + 1 ] = {
         text = 'image',
         launchPage = 'image/activity_image.lua'
     }
-    data[3] ={
-        text = 'pager',
-        launchPage = 'pager/activity_pager.lua'
-    }
-    data[4] ={
+
+    data[#data + 1 ] ={
         text = '奇趣百科',
         launchPage = 'qiqu/main.lua'
     }
-    data[5] ={
+    data[#data + 1 ] ={
         text = 'animation',
         launchPage = 'animation/activity_animation.lua'
     }
-    data[6] ={
+    data[#data + 1 ] ={
         text = '豆瓣电影',
         launchPage = 'doubanmovie/main.lua'
     }
-    data[7] ={
+    data[#data + 1 ] ={
         text = '开眼',
         launchPage = 'eyepetizer/main.lua'
     }
-    data[8] ={
+    data[#data + 1 ] ={
         text = 'IT 之家',
         launchPage = 'news/activity_news.lua'
     }
 
-    data[9] ={
+    data[#data + 1 ] ={
         text = '知乎日报',
         launchPage = 'zhihudaliy/activity_zhihu_daliy.lua'
     }
 
-    data[10] ={
+    data[#data + 1 ] ={
         text = '即刻',
         launchPage = 'jike/main.lua'
     }
 
-    data[11] ={
+    data[#data + 1 ] ={
         text = '天气',
         launchPage = 'weather/main.lua'
     }
@@ -99,7 +97,6 @@ function onCreate(savedInstanceState)
         getItem = function(position) return nil end,
         getItemId = function(position) return position end,
         getView = function(position, convertView, parent)
-            print(position)
             position = position + 1 -- lua 索引从 1开始
             if convertView == nil then
                 local views = {} -- store views
