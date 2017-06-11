@@ -144,5 +144,3 @@ function onCreate(savedInstanceState)
     }))
     getData()
 end
-
-
