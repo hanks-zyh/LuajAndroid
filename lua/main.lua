@@ -52,8 +52,8 @@ function onCreate(savedInstanceState)
     }
 
     data[#data + 1 ] = {
-        text = 'image',
-        launchPage = 'image/activity_image.lua'
+        text = '图解电影',
+        launchPage = 'graphmovies/main.lua'
     }
 
     data[#data + 1 ] ={

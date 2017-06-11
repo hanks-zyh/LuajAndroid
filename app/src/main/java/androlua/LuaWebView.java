@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -18,6 +19,9 @@ import android.webkit.WebViewClient;
  */
 
 public class LuaWebView extends WebView {
+    private WebChromeClientListener webChromeClientListener;
+    private WebViewClientListener webViewClientListener;
+
     public LuaWebView(Context context) {
         this(context, null);
     }
@@ -25,9 +29,13 @@ public class LuaWebView extends WebView {
     public LuaWebView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
-
     public LuaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        if (Build.VERSION.SDK_INT >= 19) {
+            setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
         WebSettings setting = getSettings();
         setting.setSupportZoom(false);
         setting.setBuiltInZoomControls(false);
@@ -36,17 +44,14 @@ public class LuaWebView extends WebView {
         setting.setLoadWithOverviewMode(true);
         setting.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         setting.setAllowFileAccess(true);
-        setting.setLoadsImagesAutomatically(true);
+        // setting.setLoadsImagesAutomatically(false);
         setting.setJavaScriptEnabled(true);
         setWebChromeClient(new LuaWebChromeClient());
         setWebViewClient(new LuaWebViewClient());
         if (Build.VERSION.SDK_INT >= 19) {
-           setWebContentsDebuggingEnabled(true);
+            setWebContentsDebuggingEnabled(true);
         }
     }
-
-    private WebChromeClientListener webChromeClientListener;
-    private WebViewClientListener webViewClientListener;
 
     public void setWebChromeClientListener(WebChromeClientListener webChromeClientListener) {
         this.webChromeClientListener = webChromeClientListener;
@@ -107,7 +112,7 @@ public class LuaWebView extends WebView {
         @Override
         public void onPageFinished(WebView view, String url) {
             if (webViewClientListener != null) {
-               webViewClientListener.onPageFinished(view, url);
+                webViewClientListener.onPageFinished(view, url);
             }
             super.onPageFinished(view, url);
         }
