@@ -60,7 +60,6 @@ function newInstance(id)
 
     local item_view = {
         RelativeLayout,
-        layout_widht = "fill",
         layout_height = "wrap",
         paddingLeft = "16dp",
         paddingRight = "12dp",
@@ -76,7 +75,6 @@ function newInstance(id)
         {
             TextView,
             id = "tv_title",
-            layout_widht = "fill",
             paddingRight= "16dp",
             maxLines = "2",
             layout_alignParentLeft = true,

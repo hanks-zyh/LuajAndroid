@@ -2,7 +2,7 @@
 -- Created by IntelliJ IDEA.  Copyright (C) 2017 Hanks
 -- User: hanks
 -- Date: 2017/5/26
--- A news app
+-- 图解电影
 --
 require "import"
 import "android.widget.*"
@@ -22,7 +22,7 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     orientation = "vertical",
-    fitsSystemWindows = true,
+    statusBarColor = "#ff000000",
     {
         LinearLayout,
         orientation = "horizontal",
@@ -78,7 +78,7 @@ local layout = {
 
 local item_view = {
     LinearLayout,
-    layout_widht = "fill",
+    layout_width = "fill",
     orientation = "vertical",
     paddingLeft = "16dp",
     paddingRight = "16dp",
@@ -91,7 +91,7 @@ local item_view = {
     {
         TextView,
         id = "tv_content",
-        layout_widht = "fill",
+        layout_width = "fill",
         lineSpacingMultiplier = '1.3',
         textSize = "16sp",
         textColor = "#444444",
@@ -156,7 +156,6 @@ local function getData()
 end
 
 function onCreate(savedInstanceState)
-    activity.setStatusBarColor(0xff000000)
     activity.setContentView(loadlayout(layout))
     back.onClick = function()
         activity.finish()

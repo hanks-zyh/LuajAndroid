@@ -10,7 +10,7 @@ import ("androlua.LuaAdapter")
 
 local item_view = {
     LinearLayout,
-    layout_widht = "50dp",
+    layout_width = "50dp",
     layout_height = "wrap",
     orientation = "vertical",
     gravity = "center",
@@ -27,7 +27,8 @@ local item_view = {
         TextView,
         id = "text",
         textSize = "10sp",
-        layout_widht = "fill",
+        gravity = "center",
+        layout_width = "fill",
         layout_marginTop = "2dp",
     }
 }
@@ -61,8 +62,8 @@ function onCreate(savedInstanceState)
         launchPage = 'qiqu/main.lua'
     }
     data[#data + 1 ] ={
-        text = 'animation',
-        launchPage = 'animation/activity_animation.lua'
+        text = '漫本联盟',
+        launchPage = 'dm5/main.lua'
     }
     data[#data + 1 ] ={
         text = '豆瓣电影',

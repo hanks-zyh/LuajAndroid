@@ -22,7 +22,7 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     orientation = "vertical",
-    fitsSystemWindows = true,
+    statusBarColor = "#16A0EA",
     {
         TabLayout,
         id = "tab",
@@ -84,5 +84,3 @@ function onCreate(savedInstanceState)
     tab.setupWithViewPager(viewPager)
     getData()
 end
-
-

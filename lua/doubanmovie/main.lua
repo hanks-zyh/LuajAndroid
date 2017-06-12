@@ -26,7 +26,7 @@ local layout = {
     orientation = "vertical",
     layout_width = "fill",
     layout_height = "fill",
-    fitsSystemWindows = true,
+    statusBarColor = "#FFFFFF",
     {
         TextView,
         layout_width = "fill",
@@ -48,7 +48,7 @@ local layout = {
 
 local item_view = {
     LinearLayout,
-    layout_widht = "match",
+    layout_width = "match",
     layout_height = "wrap",
     orientation = "vertical",
     gravity = "center",
@@ -65,7 +65,7 @@ local item_view = {
         layout_marginTop = "4dp",
         layout_marginBottom = "12dp",
         padding = "4dp",
-        layout_widht = "fill",
+        layout_width = "fill",
         gravity = "center",
         textSize = "12sp",
         maxLines = 1,

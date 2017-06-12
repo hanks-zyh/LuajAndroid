@@ -23,7 +23,7 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     background  = "#f1f1f1",
-    fitsSystemWindows = true,
+    statusBarColor = "#F0000000",
     {
         TextView,
         layout_width = "fill",
@@ -37,10 +37,9 @@ local layout = {
     {
         ListView,
         id = "listview",
-        layout_marginLeft = "16dp",
-        layout_marginRight = "16dp",
-        paddingTop = "12dp",
-        clipToPadding = false,
+        paddingLeft = "16dp",
+        paddingRight = "16dp",
+        scrollBarStyle = "outsideOverlay",
         dividerHeight = 0,
         layout_width = "fill",
         layout_height = "fill",
@@ -49,9 +48,15 @@ local layout = {
 
 local item_view = {
     LinearLayout,
-    layout_widht = "fill",
+    layout_width = "fill",
     orientation = "vertical",
     background = "#FFFFFF",
+    {
+        View,
+        layout_width = "fill",
+        layout_height = "12dp",
+        background = "#f1f1f1",
+    },
     {
         ImageView,
         id = "iv_image",
@@ -62,7 +67,7 @@ local item_view = {
     {
         TextView,
         id = "tv_title",
-        layout_widht = "fill",
+        layout_width = "fill",
         paddingTop = "16dp",
         paddingBottom = "16dp",
         paddingLeft = "12dp",
@@ -75,7 +80,7 @@ local item_view = {
     {
         TextView,
         id = "tv_subtitle",
-        layout_widht = "fill",
+        layout_width = "fill",
         paddingLeft = "12dp",
         paddingRight = "12dp",
         paddingBottom = "16dp",
@@ -115,12 +120,7 @@ local item_view = {
     --     textColor = "#888888",
     --   },
     -- },
-    {
-        View,
-        layout_width = "fill",
-        layout_height = "12dp",
-        background = "#f1f1f1",
-    },
+
 }
 
 
@@ -185,7 +185,7 @@ function launchDetail(item)
 end
 
 function onCreate(savedInstanceState)
-    activity.setStatusBarColor(0xF0000000)
+    activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
     adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data.dailyList end,

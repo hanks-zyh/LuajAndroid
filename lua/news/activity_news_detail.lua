@@ -17,7 +17,7 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     orientation = "vertical",
-    fitsSystemWindows = true,
+    statusBarColor = "#D22222",
     {
         LinearLayout,
         orientation = "horizontal",

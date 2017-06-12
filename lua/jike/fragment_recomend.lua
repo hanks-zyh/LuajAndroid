@@ -101,7 +101,7 @@ function newInstance()
     -- create view table
     local layout = {
         LinearLayout,
-        layout_widht = "match",
+        layout_width = "match",
         layout_height = "match",
         orientation = "vertical",
         {
@@ -121,7 +121,7 @@ function newInstance()
     local item_view = require('jike.item_msg')
     local item_loading = {
         LinearLayout,
-        layout_widht = "match",
+        layout_width = "match",
         layout_height = "72dp",
         gravity = "center",
         {

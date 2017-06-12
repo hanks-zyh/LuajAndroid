@@ -8,3 +8,6 @@
 /captures
 .externalNativeBuild
 .idea/
+/.tags
+/.tags1
+/script/node/watch/node_modules/

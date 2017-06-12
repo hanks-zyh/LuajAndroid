@@ -60,7 +60,7 @@ function newInstance(baseUrl)
 
     local item_view = {
         RelativeLayout,
-        layout_widht = "fill",
+        layout_width = "fill",
         layout_height = "wrap",
         paddingLeft = "16dp",
         paddingRight = "12dp",
@@ -77,7 +77,7 @@ function newInstance(baseUrl)
         {
             TextView,
             id = "tv_title",
-            layout_widht = "fill",
+            layout_width = "fill",
             paddingRight= "16dp",
             maxLines = "2",
             layout_alignParentLeft = true,
@@ -89,7 +89,7 @@ function newInstance(baseUrl)
         {
             TextView,
             id = "tv_time",
-            layout_widht = "120dp",
+            layout_width = "120dp",
             paddingRight= "16dp",
             layout_alignParentLeft = true,
             layout_alignParentBottom = true,

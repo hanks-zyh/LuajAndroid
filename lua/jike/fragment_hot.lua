@@ -55,7 +55,7 @@ function newInstance()
     -- create view table
     local layout = {
         LinearLayout,
-        layout_widht = "match",
+        layout_width = "match",
         layout_height = "match",
         orientation = "vertical",
         {

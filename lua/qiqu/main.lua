@@ -2,7 +2,7 @@
 -- Created by IntelliJ IDEA.  Copyright (C) 2017 Hanks
 -- User: hanks
 -- Date: 2017/5/26
--- A news app
+-- qiqu
 --
 require "import"
 import "android.widget.*"
@@ -17,7 +17,7 @@ local layout = {
     orientation = "vertical",
     layout_width = "fill",
     layout_height = "fill",
-    fitsSystemWindows = true,
+    statusBarColor = "#F79100",
     {
         TextView,
         layout_width = "fill",
@@ -49,7 +49,6 @@ local layout = {
 }
 
 function onCreate(savedInstanceState)
-    activity.setStatusBarColor(0xFFF79100)
     activity.setContentView(loadlayout(layout))
     webview.setVisibility(8)
     progressBar.setVisibility(0)

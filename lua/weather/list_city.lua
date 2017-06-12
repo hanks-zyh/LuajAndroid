@@ -14,7 +14,7 @@ local layout = {
     layout_width = "match",
     layout_height = "match",
     orientation = 'vertical',
-    fitsSystemWindows = true,
+    statusBarColor = "#8CCACE",
      {
         LinearLayout,
         layout_height = "56dp",
@@ -53,7 +53,7 @@ local item_view = {
     TextView,
     id = "tv_name",
     gravity = "center_vertical",
-    layout_widht = "fill",
+    layout_width = "fill",
     layout_height = "56dp",
     paddingLeft = "16dp",
     textColor = "#666666",

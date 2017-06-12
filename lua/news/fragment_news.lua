@@ -85,7 +85,7 @@ function newInstance(path)
 
     local item_view = {
         FrameLayout,
-        layout_widht = "fill",
+        layout_width = "fill",
         layout_height = "wrap",
         paddingLeft = "16dp",
         paddingRight = "12dp",
@@ -102,7 +102,7 @@ function newInstance(path)
             TextView,
             id = "tv_title",
             layout_marginLeft = "84dp",
-            layout_widht = "fill",
+            layout_width = "fill",
             maxLines = "2",
             lineSpacingMultiplier = '1.2',
             layout_gravity = "top",
@@ -114,7 +114,7 @@ function newInstance(path)
             id = "tv_date",
             layout_gravity = "bottom",
             layout_marginLeft = "84dp",
-            layout_widht = "fill",
+            layout_width = "fill",
             textSize = "12sp",
             textColor = "#aaaaaa",
         }

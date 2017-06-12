@@ -17,6 +17,7 @@ local context = activity or service
 local String = bindClass("java.lang.String")
 local Context = bindClass("android.content.Context")
 local ViewGroup = bindClass("android.view.ViewGroup")
+local View = bindClass("android.view.View")
 local Gravity = bindClass("android.view.Gravity")
 local OnClickListener = bindClass("android.view.View$OnClickListener")
 local TypedValue = bindClass("android.util.TypedValue")
@@ -30,6 +31,9 @@ local DisplayMetrics = bindClass("android.util.DisplayMetrics")
 local android_R = bindClass("android.R")
 local LuaDrawable = bindClass("androlua.LuaDrawable")
 local ImageLoader = bindClass("androlua.LuaImageLoader")
+local Build = bindClass("android.os.Build")
+
+local ver = Build.VERSION.SDK_INT
 
 android = { R = android_R }
 local scaleTypes = ScaleType.values()
@@ -391,8 +395,33 @@ local function dump2(t)
     return t
 end
 
-local ver = luajava.bindClass("android.os.Build").VERSION.SDK_INT;
-function setBackground(view, bg)
+local function getStatusBarHeight()
+    local identifier = context.getResources().getIdentifier("status_bar_height", "dimen", "android")
+    if identifier > 0 then
+        return context.getResources().getDimensionPixelSize(identifier)
+    end
+    return 0
+end
+
+local function setStatusBarColorTrans()
+    if activity then
+        activity.setStatusBarColor(0x00000000)
+    end
+end
+
+local function addStatusBar(parent, color)
+    if ver >= 21 then
+        local statusbBar = View(context)
+        statusbBar.setBackgroundColor(color)
+        local height = getStatusBarHeight()
+        local params = ViewGroup.LayoutParams( -2, height) --设置layout属性
+        statusbBar.setLayoutParams(params)
+        parent.addView(statusbBar,0)
+        pcall(setStatusBarColorTrans)
+    end
+end
+
+local function setBackground(view, bg)
     if ver < 16 then
         view.setBackgroundDrawable(bg)
     else
@@ -400,13 +429,13 @@ function setBackground(view, bg)
     end
 end
 
-function setElevation(view, v)
+local function setElevation(view, v)
     if ver >= 21 then
         view.setElevation(checkValue(v))
     end
 end
 
-function setLineSpacing(textView, v)
+local function setLineSpacing(textView, v)
     if ver >= 16 then
         textView.setLineSpacing(textView.getLineSpacingExtra(),v);
     end
@@ -419,6 +448,10 @@ local function setattribute(root, view, params, k, v, ids)
         params.y = checkValue(v)
     elseif k == "layout_weight" then
         params.weight = checkValue(v)
+    elseif k == "statusBarColor" then
+        if v:find("^#") then
+            addStatusBar(view,checkNumber(v))
+        end
     elseif k == "layout_gravity" then
         params.gravity = checkValue(v)
     elseif k == "layout_marginStart" then

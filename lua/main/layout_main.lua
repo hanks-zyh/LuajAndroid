@@ -4,7 +4,7 @@ return {
     layout_height = "fill",
     gravity = "center",
     background = "#FFFFFF",
-    fitsSystemWindows = true,
+    background = "#FFFFFF",
     orientation = 1,
     paddingLeft = "16dp",
     paddingRight = "16dp",

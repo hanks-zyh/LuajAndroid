@@ -7,6 +7,7 @@
 require "import"
 import "android.widget.*"
 import "android.content.*"
+import "android.view.View"
 
 import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
@@ -19,20 +20,28 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     orientation = "vertical",
-    fitsSystemWindows = true,
+    statusBarColor = "#fb7299",
     {
         TabLayout,
         id = "tab",
         layout_width = "fill",
         layout_height = "48dp",
         background = "#fffb7299",
-        elevation = "2dp",
     },
     {
-        ViewPager,
-        id = "viewPager",
+      FrameLayout,
+      {
+          ViewPager,
+          id = "viewPager",
+          layout_width = "fill",
+          layout_height = "fill",
+      },
+      {
+        View,
         layout_width = "fill",
-        layout_height = "fill",
+        layout_height = "3dp",
+        background = "@drawable/shadow_line_top",
+      }
     },
 }
 
@@ -68,7 +77,6 @@ local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
     }))
 
 function onCreate(savedInstanceState)
-    activity.setStatusBarColor(0xfffb7299)
     activity.setContentView(loadlayout(layout))
     viewPager.setAdapter(adapter)
     tab.setSelectedTabIndicatorColor(0xffffffff)

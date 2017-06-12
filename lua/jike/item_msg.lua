@@ -1,6 +1,6 @@
 return {
     LinearLayout,
-    layout_widht = "fill",
+    layout_width = "fill",
     paddingTop = "16dp",
     orientation = "vertical",
     background="@drawable/layout_se",
@@ -22,7 +22,7 @@ return {
             TextView,
             id = "tv_title",
             layout_marginLeft = "44dp",
-            layout_widht = "fill",
+            layout_width = "fill",
             paddingRight = "16dp",
             maxLines = "1",
             ellipsize="end",
@@ -34,7 +34,7 @@ return {
             id = "tv_date",
             layout_gravity="bottom",
             layout_marginLeft = "44dp",
-            layout_widht = "fill",
+            layout_width = "fill",
             maxLines = "1",
             textSize = "11sp",
             textColor = "#999999",
@@ -44,7 +44,7 @@ return {
     {
         TextView,
         id = "tv_content",
-        layout_widht = "fill",
+        layout_width = "fill",
         layout_marginLeft = "16dp",
         layout_marginRight = "16dp",
         layout_marginTop = "12dp",
@@ -78,7 +78,7 @@ return {
         {
             ImageView,
             id = "iv_video",
-            layout_widht = "fill",
+            layout_width = "fill",
             scaleType="centerCrop"
         },
         {
@@ -90,7 +90,7 @@ return {
         {
             ImageView,
             layout_gravity="center",
-            layout_widht = "40dp",
+            layout_width = "40dp",
             layout_height = "40dp",
             src="#jike/img/ic_video_play.png",
         },

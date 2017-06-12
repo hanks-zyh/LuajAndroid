@@ -22,7 +22,7 @@ local layout = {
 
 local item_view = {
     LinearLayout,
-    layout_widht = "fill",
+    layout_width = "fill",
     layout_height = "wrap",
     orientation = "horizontal",
     gravity = "center_vertical",
@@ -36,7 +36,7 @@ local item_view = {
     {
         TextView,
         id = "text",
-        layout_widht = "fill",
+        layout_width = "fill",
         layout_margin = "8dp",
     }
 }

@@ -22,7 +22,7 @@ local layout = {
     orientation = "vertical",
     layout_width = "fill",
     layout_height = "fill",
-    fitsSystemWindows = true,
+    statusBarColor = "#F0000000",
     {
         TextView,
         layout_width = "fill",
@@ -44,7 +44,7 @@ local layout = {
 
 local item_view = {
     FrameLayout,
-    layout_widht = "fill",
+    layout_width = "fill",
     layout_height = "240dp",
     {
         ImageView,
@@ -63,7 +63,7 @@ local item_view = {
         TextView,
         id = "tv_title",
         layout_margin = "16dp",
-        layout_widht = "fill",
+        layout_width = "fill",
         layout_gravity = "center",
         maxLines = "5",
         lineSpacingMultiplier = '1.2',

@@ -195,4 +195,13 @@ public class LuaUtil {
         return getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
+
+    protected int getStatusBarHeight(){
+      int identifier = getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+      if (identifier > 0) {
+          return getContext().getResources().getDimensionPixelSize(identifier);
+      }
+      return 0;
+    }
+
 }
