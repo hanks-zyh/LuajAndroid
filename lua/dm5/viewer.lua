@@ -59,16 +59,19 @@ local adapter
 local htmlTemplate = [[
 <script type="text/javascript">
 %s
-HostApp.
+window.luaapp.setImg(newImgs[0])
 </script>
 ]]
 
-function getData()
+function getData(url)
 
   LuaHttp.request({ url = url }, function(error, code, body)
     local script = string.match(body,'<script type="text/javascript">(.-)</script>')
-    webview.loadUrl('javascript:'..script)
-
+    local data = string.format(htmlTemplate, script)
+    uihelper.runOnUiThread(activity, function (  )
+        print(data)
+        webview.loadData(data, "text/html; charset=UTF-8", nil)
+    end)
   end)
 
 
@@ -82,6 +85,12 @@ end
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
+    webview.addJavascriptInterface(luajava.createProxy('',{
+        setImg = function( url )
+            print(url)
+        end
+    }), "luaapp")
+
     adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data.dailyList end,
         getView = function(position, convertView, parent)
@@ -113,5 +122,7 @@ function onCreate(savedInstanceState)
             launchDetail()
         end,
     }))
-    getData()
+
+    local url = activity.getIntent().getStringExtra('url')
+    getData(url)
 end
