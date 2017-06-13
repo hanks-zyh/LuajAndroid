@@ -56,11 +56,20 @@ local item_view = {
 local data = {}
 local adapter
 
+local htmlTemplate = [[
+<script type="text/javascript">
+%s
+HostApp.
+</script>
+]]
+
 function getData()
 
-  webview.loadUrl('')
+  LuaHttp.request({ url = url }, function(error, code, body)
+    local script = string.match(body,'<script type="text/javascript">(.-)</script>')
+    webview.loadUrl('javascript:'..script)
 
-  
+  end)
 
 
 end

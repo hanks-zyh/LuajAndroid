@@ -120,7 +120,6 @@ local item_view = {
     --     textColor = "#888888",
     --   },
     -- },
-
 }
 
 
