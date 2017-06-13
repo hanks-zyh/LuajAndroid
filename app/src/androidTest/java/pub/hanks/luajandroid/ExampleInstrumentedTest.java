@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.test.InstrumentationRegistry;
@@ -83,6 +86,7 @@ public class ExampleInstrumentedTest {
         tabLayout.setVisibility(View.VISIBLE);
         WebView webView = new WebView(appContext);
         webView.setWebChromeClient(new WebChromeClient());
+        webView.addJavascriptInterface(this,"");
 
         final BottomNavigationView bottomView = new BottomNavigationView(appContext);
         ColorStateList textColor = ColorStateList.valueOf(0xFFFF0000);
@@ -98,6 +102,11 @@ public class ExampleInstrumentedTest {
                 return true;
             }
         });
+
+
+        CollapsingToolbarLayout collapsingToolbarLayout = new CollapsingToolbarLayout(appContext);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
+        params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
 
         // 动态代理
 

@@ -448,20 +448,23 @@ local function setattribute(root, view, params, k, v, ids)
         params.y = checkValue(v)
     elseif k == "layout_weight" then
         params.weight = checkValue(v)
-    elseif k == "statusBarColor" then
-        if v:find("^#") then
-            addStatusBar(view,checkNumber(v))
-        end
     elseif k == "layout_gravity" then
         params.gravity = checkValue(v)
     elseif k == "layout_marginStart" then
         params.setMarginStart(checkValue(v))
     elseif k == "layout_marginEnd" then
         params.setMarginEnd(checkValue(v))
+    elseif k == "statusBarColor" then
+        if v:find("^#") then
+            addStatusBar(view,checkNumber(v))
+        end
     elseif rules[k] and (v == true or v == "true") then
         params.addRule(rules[k])
     elseif rules[k] then
         params.addRule(rules[k], ids[v])
+    elseif type(k) == "string" and k:find("^applayout_") then
+        k = string.gsub(k, "^applayout_(%w)", function(s) return string.upper(s) end)
+        params["set" .. k](v)
     elseif k == "items" and type(v) == "table" then --创建列表项目
         --        local adapter = ArrayListAdapter(context, android_R.layout.simple_list_item_1, String(v))
         --        view.setAdapter(adapter)
