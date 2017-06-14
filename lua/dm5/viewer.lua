@@ -43,7 +43,7 @@ local layout = {
 local item_view = {
     FrameLayout,
     layout_width = "fill",
-    layout_height = "640dp",
+    layout_height = "560dp",
     {
         ImageView,
         id = "iv_image",

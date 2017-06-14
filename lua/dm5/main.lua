@@ -95,7 +95,7 @@ local item_title = {
   },
   {
       TextView,
-      text = '更多 >',
+      text = '更多﹥',
       layout_alignParentRight = true,
       layout_centerVertical = true,
   },
@@ -122,24 +122,28 @@ local ceil_category = {
     },
 }
 
-local ceil_topList = {
+local item_topList = {
     FrameLayout,
+    id = "layout_top",
     layout_height = "96dp",
     padding = "8dp",
     {
         ImageView,
+        id = "iv_cover",
         layout_width = "120dp",
         layout_height = "80dp",
         scaleType = "centerCrop",
     },
     {
         TextView,
+        id = "tv_title",
         layout_marginLeft = "128dp",
         textColor = "#444444",
         textSize = "14sp",
     },
     {
         TextView,
+        id = "tv_subtitle",
         layout_marginLeft = "128dp",
         maxLines = 1,
         textSize = "12sp",
@@ -148,6 +152,7 @@ local ceil_topList = {
     },
     {
         TextView,
+        id = "tv_info",
         layout_marginLeft = "128dp",
         textSize = "12sp",
         textColor = "#ec4646",
@@ -155,6 +160,7 @@ local ceil_topList = {
     },
     {
         TextView,
+        id = "tv_score",
         layout_gravity = "right",
         textSize = "10sp",
     },
@@ -162,7 +168,7 @@ local ceil_topList = {
 
 local item_category = {
     LinearLayout,
-    id = "row_1",
+    id = "row",
     orientation = "horizontal",
     paddingLeft = "4dp",
     paddingRight = "4dp",
@@ -201,17 +207,22 @@ local function getData()
             -- 原创精品 最新更新 热门连载 少年热血 少女爱情 最新上架
             local count = 1
             local titleIndex = 1
+            arr = {}
             for li in string.gmatch(body, '<li class="am[-]thumbnail">(.-)</li>') do
                 local url, title = string.match(li, '<a href="(.-)".-title="(.-)">')
                 local img = string.match(li, '<img src="(.-)"')
                 if url and title and img then
                     local item = { url = url, title = title, img = img }
+
                     if math.fmod(count-1,6) == 0 then
                       data[#data +1 ] = {type= data_type.title , data=category[titleIndex] }
                       titleIndex = titleIndex + 1
-                    else
-                        data[#data +1 ] ={type= data_type.category, data=item}
                     end
+                    if #arr == 3 then
+                        data[#data +1 ] ={type= data_type.category, data=arr}
+                        arr = {}
+                    end
+                    arr[#arr +1] = item
                     count = count + 1
                 end
             end
@@ -282,45 +293,29 @@ function onCreate(savedInstanceState)
             local item = data[position]
             local views = holder.itemView.getTag()
             if item == nil or views == nil then return end
+            -- fill data
+            if item.type == data_type.banner then
               LuaImageLoader.load(views.iv_banner, item.data[1].img)
-            if item == data_type.banner then
-              
-            elseif item == data_type.title then
-            elseif item == data_type.category then
-            else
-            end
-
-            if position == 1 then
-                -- banner
-                LuaImageLoader.load(views.iv_banner, item[1] or '')
-            elseif position >= 2 and position <= 7 then
-                views.tv_category.setText(category[position])
-                for i = 1, #item do
-                    local child
-                    if i <= 3 then
-                        child = views.row_1.getChildAt(i - 1)
-                    else
-                        child = views.row_2.getChildAt(i - 4)
-                    end
-
-                    LuaImageLoader.load(child.getChildAt(0), item[i].img)
-                    child.getChildAt(1).setText(item[i].title)
+              views.iv_banner.onClick = function() launchDetail(item.data[1].url) end
+            elseif item.type == data_type.title then
+               views.tv_category.setText(item.data)
+            elseif item.type == data_type.category then
+                for i = 1, #item.data do
+                    local child = views.row.getChildAt(i - 1)
+                    LuaImageLoader.load(child.getChildAt(0), item.data[i].img)
+                    child.getChildAt(1).setText(item.data[i].title)
                     child.onClick = function()
-                      launchDetail(item[i].url)
+                      launchDetail(item.data[i].url)
                     end
                 end
-            else
-                -- toplist
-                for i = 1, #item do
-                    local child = views.layout_toplist.getChildAt(i)
-                    LuaImageLoader.load(child.getChildAt(0), item[i].img)
-                    child.getChildAt(1).setText(item[i].title)
-                    child.getChildAt(2).setText(item[i].subtitle)
-                    child.getChildAt(3).setText(item[i].updateInfo)
-                    child.getChildAt(4).setText(item[i].score)
-                    child.onClick = function()
-                      launchDetail(item[i].url)
-                    end
+            elseif item.type == data_type.top then
+                LuaImageLoader.load(views.iv_cover, item.data.img)
+               views.tv_title.setText(item.data.title)
+               views.tv_subtitle.setText(item.data.subtitle)
+               views.tv_info.setText(item.data.updateInfo)
+               views.tv_score.setText(item.data.score)
+                views.layout_top.onClick = function()
+                    launchDetail(item.data.url)
                 end
             end
         end,
