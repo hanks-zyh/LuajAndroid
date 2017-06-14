@@ -414,7 +414,7 @@ local function addStatusBar(parent, color)
         local statusbBar = View(context)
         statusbBar.setBackgroundColor(color)
         local height = getStatusBarHeight()
-        local params = ViewGroup.LayoutParams( -2, height) --设置layout属性
+        local params = ViewGroup.LayoutParams( -1, height) --设置layout属性
         statusbBar.setLayoutParams(params)
         parent.addView(statusbBar,0)
         pcall(setStatusBarColorTrans)

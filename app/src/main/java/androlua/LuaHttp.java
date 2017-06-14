@@ -55,6 +55,10 @@ public class LuaHttp {
         return instance;
     }
 
+    public static void cancelAll(){
+        getInstance().httpClient.dispatcher().cancelAll();
+    }
+
     public static void request(final LuaTable options, final LuaObject callback) {
         getInstance().httpClient.newCall(buildRequest(options))
                 .enqueue(new Callback() {

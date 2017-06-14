@@ -14,6 +14,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.luajava.LuaException;
+import com.luajava.LuaObject;
+
 /**
  * Created by hanks on 2017/5/27.
  */
@@ -50,6 +53,29 @@ public class LuaWebView extends WebView {
         setWebViewClient(new LuaWebViewClient());
         if (Build.VERSION.SDK_INT >= 19) {
             setWebContentsDebuggingEnabled(true);
+        }
+
+    }
+
+
+    public void injectObjectToJavascript(LuaObject luaObject, String objectName){
+        addJavascriptInterface(new JavascriptInterface(luaObject),objectName);
+    }
+
+    public static class JavascriptInterface{
+        private final LuaObject luaObject;
+
+        public JavascriptInterface(LuaObject luaObject) {
+            this.luaObject = luaObject;
+        }
+
+        @android.webkit.JavascriptInterface
+        public void call(String json){
+            try {
+                luaObject.call(json);
+            } catch (LuaException e) {
+                e.printStackTrace();
+            }
         }
     }
 

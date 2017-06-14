@@ -27,91 +27,113 @@ local layout = {
     {
         ListView,
         id = "listview",
-        dividerHeight = 0,
+        dividerHeight = "4dp",
         layout_width = "fill",
         layout_height = "fill",
     },
     {
-      LuaWebView,
-      id = "webview",
-      layout_height = 1,
-      layout_width = 1,
+        LuaWebView,
+        id = "webview",
+        layout_height = 1,
+        layout_width = 1,
+        background='#e1e1e1',
     }
 }
 
 local item_view = {
     FrameLayout,
     layout_width = "fill",
-    layout_height = "240dp",
+    layout_height = "640dp",
     {
         ImageView,
         id = "iv_image",
         layout_width = "fill",
         layout_height = "fill",
-        scaleType = "centerCrop",
     },
 }
-
 
 local data = {}
 local adapter
 
 local htmlTemplate = [[
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
 <script type="text/javascript">
 %s
-window.luaapp.setImg(newImgs[0])
 </script>
+<script type="text/javascript">
+var s = {};
+s.method = 'setImg';
+s.data = newImgs;
+window.luaApp.call(JSON.stringify(s));
+</script>
+</body>
+</html>
 ]]
-
-function getData(url)
-
-  LuaHttp.request({ url = url }, function(error, code, body)
-    local script = string.match(body,'<script type="text/javascript">(.-)</script>')
-    local data = string.format(htmlTemplate, script)
-    uihelper.runOnUiThread(activity, function (  )
-        print(data)
-        webview.loadData(data, "text/html; charset=UTF-8", nil)
+local function toast(s)
+    uihelper.runOnUiThread(activity,function()
+        activity.toast(s)
     end)
-  end)
+end
 
 
+local function getData(url)
+    LuaHttp.request({ url = url }, function(error, code, body)
+        local script = string.match(body,'<script type="text/javascript">(.-)</script>')
+        local data = string.format(htmlTemplate, script)
+        uihelper.runOnUiThread(activity, function (  )
+            webview.loadData(data, "text/html; charset=UTF-8", nil)
+        end)
+    end)
 end
 
 local log = require('common.log')
 function launchDetail(item)
 end
 
+local function callback(jsonStr)
+  local json = JSON.decode(jsonStr)
+  if json.method ~= 'setImg' then
+    return
+  end
+
+  uihelper = runOnUiThread(activity, function()
+    for i=1,#json.data do
+      data [#data + 1] = json.data[i]
+    end
+    adapter.notifyDataSetChanged()
+  end)
+end
 
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
-    webview.addJavascriptInterface(luajava.createProxy('',{
-        setImg = function( url )
-            print(url)
-        end
-    }), "luaapp")
+
+    local id = activity.getIntent().getStringExtra('id')
+    local url = 'http://m.dm5.com' .. id
+
+    webview.injectObjectToJavascript(callback, "luaApp")
 
     adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
-        getCount = function() return #data.dailyList end,
+        getCount = function() return #data end,
         getView = function(position, convertView, parent)
             position = position + 1 -- lua 索引从 1开始
-            if position == #data.dailyList then
-                getData()
-            end
             if convertView == nil then
                 local views = {} -- store views
                 convertView = loadlayout(item_view, views, ListView)
-                if parent then
-                    local params = convertView.getLayoutParams()
-                    params.width = parent.getWidth()
-                end
+                convertView.getLayoutParams() .width = parent.getWidth()
                 convertView.setTag(views)
             end
             local views = convertView.getTag()
-            local item = data.dailyList[position]
+            local item = data[position]
+            print(position, item)
             if item then
-                LuaImageLoader.load(views.iv_image, item.coverForFeed)
-                views.tv_title.setText(item.title)
+                LuaImageLoader.load(views.iv_image, item, url)
             end
             return convertView
         end
@@ -119,10 +141,10 @@ function onCreate(savedInstanceState)
     listview.setAdapter(adapter)
     listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
         onItemClick = function(adapter, view, position, id)
-            launchDetail()
+
         end,
     }))
 
-    local url = activity.getIntent().getStringExtra('url')
+
     getData(url)
 end

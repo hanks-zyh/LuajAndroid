@@ -48,14 +48,6 @@ local layout = {
     layout_width = "match",
     layout_height = "match",
     {
-        RecyclerView,
-        id = "recyclerView",
-        layout_width = "fill",
-        layout_height = "fill",
-        background = "#ffffff",
-        applayout_behavior = AppBarLayoutScrollingViewBehavior(),
-    },
-    {
         AppBarLayout,
         id = "appbar",
         layout_width = "match",
@@ -63,8 +55,8 @@ local layout = {
             CollapsingToolbarLayout,
             id = "collapsing_toolbar",
             applayout_scrollFlags = 0x3,
+            background = "#ffffff",
             layout_width = "match",
-            layout_height = "match",
             {
                 ImageView,
                 layout_width = "match",
@@ -85,6 +77,7 @@ local layout = {
                 layout_width = "match",
                 applayout_collapseMode = 1,
                 layout_marginTop = "180dp",
+                background = "#ffffff",
                 orientation = "vertical",
                 {
                   FrameLayout,
@@ -116,7 +109,7 @@ local layout = {
                       TextView,
                       id = "tv_type",
                       textSize = "12sp",
-                      layout_marginTop = "56dp",
+                      layout_marginTop = "60dp",
                       textColor = "#EEFFFFFF",
                   },
                 },
@@ -131,6 +124,14 @@ local layout = {
                 },
             }
         },
+    },
+    {
+        RecyclerView,
+        id = "recyclerView",
+        layout_width = "fill",
+        layout_height = "fill",
+        background = "#ffffff",
+        applayout_behavior = AppBarLayoutScrollingViewBehavior(),
     },
 
 }
@@ -155,22 +156,20 @@ local item_capter = {
 
 local baseInfo = {}
 local data = {}
-
-
 local adapter
+
+local function trim(s)
+    return s:gsub("^%s+", ""):gsub("%s+$", "")
+end
 
 local function updateHeader()
     -- header
     LuaImageLoader.load(iv_cover, baseInfo.coverImg or '')
     tv_title.setText(baseInfo.title or '')
-    tv_type.setText(string.format('%s        %s',baseInfo.author,baseInfo.type))
+    tv_type.setText(string.format('%s        %s',trim(baseInfo.author),trim(baseInfo.type)))
     tv_score.setText('评分:' .. baseInfo.score)
     tv_desc.setText(baseInfo.desc or '')
     tv_updateinfo.setText(baseInfo.updateInfo or '')
-end
-
-local function trim(s)
-    return s:gsub("^%s+", ""):gsub("%s+$", "")
 end
 
 local function getData(url)
@@ -197,10 +196,10 @@ local function getData(url)
             local desc = string.match(body, '<div class="detailContent">(.-)</div>'):gsub('<.->', '')
             baseInfo.coverImg = coverImg
             baseInfo.title = trim(title)
-            baseInfo.type = type:gsub('%s+', '')
-            baseInfo.author = author:gsub('%s+', '')
-            baseInfo.score = score:gsub('%s+', '')
-            baseInfo.updateInfo = updateInfo:gsub('%s+', '')
+            baseInfo.type = type:gsub('%s+', ' ')
+            baseInfo.author = author:gsub('%s+', ' ')
+            baseInfo.score = score:gsub('%s+', ' ')
+            baseInfo.updateInfo = updateInfo:gsub('%s+', ' ')
             baseInfo.desc = trim(desc)
             updateHeader()
             local capters = string.match(body, '<div .-id="chapterList_1".->(.-)</div>')
@@ -215,9 +214,11 @@ local function getData(url)
 end
 
 function launchDetail(item)
-  WebViewActivity.start(activity, 'http://m.dm5.com' .. item.url, 0xF12979FB)
+    local intent = Intent(activity,LuaActivity)
+    intent.putExtra("luaPath","dm5/viewer.lua")
+    intent.putExtra("id",item.url)
+    activity.startActivity(intent)
 end
-
 
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)

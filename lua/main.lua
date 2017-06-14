@@ -4,9 +4,8 @@ import "android.content.*"
 import "android.support.v4.view.ViewPager"
 import "android.support.v7.widget.Toolbar"
 import "androlua.LuaActivity"
+import "androlua.LuaAdapter"
 local layout = require "main.layout_main"
-import ("androlua.LuaAdapter")
-
 
 local item_view = {
     LinearLayout,
@@ -34,17 +33,14 @@ local item_view = {
 }
 local data = {}
 
-
 function newActivity(luaPath)
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", luaPath)
     activity.startActivity(intent)
 end
 
-
 function onCreate(savedInstanceState)
     activity.setLightStatusBar()
-
     activity.setContentView(loadlayout(layout))
 
     data[#data + 1 ] ={
@@ -62,7 +58,7 @@ function onCreate(savedInstanceState)
         launchPage = 'qiqu/main.lua'
     }
     data[#data + 1 ] ={
-        text = '漫本联盟',
+        text = '动漫屋',
         launchPage = 'dm5/main.lua'
     }
     data[#data + 1 ] ={

@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 
 import pub.hanks.luajandroid.R;
 
@@ -20,6 +22,7 @@ public class LuaImageLoader {
     public static void load(ImageView imageView, String uri) {
         load(imageView.getContext(), imageView, uri);
     }
+
 
     public static void load(Context context, ImageView imageView, String uri) {
         load(context, imageView, uri,
@@ -53,6 +56,24 @@ public class LuaImageLoader {
                 .load(uri)
                 .placeholder(placeholderDrawable)
                 .error(errorDrawable)
+                .crossFade()
+                .into(imageView);
+    }
+
+
+
+    public static void load(ImageView imageView, String uri, String referer) {
+        if (imageView == null || uri == null) {
+            return;
+        }
+        LazyHeaders headers = new LazyHeaders.Builder()
+                .addHeader("Referer", referer)
+                .build();
+        GlideUrl glideUrl = new GlideUrl(uri, headers);
+        Glide.with(imageView.getContext())
+                .load(glideUrl)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_loading)
                 .crossFade()
                 .into(imageView);
     }

@@ -61,7 +61,7 @@ local item_view = {
         ImageView,
         id = "iv_image",
         layout_width = "fill",
-        layout_height = "120dp",
+        layout_height = "200dp",
         scaleType = "centerCrop",
     },
     {
@@ -181,6 +181,10 @@ function launchDetail(item)
     intent.putExtra("luaPath", 'graphmovies/detail.lua')
     intent.putExtra("json", JSON.encode(json) )
     activity.startActivity(intent)
+end
+
+function onDestroy()
+  LuaHttp.cancelAll()
 end
 
 function onCreate(savedInstanceState)

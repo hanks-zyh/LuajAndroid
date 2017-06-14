@@ -313,6 +313,10 @@ function onCreate(savedInstanceState)
 end
 
 
+function onDestroy()
+  LuaHttp.cancelAll()
+end
+
 function findCityCode( province,city )
     local id = '101010100'
     local China  = require("weather.city")
@@ -371,6 +375,3 @@ function onResume()
         fetchData(id)
     end
 end
-
-
-
