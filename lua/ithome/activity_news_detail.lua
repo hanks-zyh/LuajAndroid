@@ -7,7 +7,8 @@
 require "import"
 import "android.widget.*"
 import "android.content.*"
-import("androlua.LuaWebView")
+import "android.view.View"
+import "androlua.LuaWebView"
 import "androlua.LuaHttp"
 local uihelper = require "common.uihelper"
 
@@ -25,7 +26,6 @@ local layout = {
         layout_height = "56dp",
         background = "#D22222",
         gravity = "center_vertical",
-        elevation = "2dp",
         {
             ImageView,
             id = "back",
@@ -67,6 +67,12 @@ local layout = {
             layout_width = "40dp",
             layout_height = "40dp",
         },
+         {
+            View,
+            layout_width = "fill",
+            layout_height = "3dp",
+            background = "@drawable/shadow_line_top",
+        }
     }
 }
 

@@ -36,14 +36,25 @@ local layout = {
         text = "豆瓣-热映电影",
         textColor = "#42BD52",
         textSize = "18sp",
-        elevation = "2dp",
     },
     {
-        RecyclerView,
-        id = "recyclerView",
+        FrameLayout,
         layout_width = "fill",
         layout_height = "fill",
-    },
+        {
+            RecyclerView,
+            id = "recyclerView",
+            layout_width = "fill",
+            layout_height = "fill",
+        },
+         {
+            View,
+            layout_width = "fill",
+            layout_height = "3dp",
+            background = "@drawable/shadow_line_top",
+        }
+    }
+   
 }
 
 local item_view = {

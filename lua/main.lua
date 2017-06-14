@@ -71,7 +71,7 @@ function onCreate(savedInstanceState)
     }
     data[#data + 1 ] ={
         text = 'IT 之家',
-        launchPage = 'news/activity_news.lua'
+        launchPage = 'ithome/activity_news.lua'
     }
 
     data[#data + 1 ] ={

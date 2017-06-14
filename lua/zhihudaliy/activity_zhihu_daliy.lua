@@ -7,6 +7,7 @@
 require "import"
 import "android.widget.*"
 import "android.content.*"
+import "android.view.View"
 import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
 import "androlua.adapter.LuaFragmentPageAdapter"
@@ -29,14 +30,24 @@ local layout = {
         layout_width = "fill",
         layout_height = "48dp",
         background = "#16A0EA",
-        elevation = "2dp",
     },
-    {
-        ViewPager,
-        id = "viewPager",
+     {
+        FrameLayout,
         layout_width = "fill",
         layout_height = "fill",
-    },
+        {
+            ViewPager,
+            id = "viewPager",
+            layout_width = "fill",
+            layout_height = "fill",
+        },
+        {
+            View,
+            layout_width = "fill",
+            layout_height = "3dp",
+            background = "@drawable/shadow_line_top",
+        }
+    }
 }
 
 local data = {

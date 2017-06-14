@@ -70,8 +70,7 @@ end
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()
     local intent = Intent(activity, LuaActivity)
-    intent.putExtra("luaPath", 'news/activity_news_detail.lua')
-    -- log.print_r(msg)
+    intent.putExtra("luaPath", 'ithome/activity_news_detail.lua')
     intent.putExtra("url", msg.item.linkUrl)
     activity.startActivity(intent)
 end

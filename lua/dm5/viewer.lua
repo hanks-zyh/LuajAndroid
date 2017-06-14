@@ -28,7 +28,7 @@ local layout = {
         ListView,
         id = "listview",
         dividerHeight = "4dp",
-        layout_width = "fill",
+        layouti_width = "fill",
         layout_height = "fill",
     },
     {
