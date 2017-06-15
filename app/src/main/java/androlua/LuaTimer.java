@@ -1,10 +1,7 @@
 package androlua;
 
 
-import com.luajava.LuaException;
-import com.luajava.LuaObject;
-
-public class LuaTimer{
+public class LuaTimer {
 //    private LuaTimerTask task;
 //
 //    public LuaTimer(LuaContext main, String src) throws LuaException {

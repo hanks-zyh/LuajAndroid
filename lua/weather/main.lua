@@ -238,13 +238,13 @@ function getData(url, successFunc)
     end)
 end
 
-local filePath = luajava.luaextdir..'/weather/id'
+local filePath = luajava.luaextdir .. '/weather/id'
 
-function fetchData( id )
+function fetchData(id)
     if id == nil then return end
-    getData( string.format('http://d1.weather.com.cn/sk_2d/%s.html',id), fillBaseInfo)
-    getData(string.format('http://d1.weather.com.cn/weixinfc/%s.html',id), fillWeekInfo)
-    getData(string.format('http://d1.weather.com.cn/wap_40d/%s.html',id), fill24HInfo)
+    getData(string.format('http://d1.weather.com.cn/sk_2d/%s.html', id), fillBaseInfo)
+    getData(string.format('http://d1.weather.com.cn/weixinfc/%s.html', id), fillWeekInfo)
+    getData(string.format('http://d1.weather.com.cn/wap_40d/%s.html', id), fill24HInfo)
 end
 
 function onCreate(savedInstanceState)
@@ -273,25 +273,25 @@ function onCreate(savedInstanceState)
             end
             local dx = line_view.getWidth() / count
             local startY = uihelper.dp2px(18)
-            local dy = (line_view.getHeight() -line_view.getPaddingTop() - line_view.getPaddingBottom() - startY - startY) / (max - min)
+            local dy = (line_view.getHeight() - line_view.getPaddingTop() - line_view.getPaddingBottom() - startY - startY) / (max - min)
             local lastPoint1 = {}
             local lastPoint2 = {}
             for i = 1, count do
                 local maxT = weekTemp[i][1]
                 local minT = weekTemp[i][2]
-                local x = dx * (i-0.5)
+                local x = dx * (i - 0.5)
                 local y1 = startY + (max - maxT) * dy
                 local y2 = startY + (max - minT) * dy
                 canvas.drawText(maxT .. '°', x - texWidth, y1 - texWidth, paint)
                 canvas.drawText(minT .. '°', x - texWidth, y2 + texWidth + texWidth, paint)
-                canvas.drawCircle(x,y1,radius,linePaint1)
-                canvas.drawCircle(x,y2,radius,linePaint2)
+                canvas.drawCircle(x, y1, radius, linePaint1)
+                canvas.drawCircle(x, y2, radius, linePaint2)
                 if lastPoint1[1] and lastPoint1[2] then
-                    canvas.drawLine(lastPoint1[1],lastPoint1[2], x, y1,linePaint1)
+                    canvas.drawLine(lastPoint1[1], lastPoint1[2], x, y1, linePaint1)
                 end
 
                 if lastPoint2[1] and lastPoint2[2] then
-                    canvas.drawLine(lastPoint2[1],lastPoint2[2], x, y2,linePaint2)
+                    canvas.drawLine(lastPoint2[1], lastPoint2[2], x, y2, linePaint2)
                 end
 
 
@@ -304,36 +304,35 @@ function onCreate(savedInstanceState)
         end,
     }))
 
-    tv_city.onClick = function ( v )
+    tv_city.onClick = function(v)
         local intent = Intent(activity, LuaActivity)
         intent.putExtra("luaPath", 'weather/list_city.lua')
         activity.startActivity(intent)
     end
-
 end
 
 
 function onDestroy()
-  LuaHttp.cancelAll()
+    LuaHttp.cancelAll()
 end
 
-function findCityCode( province,city )
+function findCityCode(province, city)
     local id = '101010100'
-    local China  = require("weather.city")
-    for k,v in pairs(China) do
+    local China = require("weather.city")
+    for k, v in pairs(China) do
         if province == k then
-            for k2,v2 in pairs(v) do
-              if k2 == city then
-                id = v2[1][1]:sub(2)
-                return id
-              end
+            for k2, v2 in pairs(v) do
+                if k2 == city then
+                    id = v2[1][1]:sub(2)
+                    return id
+                end
             end
         end
     end
     return id
 end
 
-function locateMe(  )
+function locateMe()
     local id = '101010100'
     local options = {
         url = 'http://ip.taobao.com/service/getIpInfo2.php',
@@ -342,7 +341,7 @@ function locateMe(  )
             "ip:myip"
         }
     }
-    LuaHttp.request(options, function ( error,code ,body )
+    LuaHttp.request(options, function(error, code, body)
         if error or code ~= 200 then
             print('locate failure')
             return
@@ -351,18 +350,18 @@ function locateMe(  )
         local province = json.data.region
         local city = json.data.city
         local county = json.data.county
-        local p = string.match(province,'(.*)省')
-        if p then  province = p
+        local p = string.match(province, '(.*)省')
+        if p then province = p
         else
-            p = string.match(province,'(.*)市')
-             if p then  province = p  end
+            p = string.match(province, '(.*)市')
+            if p then province = p end
         end
 
-        local c = string.match(province,'(.*)市')
-        if c then  city = c end
+        local c = string.match(province, '(.*)市')
+        if c then city = c end
 
         local id = findCityCode(province, city)
-        filehelper.writefile(filePath,id)
+        filehelper.writefile(filePath, id)
         fetchData(id)
     end)
 end

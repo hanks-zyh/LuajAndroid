@@ -13,7 +13,7 @@ import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
 import "androlua.adapter.LuaFragmentPageAdapter"
 
-local fragmentNews = require "news/fragment_news"
+local fragmentNews = require "ithome/fragment_news"
 
 -- create view table
 local layout = {
@@ -29,7 +29,7 @@ local layout = {
         layout_height = "48dp",
         background = "#D22222",
     },
-     {
+    {
         FrameLayout,
         layout_width = "fill",
         layout_height = "fill",
@@ -99,7 +99,6 @@ table.insert(data.titles, '游戏')
 
 table.insert(data.fragments, fragmentNews.newInstance("it%s.xml"))
 table.insert(data.titles, '行业前沿')
-
 
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),

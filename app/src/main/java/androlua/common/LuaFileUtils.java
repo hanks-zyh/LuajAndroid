@@ -438,7 +438,7 @@ public class LuaFileUtils {
         File appDir;
         if (sdCardAvaible()) {
             appDir = getContext().getExternalFilesDir(APP_DIR);
-        }else {
+        } else {
             appDir = new File(getContext().getFilesDir(), APP_DIR);
         }
         appDir.mkdirs(); // dont need judge dir exits

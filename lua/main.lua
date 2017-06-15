@@ -13,8 +13,8 @@ local item_view = {
     layout_height = "wrap",
     orientation = "vertical",
     gravity = "center",
-    paddingTop="4dp",
-    paddingBottom="4dp",
+    paddingTop = "4dp",
+    paddingBottom = "4dp",
     {
         ImageView,
         id = "icon",
@@ -43,48 +43,48 @@ function onCreate(savedInstanceState)
     activity.setLightStatusBar()
     activity.setContentView(loadlayout(layout))
 
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '动漫资讯',
         launchPage = 'tv005/main.lua'
     }
 
-    data[#data + 1 ] = {
+    data[#data + 1] = {
         text = '图解电影',
         launchPage = 'graphmovies/main.lua'
     }
 
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '奇趣百科',
         launchPage = 'qiqu/main.lua'
     }
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '动漫屋',
         launchPage = 'dm5/main.lua'
     }
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '豆瓣电影',
         launchPage = 'doubanmovie/main.lua'
     }
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '开眼',
         launchPage = 'eyepetizer/main.lua'
     }
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = 'IT 之家',
         launchPage = 'ithome/activity_news.lua'
     }
 
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '知乎日报',
         launchPage = 'zhihudaliy/activity_zhihu_daliy.lua'
     }
 
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '即刻',
         launchPage = 'jike/main.lua'
     }
 
-    data[#data + 1 ] ={
+    data[#data + 1] = {
         text = '天气',
         launchPage = 'weather/main.lua'
     }

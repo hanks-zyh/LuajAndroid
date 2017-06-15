@@ -23,7 +23,7 @@ import "androlua.widget.ninegride.LuaNineGridViewAdapter"
 
 local function fetchData(refreshLayout, data, adapter, fragment)
     local url = string.format('http://app.jike.ruguoapp.com/1.0/users/messages/listPopularByTag?tag=ALL')
-    Http.request({url=url}, function(error, code, body)
+    Http.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then
             print(' ================== get data error')
             return
@@ -85,15 +85,12 @@ function newInstance()
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
-
                 getItemCount = function()
                     return #data.msg
                 end,
-
                 getItemViewType = function(position)
                     return 0
                 end,
-
                 onCreateViewHolder = function(parent, viewType)
                     local views = {}
                     local holder = LuaRecyclerHolder(loadlayout(item_view, views, RecyclerView))

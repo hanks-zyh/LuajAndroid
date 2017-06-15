@@ -214,7 +214,7 @@ public class NineGridImageView<T> extends ViewGroup {
             }
             if (newShowCount == 1) {
                 iv.setScaleType(ImageView.ScaleType.FIT_XY);
-            }else {
+            } else {
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
             addView(iv, generateDefaultLayoutParams());

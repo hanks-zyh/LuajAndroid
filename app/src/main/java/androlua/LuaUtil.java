@@ -163,6 +163,31 @@ public class LuaUtil {
         //dir.delete();
     }
 
+    public static Context getContext() {
+        return LuaManager.getInstance().getContext();
+    }
+
+    public static float getDensity() {
+        return getContext().getResources().getDisplayMetrics().density;
+    }
+
+    public static int dp2px(float dp) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        return (int) (0.5F + dp * density);
+    }
+
+    public static int getScreenWidth() {
+        return getContext().getResources().getDisplayMetrics().widthPixels;
+    }
+
+    protected int getStatusBarHeight() {
+        int identifier = getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (identifier > 0) {
+            return getContext().getResources().getDimensionPixelSize(identifier);
+        }
+        return 0;
+    }
+
     public static class IntentHelper {
         public static String getLuaPath(Intent intent) {
             String luaPath = intent.getStringExtra("luaPath");
@@ -176,32 +201,6 @@ public class LuaUtil {
                 arg = new Object[0];
             return arg;
         }
-    }
-
-    public static Context getContext(){
-        return LuaManager.getInstance().getContext();
-    }
-
-    public static float getDensity(){
-        return getContext().getResources().getDisplayMetrics().density;
-    }
-
-    public static int dp2px(float dp) {
-        float density = getContext().getResources().getDisplayMetrics().density;
-        return (int) (0.5F + dp * density);
-    }
-
-    public static int getScreenWidth() {
-        return getContext().getResources().getDisplayMetrics().widthPixels;
-    }
-
-
-    protected int getStatusBarHeight(){
-      int identifier = getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
-      if (identifier > 0) {
-          return getContext().getResources().getDimensionPixelSize(identifier);
-      }
-      return 0;
     }
 
 }

@@ -46,8 +46,8 @@ local data = {}
 
 for i = 1, 59 do
     data[i] = {
-        url = string.format("http://i.meizitu.net/2017/05/07a%02d.jpg",i),
-        text = "this is item : " .. (i-1)
+        url = string.format("http://i.meizitu.net/2017/05/07a%02d.jpg", i),
+        text = "this is item : " .. (i - 1)
     }
 end
 
@@ -84,13 +84,13 @@ function onCreate(savedInstanceState)
     }))
 
     listview.setAdapter(adapter)
-    listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener",{
-        onItemClick = function(adapter,view,position,id)
+    listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
+        onItemClick = function(adapter, view, position, id)
             activity.toast('click item:' .. position)
         end,
     }))
-    listview.setOnItemLongClickListener(luajava.createProxy("android.widget.AdapterView$OnItemLongClickListener",{
-        onItemLongClick = function(adapter,view,position,id)
+    listview.setOnItemLongClickListener(luajava.createProxy("android.widget.AdapterView$OnItemLongClickListener", {
+        onItemLongClick = function(adapter, view, position, id)
             activity.toast('long click item:' .. position)
         end,
     }))

@@ -25,9 +25,9 @@ local layout = {
 }
 
 local data = {
-    titles = {"推荐","热门","订阅"},
+    titles = { "推荐", "热门", "订阅" },
     -- fragments = {recommendFragment.newInstance(), hotFragment.newInstance(), feedFragment.newInstance()},
-    fragments = {recommendFragment.newInstance()},
+    fragments = { recommendFragment.newInstance() },
 }
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
@@ -46,7 +46,7 @@ local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x33000000)
     activity.setContentView(loadlayout(layout))
-   -- bottomView
+    -- bottomView
     -- bottomView.setItemTextColor(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
     -- bottomView.setItemIconTintList(ColorStateListFactory.newInstance(0xFFC7C7C7, 0xFF1E1E1E))
     -- local recommentDrawable = LuaDrawable.create('jike/img/recoment.png')

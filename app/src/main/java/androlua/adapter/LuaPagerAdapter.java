@@ -1,18 +1,13 @@
 package androlua.adapter;
 
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.luajava.LuaTable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 
 /**
  * adapter for viewpager
@@ -34,7 +29,7 @@ public class LuaPagerAdapter extends PagerAdapter {
         int size = luaTable.keySet().size();
         for (int i = 1; i <= size; i++) {
             Object v = luaTable.get(i);
-            if (v!=null && v instanceof View) {
+            if (v != null && v instanceof View) {
                 mListViews.add((View) v);
             }
         }

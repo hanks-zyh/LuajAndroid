@@ -15,7 +15,7 @@ local function print_r(sth)
     local space, deep = string.rep(' ', 4), 0
     local function _dump(t)
         local temp = {}
-        for k,v in pairs(t) do
+        for k, v in pairs(t) do
             local key = tostring(k)
 
             if type(v) == "table" then
@@ -23,20 +23,16 @@ local function print_r(sth)
                 print(string.format("%s[%s] => Table%s{\n",
                     string.rep(space, deep - 1),
                     key,
-                    string.rep(space, deep)
-                )
-                ) --print.
+                    string.rep(space, deep))) --print.
                 _dump(v)
 
-                print(string.format("%s)",string.rep(space, deep)))
+                print(string.format("%s)", string.rep(space, deep)))
                 deep = deep - 2
             else
                 print(string.format("%s[%s] => %s",
                     string.rep(space, deep + 1),
                     key,
-                    v
-                )
-                ) --print.
+                    v)) --print.
             end
         end
     end

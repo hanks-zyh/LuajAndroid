@@ -62,7 +62,7 @@ local layout = {
         },
         {
             ProgressBar,
-            layout_gravity="center",
+            layout_gravity = "center",
             id = "progressBar",
             layout_width = "40dp",
             layout_height = "40dp",
@@ -96,12 +96,7 @@ local htmlTemplate = [[
 ]]
 
 function html_unescape(s)
-    return s:gsub("&lt;","<")
-    :gsub("&gt;",">")
-    :gsub("&amp;","&")
-    :gsub("&quot;",'"')
-    :gsub("&#39;","'")
-    :gsub("&#47;","/")
+    return s:gsub("&lt;", "<"):gsub("&gt;", ">"):gsub("&amp;", "&"):gsub("&quot;", '"'):gsub("&#39;", "'"):gsub("&#47;", "/")
 end
 
 function onCreate(savedInstanceState)
@@ -114,15 +109,12 @@ function onCreate(savedInstanceState)
     tv_title.setText(url)
     webview.setVisibility(0)
     progressBar.setVisibility(8)
-    LuaHttp.request({url= url}, function ( error, code, body )
-        local content = string.match( body,'(<div class="articleContent".-)<div class="h20 xs[-]hide">')
-                              :gsub('style=".-"','')
-                              :gsub('width=".-"','')
-                              :gsub('height=".-"','')
-        local data = string.format(htmlTemplate,css, html_unescape(content))
-        uihelper.runOnUiThread(activity,function()
-                print(data)
-                webview.loadData(data, "text/html; charset=UTF-8", nil)
+    LuaHttp.request({ url = url }, function(error, code, body)
+        local content = string.match(body, '(<div class="articleContent".-)<div class="h20 xs[-]hide">'):gsub('style=".-"', ''):gsub('width=".-"', ''):gsub('height=".-"', '')
+        local data = string.format(htmlTemplate, css, html_unescape(content))
+        uihelper.runOnUiThread(activity, function()
+            print(data)
+            webview.loadData(data, "text/html; charset=UTF-8", nil)
         end)
     end)
 end

@@ -1,4 +1,4 @@
-local uihelper  = {}
+local uihelper = {}
 
 function runOnUiThread(activity, f)
     activity.runOnUiThread(luajava.createProxy('java.lang.Runnable', {
@@ -11,7 +11,7 @@ uihelper.runOnUiThread = runOnUiThread
 local density
 local screenWidth
 
-local function dp2px (dp)
+local function dp2px(dp)
     if density == nil then
         import "androlua.LuaUtil"
         density = LuaUtil.getDensity()
@@ -20,7 +20,7 @@ local function dp2px (dp)
     return 0.5 + dp * density
 end
 
-local function getScreenWidth(  )
+local function getScreenWidth()
     if screenWidth == nil then
         dp2px(0)
     end

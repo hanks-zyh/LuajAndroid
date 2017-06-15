@@ -1,7 +1,6 @@
 package androlua.utils;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 
 /**
  * Created by hanks on 2017/5/31. Copyright (C) 2017 Hanks

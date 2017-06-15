@@ -3,7 +3,6 @@ package androlua.widget.picture;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,9 +37,9 @@ public class PicturePreviewActivity extends BaseActivity {
     private int currentIndex;
     private ViewPager viewPager;
 
-    public static void start(Context context,String json) {
+    public static void start(Context context, String json) {
         Intent starter = new Intent(context, PicturePreviewActivity.class);
-        starter.putExtra("json",json);
+        starter.putExtra("json", json);
         context.startActivity(starter);
     }
 
@@ -88,7 +87,7 @@ public class PicturePreviewActivity extends BaseActivity {
             fragments.add(PicturePreviewFragment.newInstance(uri));
         }
         adapter.notifyDataSetChanged();
-        viewPager.setCurrentItem(currentIndex,false);
+        viewPager.setCurrentItem(currentIndex, false);
     }
 
     public static class PicturePreviewFragment extends BaseFragment {

@@ -55,7 +55,7 @@ public class LuaHttp {
         return instance;
     }
 
-    public static void cancelAll(){
+    public static void cancelAll() {
         getInstance().httpClient.dispatcher().cancelAll();
     }
 
@@ -139,12 +139,12 @@ public class LuaHttp {
             for (Object key : headers.keySet()) {
                 String value = (String) headers.get(key);
                 int i = value.indexOf(":");
-                if (i == -1){
+                if (i == -1) {
                     continue;
                 }
                 String[] header = new String[]{
-                        value.substring(0,i),
-                        value.substring(i+1)
+                        value.substring(0, i),
+                        value.substring(i + 1)
                 };
                 builder.header(header[0].trim(), header[1].trim());
             }
@@ -156,7 +156,7 @@ public class LuaHttp {
 
         String body = (String) options.get("body");
         if (body != null) {
-            return RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
+            return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body);
         }
 
 
@@ -166,12 +166,12 @@ public class LuaHttp {
             for (Object key : formData.keySet()) {
                 String value = (String) formData.get(key);
                 int i = value.indexOf(":");
-                if (i == -1){
+                if (i == -1) {
                     continue;
                 }
                 String[] params = new String[]{
-                        value.substring(0,i),
-                        value.substring(i+1)
+                        value.substring(0, i),
+                        value.substring(i + 1)
                 };
                 bodyBuilder.add(params[0].trim(), params[1].trim());
             }
@@ -185,12 +185,12 @@ public class LuaHttp {
             for (Object key : multipart.keySet()) {
                 String value = (String) multipart.get(key);
                 int i = value.indexOf(":");
-                if (i == -1){
+                if (i == -1) {
                     continue;
                 }
                 String[] params = new String[]{
-                        value.substring(0,i),
-                        value.substring(i+1)
+                        value.substring(0, i),
+                        value.substring(i + 1)
                 };
                 String itemKey = params[0].trim();
                 String itemValue = params[1].trim();

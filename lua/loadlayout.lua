@@ -414,9 +414,9 @@ local function addStatusBar(parent, color)
         local statusbBar = View(context)
         statusbBar.setBackgroundColor(color)
         local height = getStatusBarHeight()
-        local params = ViewGroup.LayoutParams( -1, height) --设置layout属性
+        local params = ViewGroup.LayoutParams(-1, height) --设置layout属性
         statusbBar.setLayoutParams(params)
-        parent.addView(statusbBar,0)
+        parent.addView(statusbBar, 0)
         pcall(setStatusBarColorTrans)
     end
 end
@@ -437,7 +437,7 @@ end
 
 local function setLineSpacing(textView, v)
     if ver >= 16 then
-        textView.setLineSpacing(textView.getLineSpacingExtra(),v);
+        textView.setLineSpacing(textView.getLineSpacingExtra(), v);
     end
 end
 
@@ -456,7 +456,7 @@ local function setattribute(root, view, params, k, v, ids)
         params.setMarginEnd(checkValue(v))
     elseif k == "statusBarColor" then
         if v:find("^#") then
-            addStatusBar(view,checkNumber(v))
+            addStatusBar(view, checkNumber(v))
         end
     elseif rules[k] and (v == true or v == "true") then
         params.addRule(rules[k])
@@ -509,7 +509,7 @@ local function setattribute(root, view, params, k, v, ids)
             ImageLoader.load(view, v)
         end
     elseif k == "elevation" then
-        setElevation(view,v)
+        setElevation(view, v)
     elseif k == "scaleType" then
         view.setScaleType(scaleTypes[scaleType[v]])
     elseif k == "background" then

@@ -56,7 +56,7 @@ public class LuaBitmap {
 
     public static Bitmap getHttpBitmap(LuaContext context, String url) throws IOException {
         //Log.d(TAG, url);
-        String path =  LuaManager.getInstance().getLuaExtDir() + "/" + url.hashCode();
+        String path = LuaManager.getInstance().getLuaExtDir() + "/" + url.hashCode();
         File f = new File(path);
         if (f.exists()) {
             try {
@@ -107,7 +107,7 @@ public class LuaBitmap {
         if (path.indexOf("http://") == 0) {
             bitmap = getHttpBitmap(context, path);
         } else if (path.charAt(0) != '/') {
-            bitmap = getLoacalBitmap(context,  LuaManager.getInstance().getLuaDir() + "/" + path);
+            bitmap = getLoacalBitmap(context, LuaManager.getInstance().getLuaDir() + "/" + path);
         } else {
             bitmap = getLoacalBitmap(context, path);
         }

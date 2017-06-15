@@ -11,10 +11,10 @@ import "android.view.View"
 import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
 import "androlua.adapter.LuaFragmentPageAdapter"
+import "androlua.LuaHttp"
 
-local JSON = require("common.json")
-local Http = luajava.bindClass("androlua.LuaHttp")
-
+local JSON = require "common.json"
+local uihelper = require "common.uihelper"
 local fragment = require "zhihudaliy/fragment_zhihu_daliy"
 
 -- create view table
@@ -31,7 +31,7 @@ local layout = {
         layout_height = "48dp",
         background = "#16A0EA",
     },
-     {
+    {
         FrameLayout,
         layout_width = "fill",
         layout_height = "fill",
@@ -55,38 +55,40 @@ local data = {
     fragments = {},
 }
 
-table.insert(data.fragments, fragment.newInstance())
-table.insert(data.titles, '首页')
+local adapter
 
-local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
-    luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
-        getCount = function() return #data.fragments end,
-        getItem = function(position)
-            position = position + 1
-            return data.fragments[position]
-        end,
-        getPageTitle = function(position)
-            position = position + 1
-            return data.titles[position]
-        end
-    }))
-
-function getData()
-    Http.request({url="http://news-at.zhihu.com/api/4/themes"}, function ( error,code,body )
-        local themes  =  JSON.decode(body).others
-        runOnUiThread(activity,function ()
-            for i=1,#themes do
-            table.insert(data.titles, themes[i].name)
-            table.insert(data.fragments, fragment.newInstance(themes[i].id))
+local function getData()
+    LuaHttp.request({ url = "http://news-at.zhihu.com/api/4/themes" }, function(error, code, body)
+        local themes = JSON.decode(body).others
+        uihelper.runOnUiThread(activity, function()
+            for i = 1, #themes do
+                table.insert(data.titles, themes[i].name)
+                table.insert(data.fragments, fragment.newInstance(themes[i].id))
             end
-          adapter.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         end)
     end)
-  end
+end
 
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0xff16A0EA)
     activity.setContentView(loadlayout(layout))
+
+    table.insert(data.fragments, fragment.newInstance())
+    table.insert(data.titles, '首页')
+
+    adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
+        luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
+            getCount = function() return #data.fragments end,
+            getItem = function(position)
+                position = position + 1
+                return data.fragments[position]
+            end,
+            getPageTitle = function(position)
+                position = position + 1
+                return data.titles[position]
+            end
+        }))
     viewPager.setAdapter(adapter)
     tab.setSelectedTabIndicatorColor(0xffffffff)
     tab.setTabTextColors(0x88ffffff, 0xffffffff)

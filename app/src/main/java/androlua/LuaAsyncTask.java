@@ -1,14 +1,6 @@
 package androlua;
 
-import android.os.AsyncTask;
-
-import com.luajava.JavaFunction;
-import com.luajava.LuaException;
-import com.luajava.LuaObject;
-import com.luajava.LuaState;
-import com.luajava.LuaStateFactory;
-
-public class LuaAsyncTask   {
+public class LuaAsyncTask {
 
     //
 //    private Object[] loadeds;

@@ -44,7 +44,7 @@ public class LuaPrint extends JavaFunction {
             output.append(val);
             output.append("\t");
         }
-        Log.e("Luandroid",output.toString().substring(1, output.length() - 1));
+        Log.e("Luandroid", output.toString().substring(1, output.length() - 1));
         output.setLength(0);
         return 0;
     }

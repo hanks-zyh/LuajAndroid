@@ -32,6 +32,7 @@ public class LuaWebView extends WebView {
     public LuaWebView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
     public LuaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (Build.VERSION.SDK_INT >= 19) {
@@ -58,25 +59,8 @@ public class LuaWebView extends WebView {
     }
 
 
-    public void injectObjectToJavascript(LuaObject luaObject, String objectName){
-        addJavascriptInterface(new JavascriptInterface(luaObject),objectName);
-    }
-
-    public static class JavascriptInterface{
-        private final LuaObject luaObject;
-
-        public JavascriptInterface(LuaObject luaObject) {
-            this.luaObject = luaObject;
-        }
-
-        @android.webkit.JavascriptInterface
-        public void call(String json){
-            try {
-                luaObject.call(json);
-            } catch (LuaException e) {
-                e.printStackTrace();
-            }
-        }
+    public void injectObjectToJavascript(LuaObject luaObject, String objectName) {
+        addJavascriptInterface(new JavascriptInterface(luaObject), objectName);
     }
 
     public void setWebChromeClientListener(WebChromeClientListener webChromeClientListener) {
@@ -111,6 +95,23 @@ public class LuaWebView extends WebView {
         void onReceivedIcon(WebView view, Bitmap icon);
 
         void onReceivedTouchIconUrl(WebView view, String url, boolean precomposed);
+    }
+
+    public static class JavascriptInterface {
+        private final LuaObject luaObject;
+
+        public JavascriptInterface(LuaObject luaObject) {
+            this.luaObject = luaObject;
+        }
+
+        @android.webkit.JavascriptInterface
+        public void call(String json) {
+            try {
+                luaObject.call(json);
+            } catch (LuaException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public class LuaWebViewClient extends WebViewClient {

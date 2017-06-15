@@ -75,38 +75,38 @@ local function launchDetail(fragment, msg)
     activity.startActivity(intent)
 end
 
-  -- create view table
-    local layout = {
-        LinearLayout,
-        layout_width = "match",
-        layout_height = "match",
-        orientation = "vertical",
+-- create view table
+local layout = {
+    LinearLayout,
+    layout_width = "match",
+    layout_height = "match",
+    orientation = "vertical",
+    {
+        SwipeRefreshLayout,
+        id = "refreshLayout",
         {
-            SwipeRefreshLayout,
-            id = "refreshLayout",
-            {
-                RecyclerView,
-                id = "recyclerView",
-                paddingTop = "25dp",
-                clipToPadding = false,
-                layout_width = "fill",
-                layout_height = "fill",
-            },
+            RecyclerView,
+            id = "recyclerView",
+            paddingTop = "25dp",
+            clipToPadding = false,
+            layout_width = "fill",
+            layout_height = "fill",
         },
-    }
+    },
+}
 
-    local item_view = require('jike.item_msg')
-    local item_loading = {
-        LinearLayout,
-        layout_width = "match",
-        layout_height = "72dp",
-        gravity = "center",
-        {
-            ProgressBar,
-            layout_width = "32dp",
-            layout_height = "32dp",
-        },
-    }
+local item_view = require('jike.item_msg')
+local item_loading = {
+    LinearLayout,
+    layout_width = "match",
+    layout_height = "72dp",
+    gravity = "center",
+    {
+        ProgressBar,
+        layout_width = "32dp",
+        layout_height = "32dp",
+    },
+}
 
 
 function newInstance()
@@ -123,17 +123,15 @@ function newInstance()
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
-
                 getItemCount = function()
                     if #data.msg > 0 then return #data.msg + 1
-                    else return 0 end
+                    else return 0
+                    end
                 end,
-
                 getItemViewType = function(position)
-                    if position>0 and position == #data.msg then return 1 end
+                    if position > 0 and position == #data.msg then return 1 end
                     return 0
                 end,
-
                 onCreateViewHolder = function(parent, viewType)
                     local views = {}
                     local holder

@@ -34,13 +34,13 @@ local log = require('common.log')
 local screenWidth = uihelper.getScreenWidth()
 
 local category = {
-  "原创精品",
-  "最新更新",
-  "热门连载",
-  "少年热血",
-  "少女爱情",
-  "最新上架",
-  "TOP10",
+    "原创精品",
+    "最新更新",
+    "热门连载",
+    "少年热血",
+    "少女爱情",
+    "最新上架",
+    "TOP10",
 }
 -- create view table
 local layout = {
@@ -72,38 +72,38 @@ local item_banner = {
     layout_height = "192dp",
     layout_width = "match",
     {
-      ImageView,
-      layout_height = "match",
-      layout_width = "match",
-      id = "iv_banner",
-      scaleType = "centerCrop",
+        ImageView,
+        layout_height = "match",
+        layout_width = "match",
+        id = "iv_banner",
+        scaleType = "centerCrop",
     }
 }
 
 local item_title = {
-  RelativeLayout,
-  layout_height = "48dp",
-  paddingLeft = "8dp",
-  paddingRight = "8dp",
-  {
-      TextView,
-      id = "tv_category",
-      textSize = "16sp",
-      text = "原创精品",
-      textColor = "#222222",
-      layout_centerVertical = true,
-  },
-  {
-      TextView,
-      text = '更多﹥',
-      layout_alignParentRight = true,
-      layout_centerVertical = true,
-  },
+    RelativeLayout,
+    layout_height = "48dp",
+    paddingLeft = "8dp",
+    paddingRight = "8dp",
+    {
+        TextView,
+        id = "tv_category",
+        textSize = "16sp",
+        text = "原创精品",
+        textColor = "#222222",
+        layout_centerVertical = true,
+    },
+    {
+        TextView,
+        text = '更多﹥',
+        layout_alignParentRight = true,
+        layout_centerVertical = true,
+    },
 }
 
 local ceil_category = {
     LinearLayout,
-    layout_width = (screenWidth- uihelper.dp2px(8))/3 ,
+    layout_width = (screenWidth - uihelper.dp2px(8)) / 3,
     layout_height = "200dp",
     paddingLeft = "4dp",
     paddingRight = "4dp",
@@ -178,10 +178,10 @@ local item_category = {
 }
 
 local data_type = {
-  banner = 1,
-  title = 2,
-  category = 3,
-  top = 4,
+    banner = 1,
+    title = 2,
+    category = 3,
+    top = 4,
 }
 
 local data = {}
@@ -196,13 +196,13 @@ local function getData()
         uihelper = runOnUiThread(activity, function()
             -- banner
             local arr = {}
-            local ul =  string.match(body, '<ul class="am[-]slides">(.-)</ul>')
-            for url,img in string.gmatch(ul, '<a href="(.-)"><img src="(.-)"') do
+            local ul = string.match(body, '<ul class="am[-]slides">(.-)</ul>')
+            for url, img in string.gmatch(ul, '<a href="(.-)"><img src="(.-)"') do
                 if img:find('cdndm5.com') then
-                    arr[#arr + 1] = {url=url,img=img}
+                    arr[#arr + 1] = { url = url, img = img }
                 end
             end
-            data[#data +1 ] = { type = data_type.banner, data = arr }
+            data[#data + 1] = { type = data_type.banner, data = arr }
 
             -- 原创精品 最新更新 热门连载 少年热血 少女爱情 最新上架
             local count = 1
@@ -214,21 +214,21 @@ local function getData()
                 if url and title and img then
                     local item = { url = url, title = title, img = img }
 
-                    if math.fmod(count-1,6) == 0 then
-                      data[#data +1 ] = {type= data_type.title , data=category[titleIndex] }
-                      titleIndex = titleIndex + 1
+                    if math.fmod(count - 1, 6) == 0 then
+                        data[#data + 1] = { type = data_type.title, data = category[titleIndex] }
+                        titleIndex = titleIndex + 1
                     end
                     if #arr == 3 then
-                        data[#data +1 ] ={type= data_type.category, data=arr}
+                        data[#data + 1] = { type = data_type.category, data = arr }
                         arr = {}
                     end
-                    arr[#arr +1] = item
+                    arr[#arr + 1] = item
                     count = count + 1
                 end
             end
 
             -- TOP10
-            data[#data +1 ] = {type= data_type.title , data = category[titleIndex] }
+            data[#data + 1] = { type = data_type.title, data = category[titleIndex] }
 
             local rankList = string.match(body, '<div class="rankList">.-<ul class="list">(.-)</ul>')
             for li in string.gmatch(rankList, '<a .-</a>') do
@@ -239,7 +239,7 @@ local function getData()
                 local score = string.match(li, '<span class="score">(.-)</span>')
                 if title and url and img then
                     local item = { title = title, score = score, updateInfo = updateInfo, url = url, img = img, subtitle = subtitle }
-                    data[#data +1 ] = {type = data_type.top , data = item }
+                    data[#data + 1] = { type = data_type.top, data = item }
                 end
             end
             adapter.notifyDataSetChanged()
@@ -248,17 +248,17 @@ local function getData()
 end
 
 function onDestroy()
-  LuaHttp.cancelAll()
+    LuaHttp.cancelAll()
 end
 
 local function launchDetail(url)
-  if url:find('^http://') == nil then
-    url = 'http://m.dm5.com' .. url
-  end
-  local intent = Intent(activity, LuaActivity)
-  intent.putExtra("luaPath", 'dm5/detail.lua')
-  intent.putExtra("url", url)
-  activity.startActivity(intent)
+    if url:find('^http://') == nil then
+        url = 'http://m.dm5.com' .. url
+    end
+    local intent = Intent(activity, LuaActivity)
+    intent.putExtra("luaPath", 'dm5/detail.lua')
+    intent.putExtra("url", url)
+    activity.startActivity(intent)
 end
 
 function onCreate(savedInstanceState)
@@ -295,25 +295,25 @@ function onCreate(savedInstanceState)
             if item == nil or views == nil then return end
             -- fill data
             if item.type == data_type.banner then
-              LuaImageLoader.load(views.iv_banner, item.data[1].img)
-              views.iv_banner.onClick = function() launchDetail(item.data[1].url) end
+                LuaImageLoader.load(views.iv_banner, item.data[1].img)
+                views.iv_banner.onClick = function() launchDetail(item.data[1].url) end
             elseif item.type == data_type.title then
-               views.tv_category.setText(item.data)
+                views.tv_category.setText(item.data)
             elseif item.type == data_type.category then
                 for i = 1, #item.data do
                     local child = views.row.getChildAt(i - 1)
                     LuaImageLoader.load(child.getChildAt(0), item.data[i].img)
                     child.getChildAt(1).setText(item.data[i].title)
                     child.onClick = function()
-                      launchDetail(item.data[i].url)
+                        launchDetail(item.data[i].url)
                     end
                 end
             elseif item.type == data_type.top then
                 LuaImageLoader.load(views.iv_cover, item.data.img)
-               views.tv_title.setText(item.data.title)
-               views.tv_subtitle.setText(item.data.subtitle)
-               views.tv_info.setText(item.data.updateInfo)
-               views.tv_score.setText(item.data.score)
+                views.tv_title.setText(item.data.title)
+                views.tv_subtitle.setText(item.data.subtitle)
+                views.tv_info.setText(item.data.updateInfo)
+                views.tv_score.setText(item.data.score)
                 views.layout_top.onClick = function()
                     launchDetail(item.data.url)
                 end

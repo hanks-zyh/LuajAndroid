@@ -61,7 +61,6 @@ public class LuaImageLoader {
     }
 
 
-
     public static void load(ImageView imageView, String uri, String referer) {
         if (imageView == null || uri == null) {
             return;

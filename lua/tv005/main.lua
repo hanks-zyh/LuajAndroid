@@ -29,19 +29,19 @@ local layout = {
         background = "#fffb7299",
     },
     {
-      FrameLayout,
-      {
-          ViewPager,
-          id = "viewPager",
-          layout_width = "fill",
-          layout_height = "fill",
-      },
-      {
-        View,
-        layout_width = "fill",
-        layout_height = "3dp",
-        background = "@drawable/shadow_line_top",
-      }
+        FrameLayout,
+        {
+            ViewPager,
+            id = "viewPager",
+            layout_width = "fill",
+            layout_height = "fill",
+        },
+        {
+            View,
+            layout_width = "fill",
+            layout_height = "3dp",
+            background = "@drawable/shadow_line_top",
+        }
     },
 }
 

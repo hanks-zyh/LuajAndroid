@@ -76,24 +76,23 @@ local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()
     -- log.print_r(msg)
     if msg and msg.item and msg.item.linkUrl then
-        WebViewActivity.start(activity,msg.item.linkUrl, 0xF12979FB)
+        WebViewActivity.start(activity, msg.item.linkUrl, 0xF12979FB)
         return
     end
 
     activity.toast('没有 url 可以打开')
-
 end
 
-local function launchPicturePreview(fragment,msg,index)
+local function launchPicturePreview(fragment, msg, index)
     local urls = {}
-    for i=1,# msg.item.pictureUrls do
-        urls[i] =  msg.item.pictureUrls[i].picUrl
+    for i = 1, #msg.item.pictureUrls do
+        urls[i] = msg.item.pictureUrls[i].picUrl
     end
     local data = {
-        uris=urls,
-        currentIndex=index
+        uris = urls,
+        currentIndex = index
     }
-   PicturePreviewActivity.start(fragment.getActivity(), JSON.encode(data))
+    PicturePreviewActivity.start(fragment.getActivity(), JSON.encode(data))
 end
 
 function newInstance()
@@ -142,17 +141,15 @@ function newInstance()
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
-
                 getItemCount = function()
                     if #data.msg > 0 then return #data.msg + 1
-                    else return 0 end
+                    else return 0
+                    end
                 end,
-
                 getItemViewType = function(position)
-                    if position>0 and position == #data.msg then return 1 end
+                    if position > 0 and position == #data.msg then return 1 end
                     return 0
                 end,
-
                 onCreateViewHolder = function(parent, viewType)
                     local views = {}
                     local holder
@@ -210,7 +207,7 @@ function newInstance()
                                 LuaImageLoader.load(imageView, url)
                             end,
                             onItemImageClick = function(context, imageView, index, list)
-                                launchPicturePreview(fragment,msg,index)
+                                launchPicturePreview(fragment, msg, index)
                             end
                         })))
                         views.iv_nine_grid.setImagesData(urls)

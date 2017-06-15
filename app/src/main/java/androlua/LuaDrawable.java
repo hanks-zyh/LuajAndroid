@@ -25,6 +25,13 @@ public class LuaDrawable extends Drawable {
         this.mDraw = func;
     }
 
+    public static Drawable create(String filePath) {
+        if (!filePath.startsWith("/")) {
+            filePath = LuaManager.getInstance().getLuaExtDir() + "/" + filePath;
+        }
+        return new BitmapDrawable(LuaManager.getInstance().getContext().getResources(), BitmapFactory.decodeFile(filePath));
+    }
+
     public void draw(Canvas p1) {
         try {
             if (this.mOnDraw == null) {
@@ -55,12 +62,5 @@ public class LuaDrawable extends Drawable {
 
     public Paint getPaint() {
         return this.mPaint;
-    }
-
-    public static Drawable create(String filePath){
-        if (!filePath.startsWith("/")) {
-            filePath = LuaManager.getInstance().getLuaExtDir() + "/" + filePath;
-        }
-        return new BitmapDrawable(LuaManager.getInstance().getContext().getResources(),BitmapFactory.decodeFile(filePath));
     }
 }

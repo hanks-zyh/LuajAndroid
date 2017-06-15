@@ -70,10 +70,10 @@ public class ExampleInstrumentedTest {
             public void run() {
 
             }
-        },1000);
+        }, 1000);
 
 
-        new GridLayoutManager(appContext,3);
+        new GridLayoutManager(appContext, 3);
 
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(appContext);
         horizontalScrollView.setHorizontalScrollBarEnabled(false);
@@ -86,7 +86,7 @@ public class ExampleInstrumentedTest {
         tabLayout.setVisibility(View.VISIBLE);
         WebView webView = new WebView(appContext);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.addJavascriptInterface(this,"");
+        webView.addJavascriptInterface(this, "");
 
         final BottomNavigationView bottomView = new BottomNavigationView(appContext);
         ColorStateList textColor = ColorStateList.valueOf(0xFFFF0000);
@@ -111,18 +111,16 @@ public class ExampleInstrumentedTest {
         // 动态代理
 
 
-        Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[] { List.class },
+        Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[]{List.class},
                 new InvocationHandler() {
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         if ("add".equals(method.getName())) {
                             throw new UnsupportedOperationException();
-                        }
-                        else {
+                        } else {
                             return method.invoke(list, args);
                         }
                     }
                 });
-
 
 
     }

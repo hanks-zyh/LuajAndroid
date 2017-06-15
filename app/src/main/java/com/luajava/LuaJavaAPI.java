@@ -365,8 +365,8 @@ public final class LuaJavaAPI {
                         L.pushObjectValue(entry.getValue());
                         L.setTable(-3);
                     }
-					/*
-					 for (Map.Entry entry : map.entrySet())
+                    /*
+                     for (Map.Entry entry : map.entrySet())
 					 { 
 					 L.pushObjectValue(entry.getKey());
 					 L.pushObjectValue(entry.getValue());

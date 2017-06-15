@@ -36,7 +36,7 @@ local layout = {
         id = "webview",
         layout_height = 1,
         layout_width = 1,
-        background='#e1e1e1',
+        background = '#e1e1e1',
     }
 }
 
@@ -76,7 +76,7 @@ window.luaApp.call(JSON.stringify(s));
 </html>
 ]]
 local function toast(s)
-    uihelper.runOnUiThread(activity,function()
+    uihelper.runOnUiThread(activity, function()
         activity.toast(s)
     end)
 end
@@ -84,9 +84,9 @@ end
 
 local function getData(url)
     LuaHttp.request({ url = url }, function(error, code, body)
-        local script = string.match(body,'<script type="text/javascript">(.-)</script>')
+        local script = string.match(body, '<script type="text/javascript">(.-)</script>')
         local data = string.format(htmlTemplate, script)
-        uihelper.runOnUiThread(activity, function (  )
+        uihelper.runOnUiThread(activity, function()
             webview.loadData(data, "text/html; charset=UTF-8", nil)
         end)
     end)
@@ -97,17 +97,17 @@ function launchDetail(item)
 end
 
 local function callback(jsonStr)
-  local json = JSON.decode(jsonStr)
-  if json.method ~= 'setImg' then
-    return
-  end
-
-  uihelper = runOnUiThread(activity, function()
-    for i=1,#json.data do
-      data [#data + 1] = json.data[i]
+    local json = JSON.decode(jsonStr)
+    if json.method ~= 'setImg' then
+        return
     end
-    adapter.notifyDataSetChanged()
-  end)
+
+    uihelper = runOnUiThread(activity, function()
+        for i = 1, #json.data do
+            data[#data + 1] = json.data[i]
+        end
+        adapter.notifyDataSetChanged()
+    end)
 end
 
 function onCreate(savedInstanceState)
@@ -126,7 +126,7 @@ function onCreate(savedInstanceState)
             if convertView == nil then
                 local views = {} -- store views
                 convertView = loadlayout(item_view, views, ListView)
-                convertView.getLayoutParams() .width = parent.getWidth()
+                convertView.getLayoutParams().width = parent.getWidth()
                 convertView.setTag(views)
             end
             local views = convertView.getTag()
@@ -141,7 +141,6 @@ function onCreate(savedInstanceState)
     listview.setAdapter(adapter)
     listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
         onItemClick = function(adapter, view, position, id)
-
         end,
     }))
 

@@ -1,4 +1,3 @@
-
 require("import")
 import "android.widget.*"
 import "android.content.*"
@@ -6,7 +5,7 @@ import "android.view.View"
 import "androlua.LuaAdapter"
 
 
-local China  = require("weather.city")
+local China = require("weather.city")
 local filehelper = require("common.filehelper")
 
 local layout = {
@@ -15,13 +14,13 @@ local layout = {
     layout_height = "match",
     orientation = 'vertical',
     statusBarColor = "#8CCACE",
-     {
+    {
         LinearLayout,
         layout_height = "56dp",
         layout_width = "match",
         orientation = 'vertical',
         gravity = "center",
-        background="#8CCACE",
+        background = "#8CCACE",
         {
             TextView,
             paddingLeft = "16dp",
@@ -43,7 +42,6 @@ local layout = {
         layout_width = "match",
         layout_height = "match",
     },
-
 }
 
 
@@ -59,7 +57,7 @@ local item_view = {
     textColor = "#666666",
 }
 
-local filePath = luajava.luaextdir..'/weather/id'
+local filePath = luajava.luaextdir .. '/weather/id'
 local data = {}
 local cityData = {}
 
@@ -73,7 +71,7 @@ function onCreate(savedInstanceState)
     activity.setStatusBarColor(0xFF8CCACE)
     activity.setContentView(loadlayout(layout))
 
-    for k,_ in pairs(China) do
+    for k, _ in pairs(China) do
         data[#data + 1] = k
     end
 
@@ -94,17 +92,17 @@ function onCreate(savedInstanceState)
         end
     }))
     listview2.setAdapter(adapter2)
-    listview2.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener",{
-        onItemClick = function(adapter,view,position,id)
+    listview2.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
+        onItemClick = function(adapter, view, position, id)
             activity.toast('请稍候...')
             position = position + 1
             local id = cityData[position][1]:sub(2)
-            filehelper.writefile(filePath,id)
-            view.postDelayed(luajava.createProxy('java.lang.Runnable',{
+            filehelper.writefile(filePath, id)
+            view.postDelayed(luajava.createProxy('java.lang.Runnable', {
                 run = function()
                     activity.finish()
                 end
-            }),500)
+            }), 500)
         end,
     }))
 
@@ -120,25 +118,25 @@ function onCreate(savedInstanceState)
             end
             local views = convertView.getTag()
             local item = data[position]
-            print(position,item)
+            print(position, item)
             print(views.tv_name)
             views.tv_name.setText(item)
             return convertView
         end
     }))
     listview.setAdapter(adapter)
-    listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener",{
-        onItemClick = function(adapter,view,position,id)
+    listview.setOnItemClickListener(luajava.createProxy("android.widget.AdapterView$OnItemClickListener", {
+        onItemClick = function(adapter, view, position, id)
             position = position + 1
             local sTable = China[data[position]]
             clearTable(cityData)
-            for k,v in pairs(sTable) do
+            for k, v in pairs(sTable) do
                 for k2, v2 in pairs(v) do
-                    local name  = k .. ' · ' .. v2
+                    local name = k .. ' · ' .. v2
                     if k == v2 then
-                        name  = k
+                        name = k
                     end
-                    cityData[#cityData+1] = {k2, name}
+                    cityData[#cityData + 1] = { k2, name }
                 end
             end
             listview2.setVisibility(0)
@@ -147,7 +145,6 @@ function onCreate(savedInstanceState)
             showCityData = true
         end,
     }))
-
 end
 
 function onBackPressed()

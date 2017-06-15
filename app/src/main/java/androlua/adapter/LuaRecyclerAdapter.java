@@ -15,14 +15,6 @@ public class LuaRecyclerAdapter extends RecyclerView.Adapter {
         this.adapterCreator = adapterCreator;
     }
 
-    public interface AdapterCreator{
-        RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
-        void onBindViewHolder(RecyclerView.ViewHolder holder, int position);
-        long getItemViewType(int position);
-        long getItemCount();
-    }
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return adapterCreator.onCreateViewHolder(parent, viewType);
@@ -41,5 +33,15 @@ public class LuaRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return (int) adapterCreator.getItemCount();
+    }
+
+    public interface AdapterCreator {
+        RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
+
+        void onBindViewHolder(RecyclerView.ViewHolder holder, int position);
+
+        long getItemViewType(int position);
+
+        long getItemCount();
     }
 }

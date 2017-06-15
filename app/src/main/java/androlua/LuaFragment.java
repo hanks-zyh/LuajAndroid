@@ -15,19 +15,7 @@ import android.view.ViewGroup;
 
 public class LuaFragment extends Fragment {
 
-    public interface  FragmentCreator{
-        void onCreate(@Nullable Bundle savedInstanceState);
-        void onAttach(Context context);
-        View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
-        void onActivityCreated(@Nullable Bundle savedInstanceState);
-        void onViewCreated(View view, @Nullable Bundle savedInstanceState);
-        void onStart();
-        void onResume();
-        void onStop();
-        void onDestroyView();
-        void onDestroy();
-        void onDetach();
-    }
+    private FragmentCreator creator;
 
     public static LuaFragment newInstance() {
         Bundle args = new Bundle();
@@ -35,8 +23,6 @@ public class LuaFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private FragmentCreator creator;
 
     public void setCreator(FragmentCreator creator) {
         this.creator = creator;
@@ -48,13 +34,11 @@ public class LuaFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return creator.onCreateView(inflater, container, savedInstanceState);
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -68,7 +52,6 @@ public class LuaFragment extends Fragment {
         super.onStart();
     }
 
-
     @Override
     public void onResume() {
         creator.onResume();
@@ -79,6 +62,30 @@ public class LuaFragment extends Fragment {
     public void onStop() {
         creator.onStop();
         super.onStop();
+    }
+
+    public interface FragmentCreator {
+        void onCreate(@Nullable Bundle savedInstanceState);
+
+        void onAttach(Context context);
+
+        View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
+
+        void onActivityCreated(@Nullable Bundle savedInstanceState);
+
+        void onViewCreated(View view, @Nullable Bundle savedInstanceState);
+
+        void onStart();
+
+        void onResume();
+
+        void onStop();
+
+        void onDestroyView();
+
+        void onDestroy();
+
+        void onDetach();
     }
 
 

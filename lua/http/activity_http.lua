@@ -97,9 +97,9 @@ function download()
     local options = {
         url = url,
         method = 'GET',
-        outputFile='/sdcard/2.jpg',
+        outputFile = '/sdcard/2.jpg',
     }
-    tv_request.setText('download:\n' .. options.url.. '\n')
+    tv_request.setText('download:\n' .. options.url .. '\n')
 
     Http.request(options, function(error, stateCode, body)
         showResponse(error or stateCode .. body)

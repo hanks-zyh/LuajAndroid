@@ -47,14 +47,13 @@ local layout = {
             layout_width = "fill",
             layout_height = "fill",
         },
-         {
+        {
             View,
             layout_width = "fill",
             layout_height = "3dp",
             background = "@drawable/shadow_line_top",
         }
     }
-   
 }
 
 local item_view = {
@@ -113,11 +112,16 @@ function getData()
     end)
 end
 
-function launchDetail(item)
-  local intent = Intent(activity, LuaActivity)
-  intent.putExtra("luaPath", 'doubanmovie/detail.lua')
-  intent.putExtra("id", item.id)
-  activity.startActivity(intent)
+local function launchDetail(item)
+    local intent = Intent(activity, LuaActivity)
+    intent.putExtra("luaPath", 'doubanmovie/detail.lua')
+    intent.putExtra("id", item.id)
+    activity.startActivity(intent)
+end
+
+
+function onDestroy()
+    LuaHttp.cancelAll()
 end
 
 
@@ -125,47 +129,43 @@ function onCreate(savedInstanceState)
     activity.setLightStatusBar()
     activity.setContentView(loadlayout(layout))
     local screenWidth = uihelper.getScreenWidth()
-     adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
-          getItemCount = function()
-              return #data
-          end,
-
-          getItemViewType = function(position)
-              return 0
-          end,
-
-          onCreateViewHolder = function(parent, viewType)
-              local views = {}
-              local holder
-              holder = LuaRecyclerHolder(loadlayout(item_view, views, RecyclerView))
-              holder.itemView.setTag(views)
-              holder.itemView.onClick = function(view)
-                  local position = holder.getAdapterPosition() + 1
-              end
-              holder.itemView.getLayoutParams().width = screenWidth/3
-              holder.itemView.onClick = function()
+    adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
+        getItemCount = function()
+            return #data
+        end,
+        getItemViewType = function(position)
+            return 0
+        end,
+        onCreateViewHolder = function(parent, viewType)
+            local views = {}
+            local holder
+            holder = LuaRecyclerHolder(loadlayout(item_view, views, RecyclerView))
+            holder.itemView.setTag(views)
+            holder.itemView.onClick = function(view)
+                local position = holder.getAdapterPosition() + 1
+            end
+            holder.itemView.getLayoutParams().width = screenWidth / 3
+            holder.itemView.onClick = function()
                 local p = holder.getAdapterPosition() + 1
                 launchDetail(data[p])
-              end
-              return holder
-          end,
-
-          onBindViewHolder = function(holder, position)
-              position = position + 1
-              local views = holder.itemView.getTag()
-              if views == nil then return end
-              local item = data[position]
-              if item then
-                  LuaImageLoader.load(views.iv_image, item.images.large)
-                  views.tv_title.setText(item.title)
-              end
-              if (position == #data) then
-                  getData() -- getdata may call ther lua files
-              end
-          end,
-      }))
-
-      recyclerView.setLayoutManager(GridLayoutManager(activity,3))
-      recyclerView.setAdapter(adapter)
-      getData()
+            end
+            return holder
+        end,
+        onBindViewHolder = function(holder, position)
+            position = position + 1
+            local views = holder.itemView.getTag()
+            if views == nil then return end
+            local item = data[position]
+            if item then
+                LuaImageLoader.load(views.iv_image, item.images.large)
+                views.tv_title.setText(item.title)
+            end
+            if (position == #data) then
+                getData() -- getdata may call ther lua files
+            end
+        end,
+    }))
+    recyclerView.setLayoutManager(GridLayoutManager(activity, 3))
+    recyclerView.setAdapter(adapter)
+    getData()
 end

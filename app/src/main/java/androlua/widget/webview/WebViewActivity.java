@@ -34,6 +34,8 @@ public class WebViewActivity extends BaseActivity {
     private View loading;
     private View layout_toolbar;
     private View ivRefresh;
+    private Bitmap colorBitmap;
+    private Canvas canvas;
 
     public static void start(Context context, String url) {
         start(context, url, Color.TRANSPARENT);
@@ -56,7 +58,7 @@ public class WebViewActivity extends BaseActivity {
         mWebView = (WebView) findViewById(R.id.webview);
         ivRefresh = findViewById(R.id.iv_refresh);
 
-        colorBitmap =  Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
+        colorBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
         canvas = new Canvas(colorBitmap);
 
         WebSettings settings = mWebView.getSettings();
@@ -76,12 +78,12 @@ public class WebViewActivity extends BaseActivity {
         color = getIntent().getIntExtra("color", 0);
         if (color == Color.TRANSPARENT) {
             setLightStatusBar();
-        }else {
+        } else {
             setStatusBarColor(color);
             layout_toolbar.setBackgroundColor(color);
         }
         etUrl.setText(url);
-        mWebView.setWebChromeClient(new WebChromeClient(){
+        mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -94,7 +96,7 @@ public class WebViewActivity extends BaseActivity {
             }
 
         });
-        mWebView.setWebViewClient(new WebViewClient(){
+        mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -114,6 +116,7 @@ public class WebViewActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return false;
             }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
                 return false;
@@ -131,9 +134,6 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
-    private  Bitmap colorBitmap;
-    private Canvas canvas;
-
     private boolean canAsBgColor(int i) {
         return Color.red(i) < 220 || Color.green(i) < 220 || Color.blue(i) < 220;
     }
@@ -145,9 +145,9 @@ public class WebViewActivity extends BaseActivity {
                 int pixel = colorBitmap.getPixel(0, 0);
                 if (canAsBgColor(pixel)) {
                     layout_toolbar.setBackgroundColor(pixel);
-                    if (pixel == Color.WHITE){
+                    if (pixel == Color.WHITE) {
                         setLightStatusBar();
-                    }else {
+                    } else {
                         setStatusBarColor(pixel);
                     }
                 }
@@ -157,7 +157,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()){
+        if (mWebView.canGoBack()) {
             mWebView.goBack();
             return;
         }

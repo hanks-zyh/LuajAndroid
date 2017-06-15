@@ -15,17 +15,6 @@ public class LuaView extends View {
 
     private Creator creator;
 
-    public void setCreator(Creator creator) {
-        this.creator = creator;
-    }
-
-    public interface Creator{
-        void init(Context context, @Nullable AttributeSet attrs, int defStyleAttr);
-        void onDraw(Canvas canvas);
-        void onFinishInflate();
-        void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
-    }
-
     public LuaView(Context context) {
         this(context, null);
     }
@@ -39,6 +28,10 @@ public class LuaView extends View {
         if (creator != null) {
             creator.init(context, attrs, defStyleAttr);
         }
+    }
+
+    public void setCreator(Creator creator) {
+        this.creator = creator;
     }
 
     @Override
@@ -62,5 +55,15 @@ public class LuaView extends View {
         if (creator != null) {
             creator.onDraw(canvas);
         }
+    }
+
+    public interface Creator {
+        void init(Context context, @Nullable AttributeSet attrs, int defStyleAttr);
+
+        void onDraw(Canvas canvas);
+
+        void onFinishInflate();
+
+        void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
     }
 }

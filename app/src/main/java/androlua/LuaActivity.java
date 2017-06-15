@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -25,8 +26,20 @@ import com.luajava.LuaState;
 import com.luajava.LuaStateFactory;
 
 import java.lang.ref.WeakReference;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 
 import androlua.base.BaseActivity;
 import androlua.common.LuaLog;
@@ -50,11 +63,43 @@ public class LuaActivity extends BaseActivity implements LuaContext {
         context.startActivity(starter);
     }
 
+    public String m4069b(String str, String str2) {
+        byte[] decode = Base64.decode(str2.getBytes(), 0);
+        try {
+            Cipher instance = Cipher.getInstance("PBEWithMD5AndDES");
+            instance.init(2, SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(new PBEKeySpec(str.toCharArray())), new PBEParameterSpec(new byte[]{(byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5, (byte) 6, (byte) 7, (byte) 8}, 10));
+            return new String(instance.doFinal(decode));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return str2;
+        } catch (NoSuchPaddingException e2) {
+            e2.printStackTrace();
+            return str2;
+        } catch (InvalidKeyException e3) {
+            e3.printStackTrace();
+            return str2;
+        } catch (InvalidAlgorithmParameterException e4) {
+            e4.printStackTrace();
+            return str2;
+        } catch (IllegalBlockSizeException e5) {
+            e5.printStackTrace();
+            return str2;
+        } catch (BadPaddingException e6) {
+            e6.printStackTrace();
+            return str2;
+        } catch (InvalidKeySpecException e7) {
+            e7.printStackTrace();
+            return str2;
+        }
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         handler = new MainHandler(this);
+
 
         // 用于出错时显示
         initErrorLayout();
@@ -192,12 +237,13 @@ public class LuaActivity extends BaseActivity implements LuaContext {
     protected void onDestroy() {
         try {
             luaManager.runFunc(L, "onDestroy");
-            L.close();
+            super.onDestroy();
+//            L.close();
+            L.gc(LuaState.LUA_GCCOLLECT, 1);
             System.gc();
         } catch (Exception e) {
             LuaLog.e(e);
         }
-        super.onDestroy();
     }
 
     @Override

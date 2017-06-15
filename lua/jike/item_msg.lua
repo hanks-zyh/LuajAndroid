@@ -3,7 +3,7 @@ return {
     layout_width = "fill",
     paddingTop = "16dp",
     orientation = "vertical",
-    background="@drawable/layout_se",
+    background = "@drawable/layout_se",
     -- head
     {
         FrameLayout,
@@ -16,7 +16,7 @@ return {
             id = "iv_image",
             layout_width = "36dp",
             layout_height = "36dp",
-            scaleType="centerCrop"
+            scaleType = "centerCrop"
         },
         {
             TextView,
@@ -25,14 +25,14 @@ return {
             layout_width = "fill",
             paddingRight = "16dp",
             maxLines = "1",
-            ellipsize="end",
+            ellipsize = "end",
             textSize = "13sp",
             textColor = "#234156",
         },
         {
             TextView,
             id = "tv_date",
-            layout_gravity="bottom",
+            layout_gravity = "bottom",
             layout_marginLeft = "44dp",
             layout_width = "fill",
             maxLines = "1",
@@ -69,7 +69,7 @@ return {
     -- video
     {
         FrameLayout,
-        id= "layout_video",
+        id = "layout_video",
         layout_width = "match",
         layout_height = "240dp",
         layout_marginTop = "12dp",
@@ -79,7 +79,7 @@ return {
             ImageView,
             id = "iv_video",
             layout_width = "fill",
-            scaleType="centerCrop"
+            scaleType = "centerCrop"
         },
         {
             View,
@@ -89,10 +89,10 @@ return {
         },
         {
             ImageView,
-            layout_gravity="center",
+            layout_gravity = "center",
             layout_width = "40dp",
             layout_height = "40dp",
-            src="#jike/img/ic_video_play.png",
+            src = "#jike/img/ic_video_play.png",
         },
     },
     -- foot
@@ -100,21 +100,21 @@ return {
         LinearLayout,
         layout_width = "match",
         layout_height = "56dp",
-        paddingLeft="16dp",
-        paddingRight="16dp",
-        gravity="center_vertical",
+        paddingLeft = "16dp",
+        paddingRight = "16dp",
+        gravity = "center_vertical",
         orientation = "horizontal",
         {
             ImageView,
             layout_width = "20dp",
             layout_height = "20dp",
-            src="#jike/img/ic_like_border.png",
+            src = "#jike/img/ic_like_border.png",
         },
         {
             TextView,
             id = "tv_collect",
             layout_width = "70dp",
-            paddingLeft="4dp",
+            paddingLeft = "4dp",
             textSize = "12sp",
             textColor = "#A6A6A6",
         },
@@ -122,12 +122,12 @@ return {
             ImageView,
             layout_width = "20dp",
             layout_height = "20dp",
-            src="#jike/img/ic_comment.png"
+            src = "#jike/img/ic_comment.png"
         },
         {
             TextView,
             id = "tv_comment",
-            paddingLeft="4dp",
+            paddingLeft = "4dp",
             layout_width = "70dp",
             textSize = "12sp",
             textColor = "#A6A6A6",
@@ -136,7 +136,7 @@ return {
             ImageView,
             layout_width = "20dp",
             layout_height = "20dp",
-            src="#jike/img/ic_share.png"
+            src = "#jike/img/ic_share.png"
         },
     },
     {

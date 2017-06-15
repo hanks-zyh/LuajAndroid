@@ -8,31 +8,29 @@
 require "import"
 import "android.widget.*"
 import "android.content.*"
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
-local Adapter = luajava.bindClass("androlua.LuaAdapter")
-local ImageLoader = luajava.bindClass("androlua.LuaImageLoader")
-local LuaFragment = luajava.bindClass("androlua.LuaFragment")
-local Http = luajava.bindClass("androlua.LuaHttp")
+import "androlua.LuaImageLoader"
+
+local uihelper = require "common.uihelper"
+local JSON = require "common.json"
 
 local function fetchData(id, data, adapter, fragment)
     local url
-    if id then url = string.format('http://news-at.zhihu.com/api/4/theme/%d',id)
+    if id then url = string.format('http://news-at.zhihu.com/api/4/theme/%d', id)
     else
-         url = string.format('http://news.at.zhihu.com/api/4/news/before/%s',data.lastPage)
+        url = string.format('http://news.at.zhihu.com/api/4/news/before/%s', data.lastPage)
     end
 
-    Http.request({ url = url }, function(error, code, body)
+    LuaHttp.request({ url = url }, function(error, code, body)
         local json = JSON.decode(body)
         if json.date then data.lastPage = json.date end
         local stories = json.stories
-        for i=1,#stories do
-          local item = {}
-          item.type = stories[i].type
-          item.id = stories[i].id
-          item.title = stories[i].title
-          item.images = stories[i].images
-          data.news[#data.news+1] = item
+        for i = 1, #stories do
+            local item = {}
+            item.type = stories[i].type
+            item.id = stories[i].id
+            item.title = stories[i].title
+            item.images = stories[i].images
+            data.news[#data.news + 1] = item
         end
         uihelper.runOnUiThread(fragment.getActivity(), function()
             adapter.notifyDataSetChanged()
@@ -40,11 +38,11 @@ local function fetchData(id, data, adapter, fragment)
     end)
 end
 
-function launchDetail(fragment, newsid)
+local function launchDetail(fragment, newsid)
     local activity = fragment.getActivity()
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", 'zhihudaliy/activity_zhihu_daliy_detail.lua')
-    intent.putExtra("newsid", ''..newsid)
+    intent.putExtra("newsid", '' .. newsid)
     activity.startActivity(intent)
 end
 
@@ -75,20 +73,19 @@ function newInstance(id)
         {
             TextView,
             id = "tv_title",
-            paddingRight= "16dp",
+            paddingRight = "16dp",
             maxLines = "2",
             layout_alignParentLeft = true,
             lineSpacingMultiplier = '1.3',
             textSize = "14sp",
             textColor = "#222222",
-            layout_toLeftOf="iv_image",
+            layout_toLeftOf = "iv_image",
         },
-
     }
 
     local data = {
-      news= {},
-      lastPage='99990101',
+        news = {},
+        lastPage = '99990101',
     }
     local ids = {}
 
@@ -101,7 +98,7 @@ function newInstance(id)
             return loadlayout(layout, ids)
         end,
         onViewCreated = function(view, savedInstanceState)
-            adapter = Adapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
+            adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
                 getCount = function() return #data.news end,
                 getItem = function(position) return nil end,
                 getItemId = function(position) return position end,
@@ -109,7 +106,7 @@ function newInstance(id)
                     position = position + 1 -- lua 索引从 1开始
                     if position == #data.news then
                         if id == nil then
-                          fetchData(id, data, adapter, fragment)
+                            fetchData(id, data, adapter, fragment)
                         end
                     end
                     if convertView == nil then
@@ -125,9 +122,10 @@ function newInstance(id)
                     local item = data.news[position]
                     if item then
                         if item.images and #item.images[1] then
-                          views.iv_image.setVisibility(0)
-                          ImageLoader.load(views.iv_image, item.images[1])
-                        else views.iv_image.setVisibility(8) end
+                            views.iv_image.setVisibility(0)
+                            LuaImageLoader.load(views.iv_image, item.images[1])
+                        else views.iv_image.setVisibility(8)
+                        end
                         views.tv_title.setText(item.title)
                     end
                     return convertView

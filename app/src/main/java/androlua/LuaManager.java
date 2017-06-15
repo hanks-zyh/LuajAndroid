@@ -44,8 +44,8 @@ public class LuaManager {
     public void init(Context context) {
         this.context = context;
         // 注册crashHandler
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(context.getApplicationContext());
+        // CrashHandler crashHandler = CrashHandler.getInstance();
+        // crashHandler.init(context.getApplicationContext());
 
         //初始化AndroLua工作目录
         luaExtDir = LuaFileUtils.getAndroLuaDir();
@@ -57,13 +57,13 @@ public class LuaManager {
         luaLpath = luaDir + "/?.lua;" + luaDir + "/lua/?.lua;" + luaDir + "/?/initEnv.lua;" + luaExtDir + "/?.lua;";
     }
 
+    public boolean isDebugable() {
+        return debugable;
+    }
+
     public LuaManager setDebugable(boolean debugable) {
         this.debugable = debugable;
         return this;
-    }
-
-    public boolean isDebugable() {
-        return debugable;
     }
 
     //运行lua脚本
@@ -72,7 +72,7 @@ public class LuaManager {
     }
 
     public Object doFile(LuaState L, String filePath, Object[] args) throws LuaException {
-        appendLuaDir(L,filePath);
+        appendLuaDir(L, filePath);
         int ok = 0;
         L.setTop(0);
         ok = L.LloadFile(filePath);
@@ -193,8 +193,8 @@ public class LuaManager {
         if (!dir.startsWith("/")) {
             dir = getLibDir() + "/" + dir;
         }
-        if (dir.endsWith(".so")){
-            dir = dir.substring(0,dir.lastIndexOf('/'));
+        if (dir.endsWith(".so")) {
+            dir = dir.substring(0, dir.lastIndexOf('/'));
         }
         String newPath = String.format(";%s/?.so", dir);
         if (luaCpath.contains(newPath)) {
@@ -203,15 +203,15 @@ public class LuaManager {
         luaCpath += newPath;
     }
 
-    public void appendLuaDir(LuaState L,String dir) {
+    public void appendLuaDir(LuaState L, String dir) {
         if (!dir.startsWith("/")) {
             dir = getLuaExtDir() + "/" + dir;
         }
-        if (dir.endsWith(".lua")){
-            dir = dir.substring(0,dir.lastIndexOf('/'));
+        if (dir.endsWith(".lua")) {
+            dir = dir.substring(0, dir.lastIndexOf('/'));
         }
         String newPath = String.format(";%s/?.lua", dir);
-        if (luaLpath.contains(newPath)){
+        if (luaLpath.contains(newPath)) {
             return;
         }
         luaLpath += newPath;
@@ -284,7 +284,7 @@ public class LuaManager {
 
             initLuaPath(L);
             L.pop(1);
-            return  L;
+            return L;
         } catch (LuaException e) {
             e.printStackTrace();
             return null;

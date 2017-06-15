@@ -73,7 +73,7 @@ local layout = {
             layout_width = "40dp",
             layout_height = "40dp",
         },
-         {
+        {
             View,
             layout_width = "fill",
             layout_height = "3dp",

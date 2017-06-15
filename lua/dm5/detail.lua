@@ -80,38 +80,38 @@ local layout = {
                 background = "#ffffff",
                 orientation = "vertical",
                 {
-                  FrameLayout,
-                  padding = "16dp",
-                  layout_width = "match",
-                  background = "#2D2118",
-                  {
-                      TextView,
-                      id = "tv_title",
-                      textSize = "22sp",
-                      textColor = "#FFFFFF",
-                  },
-                  {
-                      TextView,
-                      id = "tv_updateinfo",
-                      layout_marginTop = "34dp",
-                      textSize = "14sp",
-                      textColor = "#FFFFFF",
-                  },
-                  {
-                      TextView,
-                      id = "tv_score",
-                      layout_gravity = "right",
-                      layout_marginTop = "8dp",
-                      textSize = "16sp",
-                      textColor = "#FFFFFF",
-                  },
-                  {
-                      TextView,
-                      id = "tv_type",
-                      textSize = "12sp",
-                      layout_marginTop = "60dp",
-                      textColor = "#EEFFFFFF",
-                  },
+                    FrameLayout,
+                    padding = "16dp",
+                    layout_width = "match",
+                    background = "#2D2118",
+                    {
+                        TextView,
+                        id = "tv_title",
+                        textSize = "22sp",
+                        textColor = "#FFFFFF",
+                    },
+                    {
+                        TextView,
+                        id = "tv_updateinfo",
+                        layout_marginTop = "34dp",
+                        textSize = "14sp",
+                        textColor = "#FFFFFF",
+                    },
+                    {
+                        TextView,
+                        id = "tv_score",
+                        layout_gravity = "right",
+                        layout_marginTop = "8dp",
+                        textSize = "16sp",
+                        textColor = "#FFFFFF",
+                    },
+                    {
+                        TextView,
+                        id = "tv_type",
+                        textSize = "12sp",
+                        layout_marginTop = "60dp",
+                        textColor = "#EEFFFFFF",
+                    },
                 },
                 {
                     TextView,
@@ -133,7 +133,6 @@ local layout = {
         background = "#ffffff",
         applayout_behavior = AppBarLayoutScrollingViewBehavior(),
     },
-
 }
 
 local item_capter = {
@@ -166,7 +165,7 @@ local function updateHeader()
     -- header
     LuaImageLoader.load(iv_cover, baseInfo.coverImg or '')
     tv_title.setText(baseInfo.title or '')
-    tv_type.setText(string.format('%s        %s',trim(baseInfo.author),trim(baseInfo.type)))
+    tv_type.setText(string.format('%s        %s', trim(baseInfo.author), trim(baseInfo.type)))
     tv_score.setText('评分:' .. baseInfo.score)
     tv_desc.setText(baseInfo.desc or '')
     tv_updateinfo.setText(baseInfo.updateInfo or '')
@@ -214,9 +213,9 @@ local function getData(url)
 end
 
 function launchDetail(item)
-    local intent = Intent(activity,LuaActivity)
-    intent.putExtra("luaPath","dm5/viewer.lua")
-    intent.putExtra("id",item.url)
+    local intent = Intent(activity, LuaActivity)
+    intent.putExtra("luaPath", "dm5/viewer.lua")
+    intent.putExtra("id", item.url)
     activity.startActivity(intent)
 end
 
@@ -237,9 +236,9 @@ function onCreate(savedInstanceState)
             local holder = LuaRecyclerHolder(loadlayout(item_capter, views, RecyclerView))
             holder.itemView.setTag(views)
             holder.itemView.getLayoutParams().width = screenWidth / 4
-            holder.itemView.onClick = function  (view)
-              local p = holder.getAdapterPosition() + 1
-              launchDetail(data[p])
+            holder.itemView.onClick = function(view)
+                local p = holder.getAdapterPosition() + 1
+                launchDetail(data[p])
             end
             return holder
         end,

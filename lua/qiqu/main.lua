@@ -40,7 +40,7 @@ local layout = {
         },
         {
             ProgressBar,
-            layout_gravity="center",
+            layout_gravity = "center",
             id = "progressBar",
             layout_width = "40dp",
             layout_height = "40dp",

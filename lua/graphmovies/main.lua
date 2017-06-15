@@ -22,7 +22,7 @@ local layout = {
     orientation = "vertical",
     layout_width = "fill",
     layout_height = "fill",
-    background  = "#f1f1f1",
+    background = "#f1f1f1",
     statusBarColor = "#F0000000",
     {
         TextView,
@@ -130,47 +130,46 @@ local adapter
 local orkey
 
 local function getJsonData()
-  local url = string.format('http://www.graphmovies.com/home/2/get.php?orkey=%s', orkey)
-  local options = {
-    url = url,
-    method = 'POST',
-    headers = {
-      "X-Requested-With: XMLHttpRequest",
-      "Content-Type: application/x-www-form-urlencoded",
-    },
-    formData = {
-      "p:15",
-      "type:movie",
-      "zone:0",
-      "tag:0",
-      "showtime:0",
-      "level:0",
-    },
-  }
-if #data.dailyList > 0 then
-  options.formData[#options.formData + 1] =  't:' .. (data.dailyList[#data.dailyList].onlinetime or '')
-end
-  LuaHttp.request(options, function(e,code, body)
-    local json = JSON.decode(body)
-    local arr = json.data
-    uihelper.runOnUiThread(activity, function()
-      for i=1,#arr do
-        data.dailyList[#data.dailyList + 1] = arr[i]
-      end
-      adapter.notifyDataSetChanged()
+    local url = string.format('http://www.graphmovies.com/home/2/get.php?orkey=%s', orkey)
+    local options = {
+        url = url,
+        method = 'POST',
+        headers = {
+            "X-Requested-With: XMLHttpRequest",
+            "Content-Type: application/x-www-form-urlencoded",
+        },
+        formData = {
+            "p:15",
+            "type:movie",
+            "zone:0",
+            "tag:0",
+            "showtime:0",
+            "level:0",
+        },
+    }
+    if #data.dailyList > 0 then
+        options.formData[#options.formData + 1] = 't:' .. (data.dailyList[#data.dailyList].onlinetime or '')
+    end
+    LuaHttp.request(options, function(e, code, body)
+        local json = JSON.decode(body)
+        local arr = json.data
+        uihelper.runOnUiThread(activity, function()
+            for i = 1, #arr do
+                data.dailyList[#data.dailyList + 1] = arr[i]
+            end
+            adapter.notifyDataSetChanged()
+        end)
     end)
-
-  end)
 end
 
 local function getData()
     if orkey == nil then
-        LuaHttp.request({url='http://www.graphmovies.com/home/2/'}, function(error, code, body)
-            orkey = string.match(body,"get.php[?]orkey=(.-)'")
+        LuaHttp.request({ url = 'http://www.graphmovies.com/home/2/' }, function(error, code, body)
+            orkey = string.match(body, "get.php[?]orkey=(.-)'")
             getJsonData()
         end)
     else
-      getJsonData()
+        getJsonData()
     end
 end
 
@@ -179,12 +178,12 @@ function launchDetail(item)
     local json = { orkey = item.orkey, name = item.name }
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", 'graphmovies/detail.lua')
-    intent.putExtra("json", JSON.encode(json) )
+    intent.putExtra("json", JSON.encode(json))
     activity.startActivity(intent)
 end
 
 function onDestroy()
-  LuaHttp.cancelAll()
+    LuaHttp.cancelAll()
 end
 
 function onCreate(savedInstanceState)
