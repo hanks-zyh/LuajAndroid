@@ -33,7 +33,6 @@ end
 
 local function fetchData(refreshLayout, data, adapter, fragment, reload)
     local url = string.format('http://app.jike.ruguoapp.com/1.0/recommendFeed/list')
-    print(url)
     local postBody = { trigger = 'user' }
     if data.loadMoreKey and not reload then
         postBody.loadMoreKey = data.loadMoreKey
@@ -57,13 +56,13 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
         if reload then
             clearTable(data.msg)
         end
-        for i = 1, #json.data do
-            local type = json.data[i].type
-            if type == 'MESSAGE_RECOMMENDATION' then
-                data.msg[#data.msg + 1] = json.data[i]
-            end
-        end
         uihelper.runOnUiThread(fragment.getActivity(), function()
+            for i = 1, #json.data do
+                local type = json.data[i].type
+                if type == 'MESSAGE_RECOMMENDATION' then
+                    data.msg[#data.msg + 1] = json.data[i]
+                end
+            end
             refreshLayout.setRefreshing(false)
             adapter.notifyDataSetChanged()
         end)

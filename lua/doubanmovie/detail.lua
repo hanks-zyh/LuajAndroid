@@ -3,7 +3,7 @@ import "android.widget.*"
 import "android.content.*"
 import "android.view.View"
 import "androlua.LuaHttp"
-
+import "androlua.widget.video.VideoPlayerActivity"
 local JSON = require "common.json"
 local uihelper = require "common.uihelper"
 
@@ -45,6 +45,28 @@ local layout = {
                 scaleType = "centerCrop",
                 background = "@drawable/ic_loading",
                 elevation = "2dp",
+            },
+            {
+                View,
+                layout_gravity = "bottom",
+                layout_marginLeft = "16dp",
+                layout_marginBottom = "8dp",
+                layout_width = "104dp",
+                layout_height = "160dp",
+                elevation = "2dp",
+                background = "#44000000",
+            },
+            {
+                ImageView,
+                layout_gravity = "bottom",
+                layout_marginLeft = "16dp",
+                layout_marginBottom = "8dp",
+                layout_width = "104dp",
+                layout_height = "160dp",
+                padding = "35dp",
+                elevation = "2dp",
+                scaleType = "centerInside",
+                src = "#doubanmovie/ic_video_play.png",
             },
             {
                 RelativeLayout,
@@ -137,7 +159,7 @@ local layout = {
             TextView,
             layout_margin = "16dp",
             textSize = "20sp",
-            text = "演员表",
+            text = "剧照",
             textColor = "#444444",
         },
         {
@@ -147,70 +169,157 @@ local layout = {
                 LinearLayout,
                 id = "layout_casts",
                 layout_width = "fill",
-                layout_height = "200dp",
+                layout_height = "120dp",
                 paddingLeft = "16dp",
                 clipToPadding = false,
             }
         },
+        {
+            TextView,
+            layout_margin = "16dp",
+            textSize = "20sp",
+            text = "热门评论",
+            textColor = "#444444",
+        },
+        {
+            LinearLayout,
+            id = "layout_comment",
+            layout_width = "fill",
+            orientation = "vertical",
+        }
+
     },
+}
+
+local item_comment = {
+  RelativeLayout,
+  layout_width = "fill",
+  paddingLeft = "16dp",
+  paddingRight = "16dp",
+  paddingTop = "16dp",
+  {
+      ImageView,
+      id = "iv_avatar",
+      layout_width = "36dp",
+      layout_height = "36dp",
+      scaleType = "centerCrop",
+  },
+  {
+      TextView,
+      id = "tv_nick",
+      layout_width = "fill",
+      textColor = "#111111",
+      textSize = "15sp",
+      layout_marginLeft = "48dp",
+  },
+  {
+      TextView,
+      id = "tv_date",
+      layout_width = "fill",
+      textColor = "#888888",
+      textSize = "12sp",
+      layout_marginLeft = "48dp",
+      layout_marginTop = "2dp",
+      layout_below = "tv_nick",
+  },
+
+  {
+      TextView,
+      id = "tv_content",
+      layout_width = "fill",
+      textColor = "#222222",
+      textSize = "13sp",
+      layout_below = "tv_date",
+      layout_marginLeft = "48dp",
+      layout_marginTop = "4dp",
+      lineSpacingMultiplier = 1.2,
+  },
+  {
+      View,
+      layout_below = "tv_content",
+      layout_marginTop = "16dp",
+      layout_marginLeft = "48dp",
+      layout_width = "fill",
+      layout_height = "1dp",
+      background = "#f1f1f1",
+  },
 }
 
 local item_cast = {
     LinearLayout,
-    layout_width = "80dp",
+    layout_width = "168dp",
+    layout_height = "fill",
     orientation = "vertical",
     gravity = "center",
     paddingRight = "8dp",
     {
         ImageView,
         layout_width = "fill",
-        layout_height = "120dp",
+        layout_height = "fill",
         scaleType = "centerCrop",
     },
-    {
-        TextView,
-        layout_margin = "4dp",
-        textSize = "12sp",
-        textColor = "#444444",
-    }
 }
 
-function getData(id)
-    local url = string.format('http://api.douban.com/v2/movie/subject/%s', id)
+local function updateHeader(movie)
+  uihelper.runOnUiThread(activity, function()
+    LuaImageLoader.load(iv_bg, movie.img)
+    LuaImageLoader.load(iv_cover, movie.img)
+    local rate = movie.sc
+    if rate == '0' or rate == 0 then rate = '暂无' end
+    tv_title.setText(movie.nm)
+    tv_rate.setText('评分:  ' .. rate)
+    tv_summary.setText(movie.dra or '暂无简介')
+    tv_year.setText('上映时间:  ' .. movie.rt or '')
+    tv_genres.setText('分类:  ' .. movie.cat)
+    tv_duration.setText(string.format('%s/%s分钟', movie.src or '未知' , movie.pn ))
+    tv_directors.setText('导演:  ' .. movie.dir)
+    if movie.vd then
+      iv_cover.onClick = function(view)
+        local json = { url = movie.vd, poster = movie.img }
+        VideoPlayerActivity.start(activity, JSON.encode(json))
+      end
+    end
+
+    if movie.photos then
+        layout_casts.removeAllViews()
+        for i = 1, #movie.photos do
+            local img = movie.photos[i]:gsub('net/.-/movie','net/800.1600/movie')
+            local child = loadlayout(item_cast)
+            LuaImageLoader.load(child.getChildAt(0), img)
+            layout_casts.addView(child)
+        end
+    end
+  end)
+end
+
+local function updateComment(comments)
+  uihelper = runOnUiThread(activity, function()
+
+        layout_comment.removeAllViews()
+        for i = 1, #comments do
+            local views = {}
+            local child = loadlayout(item_comment,views)
+            LuaImageLoader.load(views.iv_avatar, comments[i].avatarurl)
+            views.tv_nick.setText(comments[i].nickName or '')
+            views.tv_date.setText(comments[i].time or '')
+            views.tv_content.setText(comments[i].content or '')
+            layout_comment.addView(child)
+        end
+
+  end)
+
+end
+local function getData(id)
+    local url = string.format('http://m.maoyan.com/movie/%s.json', id)
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then
             print('get data error ' .. error)
         end
-        local json = JSON.decode(body)
-        uihelper.runOnUiThread(activity, function()
-            LuaImageLoader.load(iv_bg, json.images.small)
-            LuaImageLoader.load(iv_cover, json.images.large)
-            local rate = json.rating.average
-            if rate == '0' or rate == 0 then rate = '暂无' end
-            tv_title.setText(json.title)
-            tv_rate.setText('评分:  ' .. rate)
-            tv_summary.setText(json.summary or '暂无简介')
-            tv_year.setText('年份:  ' .. json.year or '')
-            tv_genres.setText('分类:  ' .. table.concat(json.genres or { '无' }, ','))
-            tv_duration.setText(string.format('%s/%s', table.concat(json.countries or { '未知' }, ','),
-                table.concat(json.durations or { '0' }, ',')))
-
-            local directors = {}
-            if json.directors then
-                for i = 1, #json.directors do directors[i] = json.directors[i].name end
-            end
-            tv_directors.setText('导演:  ' .. table.concat(directors, ','))
-            if json.casts then
-                layout_casts.removeAllViews()
-                for i = 1, #json.casts do
-                    local cast = json.casts[i]
-                    local child = loadlayout(item_cast)
-                    LuaImageLoader.load(child.getChildAt(0), cast.avatars.medium)
-                    child.getChildAt(1).setText(cast.name)
-                    layout_casts.addView(child)
-                end
-            end
-        end)
+        local json = JSON.decode(body).data
+        local movie  = json.MovieDetailModel
+        local comments  = json.CommentResponseModel.hcmts -- 热门
+        if movie then updateHeader(movie) end
+        if comments then updateComment(comments) end
     end)
 end
 
@@ -218,5 +327,6 @@ function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
     local id = activity.getIntent().getStringExtra('id')
+    print('ddddddddddddd:'..id)
     getData(id)
 end

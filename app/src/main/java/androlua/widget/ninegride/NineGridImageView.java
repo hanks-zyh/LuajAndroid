@@ -212,12 +212,17 @@ public class NineGridImageView<T> extends ViewGroup {
             if (iv == null) {
                 continue;
             }
+            int w,h;
             if (newShowCount == 1) {
                 iv.setScaleType(ImageView.ScaleType.FIT_XY);
+                w = mSingleImgWidth;
+                h = mSingleImgHeight;
             } else {
+                w = h = mGridSize;
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
-            addView(iv, generateDefaultLayoutParams());
+
+            addView(iv, new ViewGroup.LayoutParams(w,h));
             LuaImageLoader.load(iv, mImgDataList.get(i));
             final int finalI = i;
             iv.setOnClickListener(new OnClickListener() {

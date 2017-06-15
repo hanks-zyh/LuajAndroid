@@ -19,6 +19,7 @@ import "android.support.v7.widget.GridLayoutManager"
 
 local uihelper = require("common.uihelper")
 local JSON = require("common.json")
+local log = require("common.log")
 
 -- create view table
 local layout = {
@@ -26,15 +27,15 @@ local layout = {
     orientation = "vertical",
     layout_width = "fill",
     layout_height = "fill",
-    statusBarColor = "#FFFFFF",
+    statusBarColor = "#DB3C2E",
     {
         TextView,
         layout_width = "fill",
         layout_height = "48dp",
-        background = "#FFFFFF",
+        background = "#DB3C2E",
         gravity = "center",
-        text = "豆瓣-热映电影",
-        textColor = "#42BD52",
+        text = "热映电影",
+        textColor = "#FFFFFF",
         textSize = "18sp",
     },
     {
@@ -46,6 +47,10 @@ local layout = {
             id = "recyclerView",
             layout_width = "fill",
             layout_height = "fill",
+            paddingTop = "8dp",
+            paddingLeft= "4dp",
+            paddingRight = "4dp",
+            clipToPadding = false,
         },
         {
             View,
@@ -57,53 +62,61 @@ local layout = {
 }
 
 local item_view = {
-    LinearLayout,
+    FrameLayout,
     layout_width = "match",
-    layout_height = "wrap",
-    orientation = "vertical",
-    gravity = "center",
+    padding = "4dp",
     {
         ImageView,
         id = "iv_image",
-        layout_width = "104dp",
+        layout_width = "fill",
         layout_height = "160dp",
         scaleType = "centerCrop",
     },
     {
+      View,
+      layout_width = "fill",
+      layout_height = "36dp",
+      background = "#AA000000",
+      layout_gravity = "bottom",
+    },
+    {
         TextView,
         id = "tv_title",
-        layout_marginTop = "4dp",
-        layout_marginBottom = "12dp",
-        padding = "4dp",
+        layout_height = "36dp",
         layout_width = "fill",
-        gravity = "center",
+        gravity = "center_vertical",
+        layout_gravity = "bottom",
+        paddingLeft = "28dp",
         textSize = "12sp",
         maxLines = 1,
         ellipsize = "end",
-        textColor = "#444444",
+        textColor = "#FFFFFF",
+    },
+    {
+        TextView,
+        id = "tv_score",
+        layout_height = "36dp",
+        paddingLeft = "4dp",
+        gravity = "center_vertical",
+        layout_gravity = "bottom",
+        textSize = "13sp",
+        textColor = "#F9B600",
     },
 }
 
 
 local data = {}
 local adapter
-local page = 0
-local pageCount = 15
-local total = 99999
 
 function getData()
-    if #data >= total then return end
-    local url = string.format('http://api.douban.com/v2/movie/in_theaters?apikey=0df993c66c0c636e29ecbb5344252a4a&count=%d&start=%d', pageCount, page * pageCount)
+    local url = string.format('http://m.maoyan.com/movie/list.json?type=hot&offset=0&limit=200')
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then
             print('fetch data error')
             return
         end
-        local str = JSON.decode(body)
-        total = str.total
-        page = page + 1
+        local arr = JSON.decode(body).data.movies
         uihelper = runOnUiThread(activity, function()
-            local arr = str.subjects
             for i = 1, #arr do
                 data[#data + 1] = arr[i]
             end
@@ -115,7 +128,7 @@ end
 local function launchDetail(item)
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", 'doubanmovie/detail.lua')
-    intent.putExtra("id", item.id)
+    intent.putExtra("id", item.id ..'')
     activity.startActivity(intent)
 end
 
@@ -157,11 +170,11 @@ function onCreate(savedInstanceState)
             if views == nil then return end
             local item = data[position]
             if item then
-                LuaImageLoader.load(views.iv_image, item.images.large)
-                views.tv_title.setText(item.title)
-            end
-            if (position == #data) then
-                getData() -- getdata may call ther lua files
+                LuaImageLoader.load(views.iv_image, item.img)
+                views.tv_title.setText(item.nm)
+                local sc = item.sc
+                if sc == nil or sc == 0 then sc = '' end
+                views.tv_score.setText( '' .. sc)
             end
         end,
     }))
