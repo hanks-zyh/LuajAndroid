@@ -53,10 +53,10 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
         end
         local json = JSON.decode(body)
         data.loadMoreKey = json.loadMoreKey
-        if reload then
-            clearTable(data.msg)
-        end
         uihelper.runOnUiThread(fragment.getActivity(), function()
+            if reload then
+                clearTable(data.msg)
+            end
             for i = 1, #json.data do
                 local type = json.data[i].type
                 if type == 'MESSAGE_RECOMMENDATION' then
@@ -104,6 +104,7 @@ function newInstance()
         orientation = "vertical",
         {
             SwipeRefreshLayout,
+            layout_width = "match",
             id = "refreshLayout",
             {
                 RecyclerView,
@@ -133,8 +134,6 @@ function newInstance()
     local fragment = LuaFragment.newInstance()
     local adapter
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
-        onDestroyView = function() end,
-        onDestroy = function() end,
         onCreateView = function(inflater, container, savedInstanceState)
             return loadlayout(layout, ids)
         end,

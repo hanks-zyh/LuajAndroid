@@ -1,6 +1,7 @@
 package androlua;
 
 import android.support.annotation.NonNull;
+import android.support.compat.BuildConfig;
 
 import com.luajava.LuaException;
 import com.luajava.LuaObject;
@@ -38,9 +39,11 @@ public class LuaHttp {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        httpClient = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .build();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (!"release".equals(BuildConfig.BUILD_TYPE)){
+            builder.addInterceptor(interceptor);
+        }
+        httpClient = builder.build();
 
     }
 

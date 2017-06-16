@@ -6,12 +6,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +22,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import androlua.LuaImageLoader;
 import androlua.adapter.LuaFragmentPageAdapter;
 import androlua.base.BaseActivity;
 import androlua.base.BaseFragment;
@@ -36,6 +38,7 @@ public class PicturePreviewActivity extends BaseActivity {
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private int currentIndex;
     private ViewPager viewPager;
+    private TextView tv_count;
 
     public static void start(Context context, String json) {
         Intent starter = new Intent(context, PicturePreviewActivity.class);
@@ -47,6 +50,7 @@ public class PicturePreviewActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
+        tv_count = (TextView) findViewById(R.id.tv_count);
         setStatusBarColor(Color.TRANSPARENT);
         getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -63,7 +67,23 @@ public class PicturePreviewActivity extends BaseActivity {
 
             @Override
             public String getPageTitle(int position) {
-                return position + "/" + fragments.size();
+                return (position + 1) + "/" + fragments.size();
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tv_count.setText(adapter.getPageTitle(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
         viewPager.setAdapter(adapter);
@@ -83,6 +103,7 @@ public class PicturePreviewActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        tv_count.setText(String.format("%s/%s",1,uris.size()));
         for (String uri : uris) {
             fragments.add(PicturePreviewFragment.newInstance(uri));
         }
@@ -112,9 +133,13 @@ public class PicturePreviewActivity extends BaseActivity {
             super.onViewCreated(view, savedInstanceState);
             String uri = getArguments().getString("uri", "");
             ImageView imageView = (ImageView) view;
-            LuaImageLoader.load(getActivity(), imageView, uri,
-                    ContextCompat.getDrawable(getActivity(), R.drawable.bg_circle),
-                    ContextCompat.getDrawable(getActivity(), R.drawable.bg_circle));
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .placeholder(R.drawable.bg_circle)
+                    .error(R.drawable.bg_circle)
+                    .crossFade()
+                    .into(imageView);
         }
     }
 

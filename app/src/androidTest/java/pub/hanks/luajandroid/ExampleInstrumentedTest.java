@@ -29,11 +29,6 @@ import android.widget.TextView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -55,7 +50,7 @@ public class ExampleInstrumentedTest {
 
         GridView gridLayout = new GridView(appContext);
         gridLayout.setNumColumns(5);
-//        gridLayout.setStretchMode(1);
+        gridLayout.setStretchMode(GridView.STRETCH_SPACING);
         gridLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -86,7 +81,7 @@ public class ExampleInstrumentedTest {
         tabLayout.setVisibility(View.VISIBLE);
         WebView webView = new WebView(appContext);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.addJavascriptInterface(this, "");
+        //webView.addJavascriptInterface(this, "");
 
         final BottomNavigationView bottomView = new BottomNavigationView(appContext);
         ColorStateList textColor = ColorStateList.valueOf(0xFFFF0000);
@@ -111,16 +106,6 @@ public class ExampleInstrumentedTest {
         // 动态代理
 
 
-        Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[]{List.class},
-                new InvocationHandler() {
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if ("add".equals(method.getName())) {
-                            throw new UnsupportedOperationException();
-                        } else {
-                            return method.invoke(list, args);
-                        }
-                    }
-                });
 
 
     }

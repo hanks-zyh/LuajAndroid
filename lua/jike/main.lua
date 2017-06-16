@@ -10,7 +10,7 @@ import "androlua.adapter.LuaFragmentPageAdapter"
 local uihelper = require("common.uihelper")
 local recommendFragment = require("jike.fragment_recomend")
 -- local feedFragment = require("jike.fragment_feed")
--- local hotFragment = require("jike.fragment_hot")
+local hotFragment = require("jike.fragment_hot")
 
 local layout = {
     LinearLayout,
@@ -25,9 +25,9 @@ local layout = {
 }
 
 local data = {
-    titles = { "推荐", "热门", "订阅" },
+    titles = { "热门", "热门", "订阅" },
     -- fragments = {recommendFragment.newInstance(), hotFragment.newInstance(), feedFragment.newInstance()},
-    fragments = { recommendFragment.newInstance() },
+    fragments = { hotFragment.newInstance() },
 }
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),

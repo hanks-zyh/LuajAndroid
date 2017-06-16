@@ -6,21 +6,20 @@ import "android.support.v7.widget.Toolbar"
 import "androlua.LuaActivity"
 import "androlua.LuaAdapter"
 local layout = require "main.layout_main"
+local uihelper = require "common.uihelper"
 
 local item_view = {
     LinearLayout,
     layout_width = "50dp",
-    layout_height = "wrap",
+    layout_height = "68dp",
     orientation = "vertical",
     gravity = "center",
-    paddingTop = "4dp",
-    paddingBottom = "4dp",
     {
         ImageView,
         id = "icon",
         layout_width = "40dp",
         layout_height = "40dp",
-        src = '@mipmap/ic_launcher_round'
+        background = "#AAAAAA",
     },
     {
         TextView,
@@ -28,7 +27,7 @@ local item_view = {
         textSize = "10sp",
         gravity = "center",
         layout_width = "fill",
-        layout_marginTop = "2dp",
+        layout_height = "20dp",
     }
 }
 local data = {}
@@ -62,7 +61,7 @@ function onCreate(savedInstanceState)
         launchPage = 'dm5/main.lua'
     }
     data[#data + 1] = {
-        text = '豆瓣电影',
+        text = '热映电影',
         launchPage = 'doubanmovie/main.lua'
     }
     data[#data + 1] = {
@@ -98,7 +97,7 @@ function onCreate(savedInstanceState)
             if convertView == nil then
                 local views = {} -- store views
                 convertView = loadlayout(item_view, views, GridView)
-                convertView.getLayoutParams().width = 171
+                convertView.getLayoutParams().width = gridView.getWidth() / 5 - 1
                 convertView.setTag(views)
             end
             local views = convertView.getTag()
