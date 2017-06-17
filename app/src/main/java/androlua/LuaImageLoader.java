@@ -3,13 +3,17 @@ package androlua;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import pub.hanks.luajandroid.R;
 
 /**
@@ -22,15 +26,23 @@ public class LuaImageLoader {
     public static void load(ImageView imageView, String uri) {
         load(imageView.getContext(), imageView, uri);
     }
+    public static void loadWithRadius(ImageView imageView, float radius, String uri) {
+        Context context = imageView.getContext();
+        GradientDrawable gd = new GradientDrawable();
+        gd.setCornerRadius(LuaUtil.dp2px(radius));
+        gd.setColor(0xffebf0f2);
+        load(context, imageView, uri, radius, 0, gd, gd);
 
+    }
 
     public static void load(Context context, ImageView imageView, String uri) {
-        load(context, imageView, uri,
+
+        load(context, imageView, uri, 0, 0,
                 ContextCompat.getDrawable(context, R.drawable.ic_loading),
                 ContextCompat.getDrawable(context, R.drawable.ic_loading));
     }
 
-    public static void load(Context context, ImageView imageView, String uri,
+    public static void load(Context context, ImageView imageView, String uri, float radius, float blueRadius,
                             Drawable placeholderDrawable, Drawable errorDrawable) {
         if (imageView == null || uri == null) {
             return;
@@ -52,14 +64,29 @@ public class LuaImageLoader {
             }
             uri = "file://" + path;
         }
-        Glide.with(context)
-                .load(uri)
+        DrawableTypeRequest manager = Glide.with(context).load(uri);
+        BlurTransformation blurTransformation = null;
+        RoundedCornersTransformation roundedCornersTransformation = null;
+
+        if (radius > 0){
+            roundedCornersTransformation = new RoundedCornersTransformation(context, LuaUtil.dp2px(radius), 0);
+        }
+        if (blueRadius > 0) {
+            blurTransformation = new BlurTransformation(context, (int) blueRadius);
+        }
+        if (radius > 0 && blueRadius > 0) {
+            manager.bitmapTransform(roundedCornersTransformation, blurTransformation);
+        } else if (radius > 0) {
+            manager.bitmapTransform(roundedCornersTransformation);
+        } else if (blueRadius > 0) {
+            manager.bitmapTransform(blurTransformation);
+        }
+        manager
                 .placeholder(placeholderDrawable)
                 .error(errorDrawable)
                 .crossFade()
                 .into(imageView);
     }
-
 
     public static void load(ImageView imageView, String uri, String referer) {
         if (imageView == null || uri == null) {
