@@ -168,7 +168,7 @@ function newInstance()
                 end,
                 onBindViewHolder = function(holder, position)
                     position = position + 1
-                    if (position == #data.msg) then
+                    if (position == #data.msg + 1) then
                         fetchData(ids.refreshLayout, data, adapter, fragment) -- getdata may call ther lua files
                         return
                     end

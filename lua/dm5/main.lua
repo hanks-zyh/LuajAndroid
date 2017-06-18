@@ -50,14 +50,26 @@ local layout = {
     layout_height = "fill",
     statusBarColor = "#FDE04C",
     {
-        TextView,
-        layout_width = "fill",
-        layout_height = "48dp",
-        background = "#FDE04C",
-        gravity = "center",
-        text = "漫画",
-        textColor = "#43250C",
-        textSize = "18sp",
+      RelativeLayout,
+      layout_width = "fill",
+      layout_height = "56dp",
+      background = "#FDE04C",
+      {
+          TextView,
+          layout_centerInParent = true,
+          text = "动漫屋",
+          textColor = "#43250C",
+          textSize = "18sp",
+      },
+      {
+        ImageView,
+        id = "iv_search",
+        layout_width = "56dp",
+        layout_height = "56dp",
+        padding = "16dp",
+        layout_alignParentRight = true,
+        src = "#dm5/ic_search.png"
+      }
     },
     {
         RecyclerView,
@@ -66,6 +78,12 @@ local layout = {
         layout_height = "fill",
     },
 }
+
+local function launchSearch()
+  local intent = Intent(activity, LuaActivity)
+  intent.putExtra("luaPath", "dm5/search.lua")
+  activity.startActivity(intent)
+end
 
 local item_banner = {
     FrameLayout,
@@ -263,7 +281,7 @@ end
 
 function onCreate(savedInstanceState)
     activity.setContentView(loadlayout(layout))
-
+    iv_search.onClick = launchSearch
     adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
         getItemCount = function()
             return #data
