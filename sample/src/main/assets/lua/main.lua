@@ -26,7 +26,7 @@ local layout = {
         layout_height = "64dp",
         layout_width = "64dp",
         layout_marginTop= "120dp",
-        src = "#main/logo.png",
+        src = "@mipmap/ic_launcher",
     },
     {
         TextView,
