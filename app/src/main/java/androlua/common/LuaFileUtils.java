@@ -9,6 +9,11 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.luajava.LuaObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,11 +27,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import androlua.LuaHttp;
 import androlua.LuaManager;
+import androlua.plugin.Plugin;
 
 import static android.graphics.Bitmap.CompressFormat.JPEG;
 import static android.graphics.Bitmap.CompressFormat.PNG;
@@ -41,6 +51,175 @@ public class LuaFileUtils {
 
     private static Context getContext() {
         return LuaManager.getInstance().getContext();
+    }
+
+    public static void downloadPlugin(final String url, final String pluginName, final LuaObject callback) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    String destDirectory = getPluginsDir() + "/" + pluginName;
+                    String savePath = destDirectory + ".zip";
+                    LuaHttp.downloadFile(url, savePath);
+                    LuaFileUtils.unzip(savePath, getPluginsDir());
+                    deleteFileOrDir(new File(savePath));
+                    callback.call(destDirectory);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+    public static void downloadLuaFile(final String url, final LuaObject callback) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    String destDirectory = LuaManager.getInstance().getLuaExtDir()+"/lua";
+                    String savePath = destDirectory + ".zip";
+                    LuaHttp.downloadFile(url, savePath);
+                    LuaFileUtils.unzip(savePath, LuaManager.getInstance().getLuaExtDir());
+                    deleteFileOrDir(new File(savePath));
+                    if(callback!=null) callback.call(destDirectory);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    public static void deleteFileOrDir(File file) {
+        if (file == null || !file.exists()) {
+            return;
+        }
+        if (!file.isDirectory()) {
+            file.delete();
+            return;
+        }
+        File[] files = file.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File f : files) {
+            deleteFileOrDir(f);
+        }
+        file.delete();
+    }
+
+    public static void removePlugin(String pluginId) {
+        for (Plugin plugin : getPluginList()) {
+            if (pluginId.equals(plugin.getId())) {
+                File file = new File(plugin.getPath());
+                deleteFileOrDir(file);
+            }
+        }
+    }
+
+    public static String getPluginsDir() {
+       return  getAndroLuaDir();
+    }
+
+    public static List<Plugin> getPluginList() {
+        // 读取总目录
+        File pluginDir = new File(getPluginsDir());
+        if (!pluginDir.exists()) {
+            return Collections.emptyList();
+        }
+        List<Plugin> pluginList = new ArrayList<>();
+        for (File file : pluginDir.listFiles()) {
+            // 读取单个插件文件
+            Plugin plugin = parsePluginInfo(file);
+            if (plugin == null) {
+                continue;
+            }
+            pluginList.add(plugin);
+        }
+        return pluginList;
+    }
+
+    // 解析插件
+    private static Plugin parsePluginInfo(File pluginDir) {
+        if (pluginDir == null || !pluginDir.isDirectory()) {
+            return null;
+        }
+        File info = null;
+        for (File pFile : pluginDir.listFiles()) {
+            if ("info.json".equals(pFile.getName())) {
+                info = pFile;
+            }
+        }
+        if (info == null) {
+            return null;
+        }
+
+        String str = file2String(info);
+        try {
+            Plugin plugin = new Plugin();
+            JSONObject jsonObject = new JSONObject(str);
+            plugin.setPath(pluginDir.getAbsolutePath());
+            plugin.setPlugin(true);
+            plugin.setId(jsonObject.getString("id"));
+            plugin.setName(jsonObject.getString("name"));
+            plugin.setIconPath(jsonObject.getString("icon"));
+            plugin.setMainPath(jsonObject.getString("main"));
+            plugin.setVersionName(jsonObject.getString("versionName"));
+            plugin.setVersionCode(jsonObject.getInt("versionCode"));
+            return plugin;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static void copyAssetsFlies(String assetDir,String outputDir) {
+        try {
+            String[] files = getContext().getAssets().list(assetDir);
+            if (files == null) {
+                return;
+            }
+            for (String file : files) {
+                copyFile(getContext().getAssets().open(assetDir + "/" + file), outputDir + "/" + file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void copyFile(InputStream inStream, String newPath) throws IOException {
+        int len;
+        FileOutputStream fs = new FileOutputStream(newPath);
+        byte[] buffer = new byte[4096];
+        while ((len = inStream.read(buffer)) != -1) {
+            fs.write(buffer, 0, len);
+        }
+        inStream.close();
+    }
+
+
+    private static String file2String(File file) {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                sb.append(line);
+                sb.append("\n");
+                line = br.readLine();
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 
     public static File convertViewToImage(View view, @NonNull String filePath) throws Exception {
@@ -468,7 +647,7 @@ public class LuaFileUtils {
     }
 
     //复制asset文件到sd卡
-    public void assetsToSD(String InFileName, String OutFileName) throws IOException {
+    public static void assetsToSD(String InFileName, String OutFileName) throws IOException {
         InputStream myInput;
         OutputStream myOutput = new FileOutputStream(OutFileName);
         myInput = getContext().getAssets().open(InFileName);
@@ -487,7 +666,7 @@ public class LuaFileUtils {
     /**
      * 解压Assets中的文件
      */
-    public void unZipAssets(String assetName, String outputDirectory) throws IOException {
+    public static void unZipAssets(String assetName, String outputDirectory) throws IOException {
         //创建解压目标目录
         File file = new File(outputDirectory);
         //如果目标目录不存在，则创建

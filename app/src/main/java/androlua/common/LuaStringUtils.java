@@ -24,21 +24,6 @@ public class LuaStringUtils {
         }
     }
 
-    public static String trim(String s) {
-        if (isEmptyTrim(s)) {
-            return "";
-        }
-
-        if ((s.endsWith("\n") || s.endsWith(EMPTY_CHAR))) {
-            return s.substring(0, s.length() - 1);
-        }
-
-        if (s.startsWith(EMPTY_CHAR)) {
-            return s.substring(1, s.length());
-        }
-
-        return s;
-    }
 
     public static boolean isEmptyTrim(String s) {
         return s == null || s.trim().length() == 0 || EMPTY_CHAR.equals(s);

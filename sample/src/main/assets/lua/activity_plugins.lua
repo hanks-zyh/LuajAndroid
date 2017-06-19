@@ -78,6 +78,7 @@ local item_view = {
         TextView,
         id = "text",
         layout_widht = "fill",
+        layout_marginTop = "2dp",
         layout_marginLeft = "48dp",
         textSize = "12sp",
         textColor = "#222222",
@@ -91,6 +92,7 @@ local item_view = {
         layout_widht = "fill",
         layout_marginLeft = "48dp",
         layout_marginRight = "96dp",
+        layout_marginBottom = "4dp",
         maxLines = "2",
         layout_gravity = "bottom",
     },
@@ -154,21 +156,20 @@ local function compareWithLocal(localList, plugin)
 end
 
 local function getData()
-    local options = {
-        url = 'https://coding.net/u/zhangyuhan/p/api_fli/git/raw/master/api/plugins.json'
-    }
-    LuaHttp.request(options, function(error, code, body)
-        -- local localList = FileUtils.getPluginList()
-        local localList = {}
-        local json = JSON.decode(body)
-        local list = json.list
-        for i = 1, #list do
-            local plugin = list[i]
-            compareWithLocal(localList, plugin)
-            table.insert(data, plugin);
-        end
-        notifyAdapterData()
-    end)
+  local options = {
+      url = 'https://coding.net/u/zhangyuhan/p/api_luanroid/git/raw/master/api/plugins'
+  }
+  LuaHttp.request(options, function(error, code, body)
+      local localList = FileUtils.getPluginList()
+      local json = JSON.decode(body)
+      local list = json.data
+      for i = 1, #list do
+          local plugin = list[i]
+          compareWithLocal(localList, plugin)
+          data[#data + 1] =  plugin;
+      end
+      notifyAdapterData()
+  end)
 end
 
 
@@ -178,7 +179,6 @@ local function downloadPlugin(plugin)
         notifyAdapterData()
     end)
 end
-
 
 
 function onCreate(savedInstanceState)
@@ -205,7 +205,7 @@ function onCreate(savedInstanceState)
             local views = convertView.getTag()
             local plugin = data[position]
             if plugin then
-                LuaImageLoader.load(views.icon, plugin.icon)
+                LuaImageLoader.loadWithRadius(views.icon, 40, plugin.icon)
                 views.text.setText(plugin.name)
                 views.desc.setText(plugin.desc)
                 views.download.setText(flatType(plugin.type))

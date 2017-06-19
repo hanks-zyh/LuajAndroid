@@ -8,9 +8,11 @@ import com.luajava.LuaObject;
 import com.luajava.LuaTable;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import androlua.common.LuaFileUtils;
 import androlua.common.LuaLog;
@@ -40,7 +42,7 @@ public class LuaHttp {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        if (!"release".equals(BuildConfig.BUILD_TYPE)){
+        if (!"release".equals(BuildConfig.BUILD_TYPE)) {
             builder.addInterceptor(interceptor);
         }
         httpClient = builder.build();
@@ -212,4 +214,49 @@ public class LuaHttp {
         return new FormBody.Builder().build();
     }
 
+    public static boolean downloadFile(String url, String savePath) {
+        try {
+            final File file = new File(savePath);
+            if (file.exists()) {
+                return true;
+            }
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+            final Request request = new Request.Builder().url(url).build();
+            Response response = client.newCall(request).execute();
+
+            InputStream is = null;
+            byte[] buf = new byte[2048];
+            FileOutputStream fos = null;
+            try {
+                is = response.body().byteStream();
+                fos = new FileOutputStream(file);
+                int len = 0;
+                while ((len = is.read(buf)) != -1) {
+                    fos.write(buf, 0, len);
+                }
+                fos.flush();
+            } catch (IOException e) {
+                LuaLog.e(e);
+            } finally {
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                    LuaLog.e(e);
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            LuaLog.e(e);
+            return false;
+        }
+    }
 }
