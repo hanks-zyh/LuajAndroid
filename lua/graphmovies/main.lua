@@ -13,8 +13,8 @@ import "androlua.LuaAdapter"
 import "androlua.widget.video.VideoPlayerActivity"
 import("androlua.LuaImageLoader")
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
+local uihelper = require("uihelper")
+local JSON = require("json")
 
 -- create view table
 local layout = {
@@ -173,7 +173,7 @@ local function getData()
     end
 end
 
-local log = require('common.log')
+local log = require('log')
 function launchDetail(item)
     local json = { orkey = item.orkey, name = item.name }
     local intent = Intent(activity, LuaActivity)

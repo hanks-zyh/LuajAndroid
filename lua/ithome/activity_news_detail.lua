@@ -10,7 +10,7 @@ import "android.content.*"
 import "android.view.View"
 import "androlua.LuaWebView"
 import "androlua.LuaHttp"
-local uihelper = require "common.uihelper"
+local uihelper = require "uihelper"
 
 -- create view table
 local layout = {

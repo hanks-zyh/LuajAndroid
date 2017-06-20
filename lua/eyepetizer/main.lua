@@ -11,10 +11,10 @@ import "android.view.View"
 import "androlua.LuaHttp"
 import "androlua.LuaAdapter"
 import "androlua.widget.video.VideoPlayerActivity"
-import("androlua.LuaImageLoader")
+import "androlua.LuaImageLoader"
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
+local JSON = require("json")
+local uihelper = require('uihelper')
 
 -- create view table
 local layout = {
@@ -78,7 +78,7 @@ local data = {
 }
 local adapter
 
-function getData()
+local function getData()
     -- http://baobab.kaiyanapp.com/api/v1/feed
     local url = data.nextPageUrl
     if url == nil then url = 'http://baobab.kaiyanapp.com/api/v1/feed' end
@@ -88,7 +88,7 @@ function getData()
             return
         end
         local str = JSON.decode(body)
-        uihelper = runOnUiThread(activity, function()
+        uihelper.runOnUiThread(activity, function()
             data.nextPageUrl = str.nextPageUrl
             local list = str.dailyList[1].videoList
             for i = 1, #list do
@@ -99,8 +99,7 @@ function getData()
     end)
 end
 
-local log = require('common.log')
-function launchDetail(item)
+local function launchDetail(item)
     local json = { url = item.playInfo[#item.playInfo].url, poster = item.coverForDetail }
     VideoPlayerActivity.start(activity, JSON.encode(json))
 end

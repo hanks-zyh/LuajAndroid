@@ -27,9 +27,9 @@ import "androlua.widget.ninegride.LuaNineGridViewAdapter"
 import "androlua.widget.picture.PicturePreviewActivity"
 import "androlua.widget.webview.WebViewActivity"
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
-local log = require('common.log')
+local uihelper = require("uihelper")
+local JSON = require("json")
+local log = require("log")
 local screenWidth = uihelper.getScreenWidth()
 
 -- create view table

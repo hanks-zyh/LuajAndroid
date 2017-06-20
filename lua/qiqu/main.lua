@@ -7,10 +7,8 @@
 require "import"
 import "android.widget.*"
 import "android.content.*"
-import("androlua.LuaWebView")
-local Http = luajava.bindClass("androlua.LuaHttp")
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
+import "androlua.LuaWebView"
+
 -- create view table
 local layout = {
     LinearLayout,

@@ -17,8 +17,8 @@ import "android.os.Build"
 import "androlua.LuaAdapter"
 import "android.graphics.drawable.GradientDrawable"
 local FileUtils = import "androlua.common.LuaFileUtils"
-local JSON = require "common.json"
-local uihelper = require "common.uihelper"
+local JSON = require "json"
+local uihelper = require "uihelper"
 -- create view table
 local layout = {
     LinearLayout,

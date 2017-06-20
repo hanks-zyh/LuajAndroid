@@ -29,9 +29,9 @@ import "androlua.widget.picture.PicturePreviewActivity"
 import "androlua.widget.webview.WebViewActivity"
 
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
-local log = require('common.log')
+local uihelper = require("uihelper")
+local JSON = require("json")
+local log = require("log")
 local screenWidth = uihelper.getScreenWidth()
 
 import "android.support.design.widget.CoordinatorLayout"
@@ -177,7 +177,7 @@ local function getData(url)
             print('fetch dm5 data error')
             return
         end
-        uihelper = runOnUiThread(activity, function()
+        uihelper.runOnUiThread(activity, function()
             -- TOP10
             local coverImg = string.match(body, '<div class="coverForm".-<img src="(.-)"')
             local info = string.match(body, '<div class="info d[-]item[-]content">(.-)</div>')

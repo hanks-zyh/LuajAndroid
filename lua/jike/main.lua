@@ -7,8 +7,6 @@ import "androlua.utils.ColorStateListFactory"
 import "androlua.LuaDrawable"
 import "androlua.adapter.LuaFragmentPageAdapter"
 
-local uihelper = require("common.uihelper")
-local recommendFragment = require("jike.fragment_recomend")
 -- local feedFragment = require("jike.fragment_feed")
 local hotFragment = require("jike.fragment_hot")
 

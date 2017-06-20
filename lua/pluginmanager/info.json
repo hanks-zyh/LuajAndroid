@@ -1,9 +1,0 @@
-{
-    "id":"pub.hanks.lua_plugin_manager",
-    "name":"插件管理",
-    "icon":"https://ws1.sinaimg.cn/large/8c9b876fly1ffub7jk553j20b40b4q70.jpg",
-    "main":"activity_plugins.lua",
-    "versionName":"1.0",
-    "versionCode":1,
-    "desc":"用于添加、更新或删除插件"
-}

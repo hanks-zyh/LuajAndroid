@@ -6,7 +6,7 @@ import "androlua.LuaAdapter"
 
 
 local China = require("weather.city")
-local filehelper = require("common.filehelper")
+local filehelper = require("filehelper")
 
 local layout = {
     LinearLayout,

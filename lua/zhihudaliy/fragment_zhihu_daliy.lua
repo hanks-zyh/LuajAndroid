@@ -10,8 +10,8 @@ import "android.widget.*"
 import "android.content.*"
 import "androlua.LuaImageLoader"
 
-local uihelper = require "common.uihelper"
-local JSON = require "common.json"
+local uihelper = require "uihelper"
+local JSON = require "json"
 
 local function fetchData(id, data, adapter, fragment)
     local url

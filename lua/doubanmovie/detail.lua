@@ -4,8 +4,8 @@ import "android.content.*"
 import "android.view.View"
 import "androlua.LuaHttp"
 import "androlua.widget.video.VideoPlayerActivity"
-local JSON = require "common.json"
-local uihelper = require "common.uihelper"
+local JSON = require "json"
+local uihelper = require "uihelper"
 
 local layout = {
     ScrollView,
@@ -293,7 +293,7 @@ local function updateHeader(movie)
 end
 
 local function updateComment(comments)
-  uihelper = runOnUiThread(activity, function()
+  uihelper.runOnUiThread(activity, function()
 
         layout_comment.removeAllViews()
         for i = 1, #comments do

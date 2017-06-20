@@ -1,0 +1,9 @@
+{
+    "id":"pub.hanks.weather",
+    "name":"天气",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrp35u1f2j20be0bemxo.jpg",
+    "main":"main.lua",
+    "versionName":"1.0",
+    "versionCode":1,
+    "desc":"简洁的看天气的插件"
+}

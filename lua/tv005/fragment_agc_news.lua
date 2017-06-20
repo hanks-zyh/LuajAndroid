@@ -3,8 +3,8 @@ import "androlua.LuaImageLoader"
 import "androlua.LuaHttp"
 import "androlua.LuaFragment"
 import "androlua.widget.webview.WebViewActivity"
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
+local uihelper = require("uihelper")
+local JSON = require("json")
 
 local function fetchData(baseUrl, data, adapter, fragment)
     local url = string.format(baseUrl, data.page)

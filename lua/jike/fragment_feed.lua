@@ -5,11 +5,11 @@
 -- Time: 00:01
 -- To change this template use File | Settings | File Templates.
 --
-local JSON = require("common.json")
+local JSON = require("json")
 local ImageLoader = import "androlua.LuaImageLoader"
 local LuaFragment = import("androlua.LuaFragment")
 local Http = import "androlua.LuaHttp"
-local uihelper = require("common.uihelper")
+local uihelper = require("uihelper")
 import "android.support.v7.widget.RecyclerView"
 import "android.support.v4.widget.SwipeRefreshLayout"
 import "androlua.adapter.LuaRecyclerAdapter"

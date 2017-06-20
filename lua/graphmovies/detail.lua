@@ -13,9 +13,9 @@ import "androlua.LuaHttp"
 import "android.os.Build"
 import "android.view.View"
 
-local uihelper = require "common.uihelper"
-local JSON = require "common.json"
-local log = require "common.log"
+local uihelper = require "uihelper"
+local JSON = require "json"
+local log = require "log"
 
 -- create view table
 local layout = {

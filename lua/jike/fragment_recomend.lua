@@ -21,8 +21,8 @@ import "androlua.widget.ninegride.LuaNineGridViewAdapter"
 import "androlua.widget.picture.PicturePreviewActivity"
 import "androlua.widget.webview.WebViewActivity"
 
-local JSON = require("common.json")
-local uihelper = require("common.uihelper")
+local JSON = require("json")
+local uihelper = require("uihelper")
 
 
 local function clearTable(t)
@@ -69,7 +69,7 @@ local function fetchData(refreshLayout, data, adapter, fragment, reload)
     end)
 end
 
--- local log = require("common.log")
+-- local log = require("log")
 
 local function launchDetail(fragment, msg)
     local activity = fragment.getActivity()

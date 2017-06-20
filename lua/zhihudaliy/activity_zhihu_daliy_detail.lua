@@ -10,8 +10,8 @@ import "android.content.*"
 import "android.view.View"
 import "androlua.LuaWebView"
 local Http = luajava.bindClass("androlua.LuaHttp")
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
+local uihelper = require("uihelper")
+local JSON = require("json")
 -- create view table
 local layout = {
     FrameLayout,

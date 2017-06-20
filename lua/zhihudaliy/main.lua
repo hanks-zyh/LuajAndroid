@@ -13,8 +13,8 @@ import "android.support.design.widget.TabLayout"
 import "androlua.adapter.LuaFragmentPageAdapter"
 import "androlua.LuaHttp"
 
-local JSON = require "common.json"
-local uihelper = require "common.uihelper"
+local JSON = require "json"
+local uihelper = require "uihelper"
 local fragment = require "zhihudaliy/fragment_zhihu_daliy"
 
 -- create view table

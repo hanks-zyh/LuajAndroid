@@ -1,35 +1,25 @@
-var fs = require "fs"
+var fs = require('fs');
+var path = require('path');
+var archiver = require('archiver');
 
-var fileDirectory = "D:\\work\\opensource\\LuaJAndroid\\lua";
-if(fs.existsSync(fileDirectory)){
-  fs.readdir(fileDirectory, function (err, files) {
-  if (err) {
-    console.log(err);
-    return;
-  }
+var root = "D:\\work\\opensource\\LuaJAndroid\\lua";
+var apiFile = "D:\\work\\opensource\\api_luanroid\\api\\plugins";
 
-  var count = files.length;
-  var results = {};
-  var res = ""
-  files.forEach(function (filename) {
-    // plugin dir
-    
-      if (filename = "info.json") {
-        
-        fs.readFile(filename,'utf-8',function(err,data){
-   			if(err){
-		        console.log("error");
-		    }else{
-		        console.log(data);
-                var json = JSON.parse(data)
-                result.push(json)
-		    }
-		});
-        
+var res = {data:[]};
 
-      }
-
- 
-  });
-});
+var plugins = fs.readdirSync(root);
+for (var j = 0; j < plugins.length; j++) {
+    var pluginDir = path.join(root,plugins[j]);
+    var files = fs.readdirSync(pluginDir);
+    for (var i = 0; i < files.length; i++) {
+       if(files[i] != 'info.json') continue;
+       var text = fs.readFileSync(path.join(pluginDir,files[i]),'utf8');
+       var json = JSON.parse(text);
+       json.download = 'https://coding.net/u/zhangyuhan/p/api_luanroid/git/raw/master/plugin/' + plugins[j] + '.zip';
+       res.data.push(json);
+    }
 }
+// 生成 json
+var apiData = JSON.stringify(res);
+console.log(apiData);
+fs.writeFileSync(apiFile,apiData,'utf8');

@@ -15,8 +15,8 @@ import "androlua.LuaImageLoader"
 import "androlua.LuaWebView"
 
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
+local uihelper = require("uihelper")
+local JSON = require("json")
 
 -- create view table
 local layout = {
@@ -92,7 +92,7 @@ local function getData(url)
     end)
 end
 
-local log = require('common.log')
+local log = require('log')
 function launchDetail(item)
 end
 
@@ -102,7 +102,7 @@ local function callback(jsonStr)
         return
     end
 
-    uihelper = runOnUiThread(activity, function()
+    uihelper.runOnUiThread(activity, function()
         for i = 1, #json.data do
             data[#data + 1] = json.data[i]
         end

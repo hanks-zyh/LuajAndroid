@@ -76,7 +76,7 @@ local item_view = {
 }
 
 local data = {}
-
+local adapter
 local function newActivity(luaPath)
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", luaPath)
@@ -92,6 +92,7 @@ local function getData()
         text = p.getName(),
         launchPage = p.getMainPath()
       }
+      adapter.notifyDataSetChanged()
   end
   --
   -- data[#data + 1] = {
@@ -153,9 +154,9 @@ function onCreate(savedInstanceState)
     activity.setContentView(loadlayout(layout))
 
     tv_add_plugin.onClick = function (args)
-      newActivity('pluginmanager/activity_plugins.lua')
+      newActivity(luajava.luadir .. '/activity_plugins.lua')
     end
-    local adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
+    adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data end,
         getView = function(position, convertView, parent)
             position = position + 1 -- lua 索引从 1开始

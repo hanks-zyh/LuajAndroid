@@ -28,9 +28,9 @@ import "androlua.widget.picture.PicturePreviewActivity"
 import "androlua.widget.webview.WebViewActivity"
 
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
-local log = require('common.log')
+local uihelper = require("uihelper")
+local JSON = require("json")
+local log = require("log")
 local screenWidth = uihelper.getScreenWidth()
 
 local category = {
@@ -211,7 +211,7 @@ local function getData()
             print('fetch dm5 data error')
             return
         end
-        uihelper = runOnUiThread(activity, function()
+        uihelper.runOnUiThread(activity, function()
             -- banner
             local arr = {}
             local ul = string.match(body, '<ul class="am[-]slides">(.-)</ul>')

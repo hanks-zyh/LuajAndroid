@@ -1,0 +1,9 @@
+{
+    "id":"pub.hanks.tv005",
+    "name":"动漫资讯",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrpasr594j20f60f6wmx.jpg",
+    "main":"main.lua",
+    "versionName":"1.0",
+    "versionCode":1,
+    "desc":"主要是动漫资讯，还有 cosplay， http://www.005.tv/"
+}

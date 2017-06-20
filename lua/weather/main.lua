@@ -15,10 +15,9 @@ import "androlua.LuaView"
 import "android.graphics.Paint"
 import "androlua.LuaUtil"
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
-local log = require('common.log')
-local filehelper = require("common.filehelper")
+local uihelper = require("uihelper")
+local JSON = require("json")
+local filehelper = require("filehelper")
 local weather = require("weather.weather")
 
 local item_hour = {

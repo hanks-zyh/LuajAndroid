@@ -17,9 +17,9 @@ import "androlua.adapter.LuaRecyclerAdapter"
 import "androlua.adapter.LuaRecyclerHolder"
 import "android.support.v7.widget.GridLayoutManager"
 
-local uihelper = require("common.uihelper")
-local JSON = require("common.json")
-local log = require("common.log")
+local uihelper = require("uihelper")
+local JSON = require("json")
+local log = require("log")
 
 -- create view table
 local layout = {
@@ -116,7 +116,7 @@ function getData()
             return
         end
         local arr = JSON.decode(body).data.movies
-        uihelper = runOnUiThread(activity, function()
+        uihelper.runOnUiThread(activity, function()
             for i = 1, #arr do
                 data[#data + 1] = arr[i]
             end

@@ -1,0 +1,9 @@
+{
+    "id":"pub.hanks.ithome",
+    "name":"IT之家",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrpi1lxizj2050050mxe.jpg",
+    "main":"main.lua",
+    "versionName":"1.0",
+    "versionCode":2,
+    "desc":"快速精选IT新闻"
+}
