@@ -16,6 +16,8 @@ import "androlua.LuaHttp"
 import "android.os.Build"
 import "androlua.LuaAdapter"
 import "android.graphics.drawable.GradientDrawable"
+import "androlua.widget.marqueetext.MarqueeTextView"
+
 local FileUtils = import "androlua.common.LuaFileUtils"
 local JSON = require "json"
 local uihelper = require "uihelper"
@@ -85,7 +87,7 @@ local item_view = {
         layout_gravity = "top",
     },
     {
-        TextView,
+        MarqueeTextView,
         id = "desc",
         textSize = "10sp",
         textColor = "#666666",
@@ -93,7 +95,6 @@ local item_view = {
         layout_marginLeft = "48dp",
         layout_marginRight = "96dp",
         layout_marginBottom = "4dp",
-        maxLines = "2",
         layout_gravity = "bottom",
     },
     {

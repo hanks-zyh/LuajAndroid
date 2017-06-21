@@ -110,6 +110,7 @@ local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
     }))
 
 function onCreate(savedInstanceState)
+
     activity.setContentView(loadlayout(layout))
     viewPager.setAdapter(adapter)
     tab.setSelectedTabIndicatorColor(0xffffffff)
@@ -117,4 +118,5 @@ function onCreate(savedInstanceState)
     tab.setTabMode(TabLayout.MODE_SCROLLABLE)
     tab.setTabGravity(TabLayout.GRAVITY_CENTER)
     tab.setupWithViewPager(viewPager)
+
 end

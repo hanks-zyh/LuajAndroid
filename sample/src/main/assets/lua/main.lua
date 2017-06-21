@@ -23,6 +23,7 @@ local layout = {
     focusableInTouchMode = true,
     {
         ImageView,
+        id = "iv_logo",
         layout_height = "64dp",
         layout_width = "64dp",
         layout_marginTop= "120dp",
@@ -77,6 +78,11 @@ local item_view = {
 
 local data = {}
 local adapter
+
+local config_file = "luandroid"
+local sp = activity.getSharedPreferences(config_file, Context.MODE_PRIVATE)
+local home_loadicon = false
+
 local function newActivity(luaPath)
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", luaPath)
@@ -90,68 +96,29 @@ local function getData()
       local p = localList[i - 1]
       data[#data + 1] = {
         text = p.getName(),
-        launchPage = p.getMainPath()
+        launchPage = p.getMainPath(),
+        icon = p.getIconPath(),
       }
       adapter.notifyDataSetChanged()
   end
-  --
-  -- data[#data + 1] = {
-  --     text = '动漫资讯',
-  --     launchPage = 'tv005/main.lua'
-  -- }
-  --
-  -- data[#data + 1] = {
-  --     text = '图解电影',
-  --     launchPage = 'graphmovies/main.lua'
-  -- }
-  --
-  -- data[#data + 1] = {
-  --     text = '奇趣百科',
-  --     launchPage = 'qiqu/main.lua'
-  -- }
-  -- data[#data + 1] = {
-  --     text = '动漫屋',
-  --     launchPage = 'dm5/main.lua'
-  -- }
-  -- data[#data + 1] = {
-  --     text = '热映电影',
-  --     launchPage = 'doubanmovie/main.lua'
-  -- }
-  -- data[#data + 1] = {
-  --     text = '开眼',
-  --     launchPage = 'eyepetizer/main.lua'
-  -- }
-  -- data[#data + 1] = {
-  --     text = 'IT 之家',
-  --     launchPage = 'ithome/activity_news.lua'
-  -- }
-  --
-  -- data[#data + 1] = {
-  --     text = '知乎日报',
-  --     launchPage = 'zhihudaliy/activity_zhihu_daliy.lua'
-  -- }
-  --
-  -- data[#data + 1] = {
-  --     text = '即刻',
-  --     launchPage = 'jike/main.lua'
-  -- }
-  --
-  -- data[#data + 1] = {
-  --     text = '天气',
-  --     launchPage = 'weather/main.lua'
-  -- }
 end
 
 function onResume()
+  home_loadicon = sp.getBoolean("home_loadicon",false)
   for k,v in pairs(data) do
     data[k] = nil
   end
   getData()
 end
 
+
 function onCreate(savedInstanceState)
     activity.setLightStatusBar()
     activity.setContentView(loadlayout(layout))
+
+    iv_logo.onClick = function (args)
+      newActivity(luajava.luaextdir .. '/activity_setting.lua')
+    end
 
     tv_add_plugin.onClick = function (args)
       newActivity(luajava.luadir .. '/activity_plugins.lua')
@@ -169,7 +136,9 @@ function onCreate(savedInstanceState)
             local views = convertView.getTag()
             local item = data[position]
             if item then
-                LuaImageLoader.loadWithRadius(views.icon, 40, '')
+                local icon = ''
+                if home_loadicon then icon = item.icon end
+                LuaImageLoader.loadWithRadius(views.icon, 40, icon)
                 views.text.setText(item.text)
             end
             return convertView

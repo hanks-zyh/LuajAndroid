@@ -9,5 +9,7 @@
         <item name="android:windowIsTranslucent">true</item>
 
     </style>
-
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
 </resources>

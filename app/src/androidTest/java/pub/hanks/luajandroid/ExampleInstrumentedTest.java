@@ -2,6 +2,7 @@ package pub.hanks.luajandroid;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -12,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +49,8 @@ public class ExampleInstrumentedTest {
         assertEquals("pub.hanks.luajandroid", appContext.getPackageName());
         linearLayout.animate().scaleX(2).scaleY(2).translationX(100).setDuration(3000).start();
         VectorDrawableCompat.createFromPath("");
+
+
 
         GridView gridLayout = new GridView(appContext);
         gridLayout.setNumColumns(5);
