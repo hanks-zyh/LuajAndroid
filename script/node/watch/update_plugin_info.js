@@ -31,4 +31,4 @@ fs.writeFileSync(apiFile,apiData,'utf8');
 var shelljs = require('shelljs');
 
 shelljs.exec('cd ' + apiFile);
-shelljs.exec('git add -A && git ci -am "update" && git push')
+shelljs.exec('git add -A && git ci -am "update" && git push origin master')
