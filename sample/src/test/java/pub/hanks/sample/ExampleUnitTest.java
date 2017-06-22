@@ -1,29 +1,19 @@
 package pub.hanks.sample;
 
-import org.json.JSONArray;
 import org.junit.Test;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.Enumeration;
-import java.util.zip.CRC32;
-import java.util.zip.CheckedOutputStream;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import androlua.common.LuaFileUtils;
-import androlua.common.LuaStringUtils;
 
 import static java.util.zip.Deflater.BEST_COMPRESSION;
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -31,39 +21,21 @@ import static org.junit.Assert.*;
  * @see <byteToString href="http://d.android.com/tools/testing">Testing documentation</byteToString>
  */
 public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        LuaFileUtils.unzip("D:\\Desktop\\91pic-o.zip", "D:\\Desktop");
-    }
-
-
-    @Test
-    public void unZipPlugin() throws Exception {
-        String zipDir = "D:\\work\\opensource\\api_luanroid\\plugin\\eyepetizer.zip";
-        LuaFileUtils.unzip(zipDir, "D:\\Desktop");
-    }
-
-    @Test
-    public void testCommand() throws Exception{
-            String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
-            execCMD(command);
-    }
-
-    public static void execCMD(String command){
+    public static void execCMD(String command) {
         try {
             Process child = Runtime.getRuntime().exec(command);
             InputStreamReader isr = new InputStreamReader(child.getInputStream());
             BufferedReader buff = new BufferedReader(isr);
 
             String line;
-            while((line = buff.readLine()) != null)
+            while ((line = buff.readLine()) != null)
                 System.out.print(line);
 
             InputStreamReader is2 = new InputStreamReader(child.getErrorStream());
             BufferedReader buff2 = new BufferedReader(is2);
 
             String line2;
-            while((line2 = buff2.readLine()) != null)
+            while ((line2 = buff2.readLine()) != null)
                 System.out.print(line2);
 
 
@@ -71,40 +43,6 @@ public class ExampleUnitTest {
             e.printStackTrace();
         }
     }
-    @Test
-    public void zipPlugin() throws Exception {
-        String root = "D:\\work\\opensource\\LuaJAndroid\\lua";
-        String outDir = "D:\\work\\opensource\\api_luanroid\\plugin";
-        File[] files = new File(root).listFiles();
-        int length = files.length;
-        for (int i = 0; i < length; i++) {
-            File file = files[i];
-            if (!file.isDirectory()) {
-                continue;
-            }
-            File[] childFiles = file.listFiles();
-            boolean isPlugin = false;
-            for (int j = 0; j < childFiles.length; j++) {
-                if (childFiles[j].getName().equals("info.json")) {
-                    isPlugin = true;
-                    break;
-                }
-            }
-            if (isPlugin) {
-                //创建文件输出对象out,提示:注意中文支持
-                FileOutputStream out = new FileOutputStream(outDir + File.separator + file.getName() + ".zip");
-                //將文件輸出ZIP输出流接起来
-                ZipOutputStream zos = new ZipOutputStream(out);
-                zos.setLevel(BEST_COMPRESSION);
-                zip(zos, file.getAbsoluteFile(), file.getName());
-                zos.flush();
-                zos.close();
-            }
-        }
-        String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
-        execCMD(command);
-    }
-
 
     public static void zip(ZipOutputStream zOut, File file, String base) {
         try {
@@ -146,6 +84,57 @@ public class ExampleUnitTest {
         while ((len = in.read()) != -1)
             zOut.write(len);
         in.close();
+    }
+
+    @Test
+    public void addition_isCorrect() throws Exception {
+        LuaFileUtils.unzip("D:\\Desktop\\91pic-o.zip", "D:\\Desktop");
+    }
+
+    @Test
+    public void unZipPlugin() throws Exception {
+        String zipDir = "D:\\work\\opensource\\api_luanroid\\plugin\\eyepetizer.zip";
+        LuaFileUtils.unzip(zipDir, "D:\\Desktop");
+    }
+
+    @Test
+    public void testCommand() throws Exception {
+        String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
+        execCMD(command);
+    }
+
+    @Test
+    public void zipPlugin() throws Exception {
+        String root = "D:\\work\\opensource\\LuaJAndroid\\lua";
+        String outDir = "D:\\work\\opensource\\api_luanroid\\plugin";
+        File[] files = new File(root).listFiles();
+        int length = files.length;
+        for (int i = 0; i < length; i++) {
+            File file = files[i];
+            if (!file.isDirectory()) {
+                continue;
+            }
+            File[] childFiles = file.listFiles();
+            boolean isPlugin = false;
+            for (int j = 0; j < childFiles.length; j++) {
+                if (childFiles[j].getName().equals("info.json")) {
+                    isPlugin = true;
+                    break;
+                }
+            }
+            if (isPlugin) {
+                //创建文件输出对象out,提示:注意中文支持
+                FileOutputStream out = new FileOutputStream(outDir + File.separator + file.getName() + ".zip");
+                //將文件輸出ZIP输出流接起来
+                ZipOutputStream zos = new ZipOutputStream(out);
+                zos.setLevel(BEST_COMPRESSION);
+                zip(zos, file.getAbsoluteFile(), file.getName());
+                zos.flush();
+                zos.close();
+            }
+        }
+        String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
+        execCMD(command);
     }
 
 }

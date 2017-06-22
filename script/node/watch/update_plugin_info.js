@@ -24,11 +24,3 @@ var apiData = JSON.stringify(res);
 console.log(apiData);
 fs.writeFileSync(apiFile,apiData,'utf8');
 
-
-
-
-
-var shelljs = require('shelljs');
-
-shelljs.exec('cd /d/work/opensource/api_luanroid');
-shelljs.exec('git add -A && git ci -am "update" && git push origin master')
