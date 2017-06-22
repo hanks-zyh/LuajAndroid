@@ -5,10 +5,13 @@ import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedOutputStream;
@@ -37,7 +40,36 @@ public class ExampleUnitTest {
     @Test
     public void unZipPlugin() throws Exception {
         String zipDir = "D:\\work\\opensource\\api_luanroid\\plugin\\eyepetizer.zip";
-        LuaFileUtils.unzip(zipDir,"D:\\Desktop");
+        LuaFileUtils.unzip(zipDir, "D:\\Desktop");
+    }
+
+    @Test
+    public void testCommand() throws Exception{
+            String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
+            execCMD(command);
+    }
+
+    public static void execCMD(String command){
+        try {
+            Process child = Runtime.getRuntime().exec(command);
+            InputStreamReader isr = new InputStreamReader(child.getInputStream());
+            BufferedReader buff = new BufferedReader(isr);
+
+            String line;
+            while((line = buff.readLine()) != null)
+                System.out.print(line);
+
+            InputStreamReader is2 = new InputStreamReader(child.getErrorStream());
+            BufferedReader buff2 = new BufferedReader(is2);
+
+            String line2;
+            while((line2 = buff2.readLine()) != null)
+                System.out.print(line2);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Test
     public void zipPlugin() throws Exception {
@@ -60,15 +92,17 @@ public class ExampleUnitTest {
             }
             if (isPlugin) {
                 //创建文件输出对象out,提示:注意中文支持
-                FileOutputStream out = new FileOutputStream(outDir + File.separator + file.getName()+".zip");
+                FileOutputStream out = new FileOutputStream(outDir + File.separator + file.getName() + ".zip");
                 //將文件輸出ZIP输出流接起来
                 ZipOutputStream zos = new ZipOutputStream(out);
                 zos.setLevel(BEST_COMPRESSION);
-                zip(zos,file.getAbsoluteFile(),file.getName());
+                zip(zos, file.getAbsoluteFile(), file.getName());
                 zos.flush();
                 zos.close();
             }
         }
+        String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
+        execCMD(command);
     }
 
 
@@ -81,7 +115,7 @@ public class ExampleUnitTest {
                 File[] listFiles = file.listFiles();
                 // 建立ZIP条目
                 zOut.putNextEntry(new ZipEntry(base + "/"));
-                base =( base.length() == 0 ? "" : base + "/" );
+                base = (base.length() == 0 ? "" : base + "/");
                 // 遍历目录下文件
                 for (int i = 0; i < listFiles.length; i++) {
                     // 递归进入本方法
@@ -97,7 +131,7 @@ public class ExampleUnitTest {
                 zOut.putNextEntry(new ZipEntry(base));
                 // 开始压缩
                 // 从文件入流读,写入ZIP 出流
-                writeFile(zOut,file);
+                writeFile(zOut, file);
             }
 
         } catch (Exception e) {
@@ -106,7 +140,7 @@ public class ExampleUnitTest {
 
     }
 
-    public static void writeFile(ZipOutputStream zOut,File file) throws IOException{
+    public static void writeFile(ZipOutputStream zOut, File file) throws IOException {
         FileInputStream in = new FileInputStream(file);
         int len;
         while ((len = in.read()) != -1)
