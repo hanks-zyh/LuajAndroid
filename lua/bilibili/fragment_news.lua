@@ -14,11 +14,11 @@ import "androlua.LuaImageLoader"
 import "androlua.LuaFragment"
 import "androlua.LuaHttp"
 import "androlua.widget.webview.WebViewActivity"
-
+import "android.support.v4.widget.SwipeRefreshLayout"
 local uihelper = require "uihelper"
 local JSON = require "json"
 
-local function getData(rid, data, adapter, fragment)
+local function getData(rid, data, adapter, fragment,swipe_layout)
     if rid == nil then rid = 0 end
     local url = string.format('https://api.bilibili.com/x/web-interface/ranking?rid=%d&day=3&jsonp=jsonp',rid)
     LuaHttp.request({ url = url }, function(error, code, body)
@@ -29,6 +29,7 @@ local function getData(rid, data, adapter, fragment)
               data[#data + 1] = arr[i]
             end
             adapter.notifyDataSetChanged()
+            swipe_layout.setRefreshing(false)
         end)
     end)
 end
@@ -47,10 +48,17 @@ function newInstance(rid)
 
     -- create view table
     local layout = {
+      SwipeRefreshLayout,
+      layout_width = "fill",
+      layout_height = "fill",
+      id = "swipe_layout",
+      {
         ListView,
         id = "listview",
         layout_width = "fill",
         layout_height = "fill",
+      }
+
     }
 
     local item_view = {
@@ -94,9 +102,8 @@ function newInstance(rid)
     local lastId
     local data = {}
     local ids = {}
-
-    local fragment = LuaFragment.newInstance()
     local adapter
+    local fragment = LuaFragment.newInstance()
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
         onCreateView = function(inflater, container, savedInstanceState)
             return  loadlayout(layout, ids)
@@ -128,7 +135,11 @@ function newInstance(rid)
                     launchDetail(fragment, data[position + 1])
                 end,
             }))
-            getData(rid, data, adapter, fragment)
+            ids.swipe_layout.setRefreshing(true)
+        end,
+        onFirstUserVisible = function(visible)
+          print("visible" .. rid)
+          getData(rid, data, adapter, fragment, ids.swipe_layout)
         end,
     }))
     return fragment

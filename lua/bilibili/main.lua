@@ -113,6 +113,8 @@ function onCreate(savedInstanceState)
 
     activity.setContentView(loadlayout(layout))
     viewPager.setAdapter(adapter)
+    viewPager.setOffscreenPageLimit(#data.fragments)
+    viewPager.setCurrentItem(0)
     tab.setSelectedTabIndicatorColor(0xffffffff)
     tab.setTabTextColors(0x88ffffff, 0xffffffff)
     tab.setTabMode(TabLayout.MODE_SCROLLABLE)

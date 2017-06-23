@@ -8,6 +8,7 @@ import android.view.View;
 
 
 /**
+ * 可以禁止左右滑动
  * Created by hanks on 16/7/18.
  */
 public class NoScrollViewPager extends ViewPager {

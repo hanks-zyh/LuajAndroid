@@ -105,7 +105,11 @@ public class ExampleUnitTest {
 
     @Test
     public void zipPlugin() throws Exception {
-        String root = "D:\\work\\opensource\\LuaJAndroid\\lua";
+//        String compileLua = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\exec_luac.js";
+//        execCMD(compileLua);
+
+//        String root = "D:\\work\\opensource\\api_luanroid\\lua";
+        String root = "D:\\work\\opensource\\LuajAndroid\\lua";
         String outDir = "D:\\work\\opensource\\api_luanroid\\plugin";
         File[] files = new File(root).listFiles();
         int length = files.length;
@@ -133,8 +137,9 @@ public class ExampleUnitTest {
                 zos.close();
             }
         }
-        String command = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
-        execCMD(command);
+
+        String updateJSON = "node D:\\work\\opensource\\LuaJAndroid\\script\\node\\watch\\update_plugin_info.js";
+        execCMD(updateJSON);
     }
 
 }
