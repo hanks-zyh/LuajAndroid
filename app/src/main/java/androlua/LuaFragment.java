@@ -16,13 +16,6 @@ import android.view.ViewGroup;
 public class LuaFragment extends Fragment {
 
     private FragmentCreator creator;
-    private boolean isPrepared;
-    /**
-     * 第一次onResume中的调用onUserVisible避免操作与onFirstUserVisible操作重复
-     */
-    private boolean isFirstResume = false;
-    private boolean isFirstVisible = false;
-    private boolean isFirstInvisible = false;
 
     public static LuaFragment newInstance() {
         Bundle args = new Bundle();
@@ -32,47 +25,15 @@ public class LuaFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        creator.onActivityCreated(savedInstanceState);
-        initPrepare();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         creator.onPause();
-        if (getUserVisibleHint()) {
-            creator.onUserInvisible();
-        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (isFirstVisible) {
-                isFirstVisible = false;
-                initPrepare();
-            } else {
-                creator.onUserVisible();
-            }
-        } else {
-            if (isFirstInvisible) {
-                isFirstInvisible = false;
-                creator.onFirstUserInvisible();
-            } else {
-                creator.onUserInvisible();
-            }
-        }
-    }
-
-    public void initPrepare() {
-        if (isPrepared && isFirstVisible) {
-            creator.onFirstUserVisible();
-        } else {
-            isPrepared = true;
-        }
+        creator.onUserVisible(isVisibleToUser);
     }
 
     public void setCreator(FragmentCreator creator) {
@@ -98,10 +59,15 @@ public class LuaFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        creator.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         creator.onViewCreated(view, savedInstanceState);
-        isPrepared = true;
     }
 
 
@@ -115,13 +81,6 @@ public class LuaFragment extends Fragment {
     public void onResume() {
         creator.onResume();
         super.onResume();
-        if (isFirstResume) {
-            isFirstResume = false;
-            return;
-        }
-        if (getUserVisibleHint()) {
-            creator.onUserVisible();
-        }
     }
 
     @Override
@@ -155,7 +114,7 @@ public class LuaFragment extends Fragment {
 
         View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-        void onActivityCreated(@Nullable Bundle savedInstanceState);
+        void onActivityCreated(Bundle savedInstanceState);
 
         void onViewCreated(View view, @Nullable Bundle savedInstanceState);
 
@@ -165,33 +124,16 @@ public class LuaFragment extends Fragment {
 
         void onStop();
 
+        void onPause();
+
         void onDestroyView();
 
         void onDestroy();
 
         void onDetach();
 
-        /**
-         * 第一次fragment可见（进行初始化工作）
-         */
-        void onFirstUserVisible();
+        void onUserVisible(boolean isVisibleToUser);
 
-        /**
-         * fragment可见（切换回来或者onResume）
-         */
-        void onUserVisible();
-
-        /**
-         * 第一次fragment不可见（不建议在此处理事件）
-         */
-        void onFirstUserInvisible();
-
-        /**
-         * fragment不可见（切换掉或者onPause）
-         */
-        void onUserInvisible();
-
-        void onPause();
     }
 
 

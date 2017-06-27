@@ -15,6 +15,8 @@ import "androlua.adapter.LuaFragmentPageAdapter"
 
 local fragmentNews = require "bilibili/fragment_news"
 
+
+
 -- create view table
 local layout = {
     LinearLayout,

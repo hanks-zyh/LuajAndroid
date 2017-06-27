@@ -9,9 +9,9 @@ import "android.widget.*"
 import "android.content.*"
 import "android.view.View"
 import "androlua.LuaWebView"
-local Http = luajava.bindClass("androlua.LuaHttp")
+import "androlua.LuaHttp"
 local uihelper = require("uihelper")
-local JSON = require("json")
+local JSON = require("cjson")
 -- create view table
 local layout = {
     FrameLayout,
@@ -56,10 +56,9 @@ function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
     local id = activity.getIntent().getStringExtra('newsid')
-    webview.setVisibility(8)
-    progressBar.setVisibility(0)
-
-    Http.request({ url = string.format('http://news-at.zhihu.com/api/4/news/%s', id) }, function(error, code, body)
+    webview.setVisibility(0)
+    progressBar.setVisibility(8)
+    LuaHttp.request({ url = string.format('http://news-at.zhihu.com/api/4/news/%d', id) }, function(error, code, body)
         local json = JSON.decode(body)
         local title = json.title or ''
         local body = json.body or ''
@@ -73,17 +72,9 @@ function onCreate(savedInstanceState)
 
         local data = string.format(htmlTemplate, title, image, css, body)
         uihelper.runOnUiThread(activity, function()
-            print(data)
             webview.loadData(data, "text/html; charset=UTF-8", nil)
         end)
     end)
-
-    webview.setWebViewClientListener(luajava.createProxy('androlua.LuaWebView$WebViewClientListener', {
-        onPageFinished = function(view, url)
-            webview.setVisibility(0)
-            progressBar.setVisibility(8)
-        end
-    }))
 end
 
 

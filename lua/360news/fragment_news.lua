@@ -17,13 +17,52 @@ import "androlua.widget.webview.WebViewActivity"
 import "android.support.v4.widget.SwipeRefreshLayout"
 local uihelper = require "uihelper"
 local JSON = require "cjson"
+local log = require "log"
 
-local function getData(rid, data, adapter, fragment,swipe_layout)
-    if rid == nil then rid = 0 end
-    local url = string.format('https://api.bilibili.com/x/web-interface/ranking?rid=%d&day=3&jsonp=jsonp',rid)
+local function getData(params, data, adapter, fragment,swipe_layout)
+    local action = 1
+    if #data > 0 then
+        action = 2
+    end
+
+    local path = 'youlike?air=1'
+    local category = ''
+    if params.rid then 
+        path = 'clsnews?'
+        category ='&category='..params.rid 
+    else
+        action = 2
+    end
+   
+
+    local uid = params.uid
+    if uid == nil then
+        uid = '' .. os.time()
+        params.uid = uid
+    end
+
+     local fctime = params.fctime
+     local fetime =  params.fetime
+     local fst = params.fst
+     local lvtime = params.lvtime
+     local h = params.h
+     local _ = os.time() * 1000
+
+    http://3g.163.com/touch/jsonp/sy/recommend/30-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec3
+    http://3g.163.com/touch/jsonp/sy/recommend/40-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec4
+    http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/10-10.html
+    http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/20-10.html
+    http://3g.163.com/touch/reconstruct/article/list/BCR1UC1Qwangning/0-10.html
+    
+    local url = string.format('http://tran.news.so.com/news/%s&f=jsonp&n=10&u=%s&sign=mso_m_home&action=%d&fst=%d&fctime=%d&fetime=%d&lvtime=%d&h=%s&version=1.0.0&device=0%s&_=%d&callback=jsonp1',path,uid,action,fst,fctime,fetime,lvtime,h,category,_)
+    params.lvtime = os.time()
+    print(url)
+
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then return end
-        local arr = JSON.decode(body).data.list
+        body = body:sub(9,#body-1)
+        print(body)
+        local arr = JSON.decode(body)
         uihelper.runOnUiThread(fragment.getActivity(), function()
             for i=1,#arr do
               data[#data + 1] = arr[i]
@@ -36,15 +75,31 @@ end
 
 local function launchDetail(fragment, item)
   local activity = fragment.getActivity()
-  if item and item.aid then
-      local url = string.format('https://m.bilibili.com/video/av%d.html', item.aid)
-      WebViewActivity.start(activity, url, 0xFFfb7299)
+  if item and item.u then
+      WebViewActivity.start(activity,  item.u, 0xFFfb7299)
       return
   end
   activity.toast('没有 url 可以打开')
 end
 
-function newInstance(rid)
+local function dateStr(d)
+
+     local now = os.time()
+      local dx = now - d
+      if dx < 600 then
+        return '刚刚'
+      elseif  dx < 3600 then
+        return math.floor(dx/60) .. '分钟前'
+      elseif  dx < 3600 * 24 then
+        return math.floor(dx/3600) .. '小时前'
+      else
+        return os.date('%y-%m-%d',d)
+      end
+
+end
+
+
+local function newInstance(rid)
 
     -- create view table
     local layout = {
@@ -98,9 +153,11 @@ function newInstance(rid)
             textColor = "#aaaaaa",
         }
     }
+
     local hadLoadData
     local isVisible
     local lastId
+    local params = { rid=rid, fctime = 0, fetime = 0, lvtime = 0, fst= 1, h=0, uid= '126174545.2556769649736356000.1498557659047.7295' }
     local data = {}
     local ids = {}
     local adapter
@@ -110,7 +167,7 @@ function newInstance(rid)
         if hadLoadData then return end
         if adapter == nil then return end
         hadLoadData = true
-        getData(rid, data, adapter, fragment, ids.swipe_layout)
+        getData(params, data, adapter, fragment, ids.swipe_layout)
     end
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
         onCreateView = function(inflater, container, savedInstanceState)
@@ -130,10 +187,13 @@ function newInstance(rid)
                     local views = convertView.getTag()
                     local item = data[position]
                     if item then
-                        LuaImageLoader.load(views.iv_image, item.pic)
-                        views.tv_date.setText(string.format('%d 次播放        %d 条弹幕',item.play ,item.video_review))
-                        views.tv_title.setText(item.title)
+                        LuaImageLoader.load(views.iv_image, item.i)
+                        views.tv_date.setText(string.format('%s        %s',item.f ,dateStr(item.p)))
+                        views.tv_title.setText(item.t)
                     end
+                    
+                    if position == #data then getData(params, data, adapter, fragment, ids.swipe_layout) end
+
                     return convertView
                 end
             }))

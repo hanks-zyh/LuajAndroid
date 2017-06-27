@@ -13,7 +13,7 @@ import "androlua.LuaAdapter"
 import "androlua.widget.video.VideoPlayerActivity"
 import "androlua.LuaImageLoader"
 
-local JSON = require("json")
+local JSON = require("cjson")
 local uihelper = require('uihelper')
 
 -- create view table

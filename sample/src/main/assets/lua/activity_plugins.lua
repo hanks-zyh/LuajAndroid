@@ -19,7 +19,7 @@ import "android.graphics.drawable.GradientDrawable"
 import "androlua.widget.marqueetext.MarqueeTextView"
 
 local FileUtils = import "androlua.common.LuaFileUtils"
-local JSON = require "json"
+local JSON = require "cjson"
 local uihelper = require "uihelper"
 -- create view table
 local layout = {
