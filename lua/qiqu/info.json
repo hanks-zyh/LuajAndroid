@@ -1,7 +1,7 @@
 {
     "id":"pub.hanks.qiqu",
     "name":"奇趣百科",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrjga8r6kj20e80e8wgq.jpg",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10pf0gqkj2046046748.jpg",
     "main":"main.lua",
     "versionName":"1.0",
     "versionCode":1,

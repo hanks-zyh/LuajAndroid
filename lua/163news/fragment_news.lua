@@ -19,54 +19,31 @@ local uihelper = require "uihelper"
 local JSON = require "cjson"
 local log = require "log"
 
-local function getData(params, data, adapter, fragment,swipe_layout)
-    local action = 1
-    if #data > 0 then
-        action = 2
-    end
 
-    local path = 'youlike?air=1'
-    local category = ''
-    if params.rid then 
-        path = 'clsnews?'
-        category ='&category='..params.rid 
-    else
-        action = 2
-    end
-   
+local function getData(params, data, adapter, fragment,swipe_layout, reload)
 
-    local uid = params.uid
-    if uid == nil then
-        uid = '' .. os.time()
-        params.uid = uid
-    end
-
-     local fctime = params.fctime
-     local fetime =  params.fetime
-     local fst = params.fst
-     local lvtime = params.lvtime
-     local h = params.h
-     local _ = os.time() * 1000
-
-    http://3g.163.com/touch/jsonp/sy/recommend/30-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec3
-    http://3g.163.com/touch/jsonp/sy/recommend/40-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec4
-    http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/10-10.html
-    http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/20-10.html
-    http://3g.163.com/touch/reconstruct/article/list/BCR1UC1Qwangning/0-10.html
+    -- http://3g.163.com/touch/jsonp/sy/recommend/30-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec3
+    -- http://3g.163.com/touch/jsonp/sy/recommend/40-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec4
+    -- http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/10-10.html
+    -- http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/20-10.html
+    -- http://3g.163.com/touch/reconstruct/article/list/BCR1UC1Qwangning/0-10.html
     
-    local url = string.format('http://tran.news.so.com/news/%s&f=jsonp&n=10&u=%s&sign=mso_m_home&action=%d&fst=%d&fctime=%d&fetime=%d&lvtime=%d&h=%s&version=1.0.0&device=0%s&_=%d&callback=jsonp1',path,uid,action,fst,fctime,fetime,lvtime,h,category,_)
-    params.lvtime = os.time()
+    local url = string.format('http://3g.163.com/touch/reconstruct/article/list/%s/%d-10.html', params.rid, params.page * 10)
     print(url)
 
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then return end
-        body = body:sub(9,#body-1)
+        body = body:sub(10,#body-1)
         print(body)
-        local arr = JSON.decode(body)
+        local arr = JSON.decode(body)[params.rid]
         uihelper.runOnUiThread(fragment.getActivity(), function()
+            if reload then
+                for k,_ in pairs(date) do data[k] = nil end
+            end
             for i=1,#arr do
               data[#data + 1] = arr[i]
             end
+            params.page = params.page + 1
             adapter.notifyDataSetChanged()
             swipe_layout.setRefreshing(false)
         end)
@@ -74,28 +51,39 @@ local function getData(params, data, adapter, fragment,swipe_layout)
 end
 
 local function launchDetail(fragment, item)
-  local activity = fragment.getActivity()
-  if item and item.u then
-      WebViewActivity.start(activity,  item.u, 0xFFfb7299)
-      return
-  end
-  activity.toast('没有 url 可以打开')
+    local activity = fragment.getActivity()
+    if item == nil or item.url == nil then
+        activity.toast('没有 url 可以打开')
+        return
+    end
+    if not item.url:find('^http://') then 
+        WebViewActivity.start(activity, item.skipURL , 0xFFff3333)
+        return
+    else
+        local activity = fragment.getActivity()
+        local intent = Intent(activity, LuaActivity)
+        intent.putExtra("luaPath", '163news/activity_news_detail.lua')
+        intent.putExtra("url", item.url)
+        activity.startActivity(intent)
+    end
 end
 
 local function dateStr(d)
-
-     local now = os.time()
-      local dx = now - d
-      if dx < 600 then
+    if type(d) == 'string' then
+        local Y,M,D,h,m,s = string.match(d,'(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)')
+        return dateStr(os.time({day=D,month=M,year=Y,hour=h,min=m,sec=s}))
+    end
+    local now = os.time()
+    local dx = now - d
+    if dx < 600 then
         return '刚刚'
-      elseif  dx < 3600 then
+    elseif  dx < 3600 then
         return math.floor(dx/60) .. '分钟前'
-      elseif  dx < 3600 * 24 then
+    elseif  dx < 3600 * 24 then
         return math.floor(dx/3600) .. '小时前'
-      else
+    else
         return os.date('%y-%m-%d',d)
-      end
-
+    end
 end
 
 
@@ -113,11 +101,10 @@ local function newInstance(rid)
         layout_width = "fill",
         layout_height = "fill",
       }
-
     }
 
     local item_view = {
-        FrameLayout,
+        RelativeLayout,
         layout_width = "fill",
         layout_height = "wrap",
         paddingLeft = "16dp",
@@ -127,37 +114,52 @@ local function newInstance(rid)
         {
             ImageView,
             id = "iv_image",
-            layout_gravity = "center_vertical",
-            layout_width = "120dp",
-            layout_height = "75dp",
+            layout_width = "110dp",
+            layout_height = "83dp",
+            layout_marginRight = "12dp",
             scaleType = "centerCrop",
         },
         {
             TextView,
             id = "tv_title",
-            layout_marginLeft = "132dp",
+            layout_toRightOf = "iv_image",
             layout_width = "fill",
             maxLines = "2",
             lineSpacingMultiplier = 1.3,
-            layout_gravity = "top",
-            textSize = "14sp",
+            textSize = "16sp",
             textColor = "#222222",
+        },
+        {
+            LinearLayout,
+            id = "layout_imgs",
+            layout_below = "tv_title",
+            layout_marginTop = "8dp",
+            layout_marginBottom = "8dp",
+            layout_width = "match",
         },
         {
             TextView,
             id = "tv_date",
-            layout_gravity = "bottom",
-            layout_marginLeft = "132dp",
+            layout_below = "layout_imgs",
+            layout_toRightOf = "iv_image",
+            layout_alignParentBottom = true,
             layout_width = "fill",
             textSize = "12sp",
             textColor = "#aaaaaa",
         }
     }
+    local singleImg =  {
+        ImageView,
+        layout_width = (uihelper.getScreenWidth() - uihelper.dp2px(44)) / 3,
+        layout_height = "83dp",
+        layout_marginRight = "8dp",
+        scaleType = "centerCrop",
+    }
 
     local hadLoadData
     local isVisible
     local lastId
-    local params = { rid=rid, fctime = 0, fetime = 0, lvtime = 0, fst= 1, h=0, uid= '126174545.2556769649736356000.1498557659047.7295' }
+    local params = { rid=rid,  page = 0 }
     local data = {}
     local ids = {}
     local adapter
@@ -187,9 +189,27 @@ local function newInstance(rid)
                     local views = convertView.getTag()
                     local item = data[position]
                     if item then
-                        LuaImageLoader.load(views.iv_image, item.i)
-                        views.tv_date.setText(string.format('%s        %s',item.f ,dateStr(item.p)))
-                        views.tv_title.setText(item.t)
+                        if item.imgextra and #item.imgextra > 0 then
+
+                            views.iv_image.setVisibility(8)
+                            views.layout_imgs.setVisibility(0)
+                            views.layout_imgs.removeAllViews()
+                            item.imgextra[#item.imgextra + 1] = {imgsrc=item.imgsrc}
+                            local len = #item.imgextra
+                            if len > 3 then len = 3 end
+                            for i=1,len do
+                              local img = loadlayout(singleImg,{},LinearLayout)
+                              LuaImageLoader.load(img, item.imgextra[i].imgsrc)    
+                              views.layout_imgs.addView(img)
+                            end
+                        else
+                            views.iv_image.setVisibility(0)
+                            views.layout_imgs.setVisibility(8)
+                            LuaImageLoader.load(views.iv_image, item.imgsrc) 
+                        end
+                        views.tv_date.setText(string.format('%s        %s', dateStr(item.ptime), item.source ))
+                        views.tv_title.setText(item.title)
+
                     end
                     
                     if position == #data then getData(params, data, adapter, fragment, ids.swipe_layout) end
@@ -204,6 +224,11 @@ local function newInstance(rid)
                 end,
             }))
             ids.swipe_layout.setRefreshing(true)
+            ids.swipe_layout.setOnRefreshListener(luajava.createProxy('android.support.v4.widget.SwipeRefreshLayout$OnRefreshListener', {
+                onRefresh = function()
+                    getData(params, data, adapter, fragment, ids.swipe_layout, true)
+                end
+            }))
             lazyLoad()
         end,
         onUserVisible = function(visible)

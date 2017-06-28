@@ -18,13 +18,13 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     orientation = "vertical",
-    statusBarColor = "#D22222",
+    statusBarColor = "#ff3333",
     {
         LinearLayout,
         orientation = "horizontal",
         layout_width = "fill",
         layout_height = "56dp",
-        background = "#D22222",
+        background = "#ff3333",
         gravity = "center_vertical",
         {
             ImageView,
@@ -83,11 +83,11 @@ local htmlTemplate = [[
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width; initial-scale=1; minimum-scale=1; maximum-scale=2">
-	<meta content="width=device-width,user-scalable=no" name="viewport">
-	<style type="text/css">	%s </style>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1; minimum-scale=1; maximum-scale=2">
+    <meta content="width=device-width,user-scalable=no" name="viewport">
+    <style type="text/css"> %s </style>
 </head>
 <body>
 <div class="content"> %s </div>
@@ -95,30 +95,31 @@ local htmlTemplate = [[
 </html>
 ]]
 
-function html_unescape(s)
-    return s:gsub("&lt;", "<"):gsub("&gt;", ">"):gsub("&amp;", "&"):gsub("&quot;", '"'):gsub("&#39;", "'"):gsub("&#47;", "/")
-end
+ 
 
-function onCreate(savedInstanceState)
-    activity.setStatusBarColor(0xffd22222)
-    activity.setContentView(loadlayout(layout))
-    back.onClick = function()
-        activity.finish()
-    end
-    local newsid = activity.getIntent().getStringExtra('newsid')
-    local originalUrl = string.format('http://wap.ithome.com/html/%s.htm', newsid)
-    tv_title.setText(originalUrl)
-    webview.setVisibility(0)
-    progressBar.setVisibility(8)
-    local url = string.format("http://api.ithome.com/xml/newscontent/%s/%s.xml", newsid:sub(1, 3), newsid:sub(4, 6))
+local function getData( url )
+    url = url:gsub('.html','_0.html')
     LuaHttp.request({ url = url }, function(error, code, body)
-        local content = string.match(body, '<detail.->(.-)</detail>')
-        local data = string.format(htmlTemplate, css, html_unescape(content))
+        local content = string.match(body, '(<div class="content">.-</div>)%s<![-][-]微博[-][-]>')
+        local data = string.format(htmlTemplate, css, content)
         uihelper.runOnUiThread(activity, function()
             print(data)
             webview.loadData(data, "text/html; charset=UTF-8", nil)
         end)
     end)
+end
+
+
+function onCreate(savedInstanceState)
+    activity.setContentView(loadlayout(layout))
+    back.onClick = function()
+        activity.finish()
+    end
+    local url = activity.getIntent().getStringExtra('url')
+    tv_title.setText(url)
+    webview.setVisibility(0)
+    progressBar.setVisibility(8)
+    getData(url)
 end
 
 

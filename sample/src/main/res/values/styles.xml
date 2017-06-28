@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@style/AppActivityAnim</item>
     </style>
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/white</item>

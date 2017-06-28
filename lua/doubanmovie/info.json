@@ -1,7 +1,7 @@
 {
     "id":"pub.hanks.doubanmovie",
     "name":"热映电影",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrpmhay38j20bh0bgaej.jpg",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10mosfy3j2046046jrf.jpg",
     "main":"main.lua",
     "versionName":"1.0.1",
     "versionCode":2,

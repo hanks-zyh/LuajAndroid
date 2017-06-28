@@ -1,7 +1,7 @@
 {
     "id":"pub.hanks.weather",
     "name":"天气",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrp35u1f2j20be0bemxo.jpg",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10p6tgqtj2046046jr5.jpg",
     "main":"main.lua",
     "versionName":"1.0",
     "versionCode":1,

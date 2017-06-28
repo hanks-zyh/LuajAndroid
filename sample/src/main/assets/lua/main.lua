@@ -24,8 +24,8 @@ local layout = {
     {
         ImageView,
         id = "iv_logo",
-        layout_height = "64dp",
-        layout_width = "64dp",
+        layout_height = "72dp",
+        layout_width = "72dp",
         layout_marginTop= "120dp",
         src = "@mipmap/ic_launcher",
     },

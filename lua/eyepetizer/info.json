@@ -1,7 +1,7 @@
 {
     "id":"pub.hanks.eyepetizer",
     "name":"开眼",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrjd48rc1j20hi0hiwgw.jpg",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10ok80b4j2046046741.jpg",
     "main":"main.lua",
     "versionName":"1.0.1",
     "versionCode":2,

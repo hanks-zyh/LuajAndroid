@@ -1,7 +1,7 @@
 {
     "id":"pub.hanks.graphmovies",
     "name":"图解电影",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrp42ewaxj20bt0bt40h.jpg",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10nushb5j2046046q2s.jpg",
     "main":"main.lua",
     "versionName":"1.0.1",
     "versionCode":2,

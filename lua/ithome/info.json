@@ -1,7 +1,7 @@
 {
     "id":"pub.hanks.ithome",
     "name":"IT之家",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgrpi1lxizj2050050mxe.jpg",
+    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10neq5anj20460460sh.jpg",
     "main":"main.lua",
     "versionName":"1.0",
     "versionCode":2,

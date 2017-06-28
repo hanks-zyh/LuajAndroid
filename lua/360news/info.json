@@ -1,9 +1,0 @@
-{
-    "id":"pub.hanks.360news",
-    "name":"新闻",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fgruofxxmpj20oh0ohwuc.jpg",
-    "main":"main.lua",
-    "versionName":"1.0",
-    "versionCode":1,
-    "desc":"新闻客户端"
-}

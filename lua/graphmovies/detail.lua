@@ -99,12 +99,15 @@ local item_view = {
         id = "tv_content",
         layout_width = "fill",
         lineSpacingMultiplier = '1.3',
-        textSize = "16sp",
+        paddingTop = "8dp",
+        paddingBottom = "8dp",
+        textSize = "14sp",
         textColor = "#444444",
     },
 }
 
 local data = {}
+local baseUrl = ""
 local adapter
 
 local function unicode_to_utf8(convertStr)
@@ -150,8 +153,10 @@ local function getData()
                 "a:1",
             },
         }
-        LuaHttp.request(options, function(e, c, b)
-            for m, r in string.gmatch(b, '"m":"(.-)","r":"(.-)"') do
+        LuaHttp.request(options, function(e, c, b) 
+            baseUrl = string.match(b,'data":{"p":"(.-)"')
+            print(baseUrl)
+            for m, r in string.gmatch(b, '"m":"(.-)","r":"(.-)"') do 
                 data[#data + 1] = { m = m, r = r }
             end
             uihelper.runOnUiThread(activity, function()
@@ -183,7 +188,11 @@ function onCreate(savedInstanceState)
             local views = convertView.getTag()
             local item = data[position]
             if item then
-                local img = item.m:gsub('\\/', '/')
+                local img = item.m
+                if not img:find('^http') then
+                    img = baseUrl .. img
+                end
+                img = img:gsub('\\/', '/')
                 LuaImageLoader.load(views.iv_image, img)
                 views.tv_content.setText(unicode_to_utf8(item.r or ''))
             end

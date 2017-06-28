@@ -140,7 +140,7 @@ local layout_content = {
     background = "@drawable/layout_selector_tran",
     {
       TextView,
-      text = "捐赠 🐒🐒",
+      text = "《《捐赠》》",
       textColor = "#444444",
       textSize = "16sp",
       layout_centerVertical = true,

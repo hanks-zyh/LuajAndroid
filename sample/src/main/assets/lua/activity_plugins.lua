@@ -175,6 +175,8 @@ end
 
 
 local function downloadPlugin(plugin)
+    plugin.type = 'downloading'
+    notifyAdapterData()
     FileUtils.downloadPlugin(plugin.download, plugin.id, function(pluginDir)
         plugin.type = 'uninstall'
         notifyAdapterData()
