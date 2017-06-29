@@ -100,7 +100,7 @@ local htmlTemplate = [[
 local function getData( url )
     url = url:gsub('.html','_0.html')
     LuaHttp.request({ url = url }, function(error, code, body)
-        local content = string.match(body, '(<div class="content">.-</div>)%s<![-][-]微博[-][-]>')
+        local content = string.match(body, '<div class="content">(.-)</div>%s<![-][-]微博[-][-]>')
         local data = string.format(htmlTemplate, css, content)
         uihelper.runOnUiThread(activity, function()
             print(data)

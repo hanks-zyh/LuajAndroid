@@ -100,6 +100,7 @@ local function newInstance(rid)
         id = "listview",
         layout_width = "fill",
         layout_height = "fill",
+        
       }
     }
 
@@ -109,8 +110,8 @@ local function newInstance(rid)
         layout_height = "wrap",
         paddingLeft = "16dp",
         paddingRight = "12dp",
-        paddingTop = "12dp",
-        paddingBottom = "12dp",
+        paddingTop = "16dp",
+        paddingBottom = "16dp",
         {
             ImageView,
             id = "iv_image",

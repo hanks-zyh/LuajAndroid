@@ -18,7 +18,7 @@ import "androlua.adapter.LuaRecyclerHolder"
 import "android.support.v7.widget.GridLayoutManager"
 
 local uihelper = require("uihelper")
-local JSON = require("json")
+local JSON = require("cjson")
 local log = require("log")
 
 -- create view table

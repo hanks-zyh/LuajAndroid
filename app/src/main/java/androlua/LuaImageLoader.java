@@ -53,7 +53,8 @@ public class LuaImageLoader {
             loadLocal = true;
         }
 
-        if (!uri.startsWith("http://") && !uri.startsWith("https://")) {
+        if (!uri.startsWith("http://") && !uri.startsWith("https://")
+                && !uri.startsWith("content://") && !uri.startsWith("file://")) {
             String path = uri;
             if (!uri.startsWith("/")) {
                 path = LuaManager.getInstance().getLuaExtDir() + "/" + uri;

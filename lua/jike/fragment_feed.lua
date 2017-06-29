@@ -5,7 +5,7 @@
 -- Time: 00:01
 -- To change this template use File | Settings | File Templates.
 --
-local JSON = require("json")
+local JSON = require("cjson")
 local ImageLoader = import "androlua.LuaImageLoader"
 local LuaFragment = import("androlua.LuaFragment")
 local Http = import "androlua.LuaHttp"

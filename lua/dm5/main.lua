@@ -29,7 +29,7 @@ import "androlua.widget.webview.WebViewActivity"
 
 
 local uihelper = require("uihelper")
-local JSON = require("json")
+local JSON = require("cjson")
 local log = require("log")
 local screenWidth = uihelper.getScreenWidth()
 

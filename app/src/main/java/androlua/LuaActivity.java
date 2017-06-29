@@ -63,43 +63,11 @@ public class LuaActivity extends BaseActivity implements LuaContext {
         context.startActivity(starter);
     }
 
-    public String m4069b(String str, String str2) {
-        byte[] decode = Base64.decode(str2.getBytes(), 0);
-        try {
-            Cipher instance = Cipher.getInstance("PBEWithMD5AndDES");
-            instance.init(2, SecretKeyFactory.getInstance("PBEWithMD5AndDES").generateSecret(new PBEKeySpec(str.toCharArray())), new PBEParameterSpec(new byte[]{(byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5, (byte) 6, (byte) 7, (byte) 8}, 10));
-            return new String(instance.doFinal(decode));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return str2;
-        } catch (NoSuchPaddingException e2) {
-            e2.printStackTrace();
-            return str2;
-        } catch (InvalidKeyException e3) {
-            e3.printStackTrace();
-            return str2;
-        } catch (InvalidAlgorithmParameterException e4) {
-            e4.printStackTrace();
-            return str2;
-        } catch (IllegalBlockSizeException e5) {
-            e5.printStackTrace();
-            return str2;
-        } catch (BadPaddingException e6) {
-            e6.printStackTrace();
-            return str2;
-        } catch (InvalidKeySpecException e7) {
-            e7.printStackTrace();
-            return str2;
-        }
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         handler = new MainHandler(this);
-
 
         // 用于出错时显示
         initErrorLayout();
@@ -180,6 +148,7 @@ public class LuaActivity extends BaseActivity implements LuaContext {
         errorLayout.setBackgroundColor(Color.WHITE);
 
         status = new TextView(this);
+        status.setPadding(10,100,10,0);
         status.setTextColor(Color.BLACK);
         status.setText("");
         status.setTextIsSelectable(true);

@@ -16,7 +16,7 @@ import "android.graphics.Paint"
 import "androlua.LuaUtil"
 
 local uihelper = require("uihelper")
-local JSON = require("json")
+local JSON = require("cjson")
 local filehelper = require("filehelper")
 local weather = require("weather.weather")
 

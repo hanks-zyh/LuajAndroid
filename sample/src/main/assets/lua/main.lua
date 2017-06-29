@@ -9,18 +9,31 @@ import "androlua.LuaImageLoader"
 import "androlua.common.LuaFileUtils"
 
 local uihelper = require "uihelper"
+local log = require "log"
+local JSON = require "cjson"
+
 local layout = {
+    FrameLayout,
+    layout_width = "fill",
+    layout_height = "fill",
+    focusable = true,
+    focusableInTouchMode = true,
+    {
+        ImageView,
+        id = "iv_home_bg",
+        layout_width = "fill",
+        layout_height = "fill",
+    },
+    {
+
     LinearLayout,
     layout_width = "fill",
     layout_height = "fill",
     gravity = "center_horizontal",
-    background = "#FFFFFF",
-    background = "#FFFFFF",
+    background = "#55FFFFFF",
     orientation = 1,
     paddingLeft = "16dp",
     paddingRight = "16dp",
-    focusable = true,
-    focusableInTouchMode = true,
     {
         ImageView,
         id = "iv_logo",
@@ -28,6 +41,7 @@ local layout = {
         layout_width = "72dp",
         layout_marginTop= "120dp",
         src = "@mipmap/ic_launcher",
+        scaleType = "centerCrop",
     },
     {
         TextView,
@@ -42,7 +56,7 @@ local layout = {
         text = "URL | AGC | NEWS | CODE",
         textColor = "#9DAEBF",
         textSize = "12sp",
-        background = "#F4F4F4",
+        background = "#E0EBF0F2",
     },
     {
         GridView,
@@ -52,6 +66,7 @@ local layout = {
         layout_marginRight = "14dp",
         numColumns = 5,
     },
+    }
 }
 
 local item_view = {
@@ -82,6 +97,7 @@ local adapter
 local config_file = "luandroid"
 local sp = activity.getSharedPreferences(config_file, Context.MODE_PRIVATE)
 local home_loadicon = false
+local home_bg
 
 local function newActivity(luaPath)
     local intent = Intent(activity, LuaActivity)
@@ -90,7 +106,6 @@ local function newActivity(luaPath)
 end
 
 local function getData()
-
   local localList = LuaFileUtils.getPluginList()
   for i = 1, #localList do
       local p = localList[i - 1]
@@ -103,12 +118,24 @@ local function getData()
   end
 end
 
+local config
 function onResume()
-  home_loadicon = sp.getBoolean("home_loadicon",false)
+  config = JSON.decode( sp.getString('config','{}'))
+  log.print_r(config)
   for k,v in pairs(data) do
     data[k] = nil
   end
   getData()
+  -- bg
+  if config.home_bg and config.home_bg ~= '' then
+    activity.setStatusBarColor(0x00FFFFFF)
+    LuaImageLoader.load(iv_home_bg, config.home_bg)
+  end
+
+  -- logo
+  if config.home_logo and config.home_logo ~= '' then
+    LuaImageLoader.loadWithRadius(iv_logo, 36 , config.home_logo)
+  end
 end
 
 
@@ -137,7 +164,7 @@ function onCreate(savedInstanceState)
             local item = data[position]
             if item then
                 local icon = ''
-                if home_loadicon then icon = item.icon end
+                if config.home_loadicon then icon = item.icon end
                 LuaImageLoader.loadWithRadius(views.icon, 40, icon)
                 views.text.setText(item.text)
             end

@@ -21,7 +21,7 @@ import "androlua.widget.ninegride.LuaNineGridViewAdapter"
 import "androlua.widget.picture.PicturePreviewActivity"
 import "androlua.widget.webview.WebViewActivity"
 
-local JSON = require("json")
+local JSON = require("cjson")
 local uihelper = require("uihelper")
 
 local function clearTable(t)

@@ -1,8 +1,8 @@
 package pub.hanks.luajandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -11,9 +11,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,10 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
+import java.io.File;
+import java.net.URI;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -50,6 +48,13 @@ public class ExampleInstrumentedTest {
         linearLayout.animate().scaleX(2).scaleY(2).translationX(100).setDuration(3000).start();
         VectorDrawableCompat.createFromPath("");
 
+        linearLayout.setClickable(true);
+        linearLayout.setFocusable(true);
+        linearLayout.setFocusableInTouchMode(true);
+        linearLayout.setBackgroundResource(R.drawable.layout_selector_tran);
+
+        Intent intent = new Intent();
+        new File(new URI(intent.getData().getPath())).getAbsolutePath();
 
 
         GridView gridLayout = new GridView(appContext);
