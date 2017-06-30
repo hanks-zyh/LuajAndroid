@@ -25,47 +25,46 @@ local layout = {
         layout_height = "fill",
     },
     {
-
-    LinearLayout,
-    layout_width = "fill",
-    layout_height = "fill",
-    gravity = "center_horizontal",
-    background = "#55FFFFFF",
-    orientation = 1,
-    paddingLeft = "16dp",
-    paddingRight = "16dp",
-    {
-        ImageView,
-        id = "iv_logo",
-        layout_height = "72dp",
-        layout_width = "72dp",
-        layout_marginTop= "120dp",
-        src = "@mipmap/ic_launcher",
-        scaleType = "centerCrop",
-    },
-    {
-        TextView,
-        id = "tv_add_plugin",
-        layout_height = "48dp",
+        LinearLayout,
         layout_width = "fill",
-        layout_marginLeft = "24dp",
-        layout_marginTop = "48dp",
-        layout_marginBottom = "40dp",
-        layout_marginRight = "24dp",
-        gravity = "center",
-        text = "URL | AGC | NEWS | CODE",
-        textColor = "#9DAEBF",
-        textSize = "12sp",
-        background = "#E0EBF0F2",
-    },
-    {
-        GridView,
-        id = "gridView",
-        layout_width = "fill",
-        layout_marginLeft = "14dp",
-        layout_marginRight = "14dp",
-        numColumns = 5,
-    },
+        layout_height = "fill",
+        gravity = "center_horizontal",
+        background = "#55FFFFFF",
+        orientation = 1,
+        paddingLeft = "16dp",
+        paddingRight = "16dp",
+        {
+            ImageView,
+            id = "iv_logo",
+            layout_height = "72dp",
+            layout_width = "72dp",
+            layout_marginTop = "120dp",
+            src = "@mipmap/ic_launcher",
+            scaleType = "centerCrop",
+        },
+        {
+            TextView,
+            id = "tv_add_plugin",
+            layout_height = "48dp",
+            layout_width = "fill",
+            layout_marginLeft = "24dp",
+            layout_marginTop = "48dp",
+            layout_marginBottom = "40dp",
+            layout_marginRight = "24dp",
+            gravity = "center",
+            text = "URL | AGC | NEWS | CODE",
+            textColor = "#9DAEBF",
+            textSize = "12sp",
+            background = "#E0EBF0F2",
+        },
+        {
+            GridView,
+            id = "gridView",
+            layout_width = "fill",
+            layout_marginLeft = "14dp",
+            layout_marginRight = "14dp",
+            numColumns = 5,
+        },
     }
 }
 
@@ -106,36 +105,36 @@ local function newActivity(luaPath)
 end
 
 local function getData()
-  local localList = LuaFileUtils.getPluginList()
-  for i = 1, #localList do
-      local p = localList[i - 1]
-      data[#data + 1] = {
-        text = p.getName(),
-        launchPage = p.getMainPath(),
-        icon = p.getIconPath(),
-      }
-      adapter.notifyDataSetChanged()
-  end
+    local localList = LuaFileUtils.getPluginList()
+    for i = 1, #localList do
+        local p = localList[i - 1]
+        data[#data + 1] = {
+            text = p.getName(),
+            launchPage = p.getMainPath(),
+            icon = p.getIconPath(),
+        }
+        adapter.notifyDataSetChanged()
+    end
 end
 
 local config
 function onResume()
-  config = JSON.decode( sp.getString('config','{}'))
-  log.print_r(config)
-  for k,v in pairs(data) do
-    data[k] = nil
-  end
-  getData()
-  -- bg
-  if config.home_bg and config.home_bg ~= '' then
-    activity.setStatusBarColor(0x00FFFFFF)
-    LuaImageLoader.load(iv_home_bg, config.home_bg)
-  end
+    config = JSON.decode(sp.getString('config', '{}'))
+    log.print_r(config)
+    for k, v in pairs(data) do
+        data[k] = nil
+    end
+    getData()
+    -- bg
+    if config.home_bg and config.home_bg ~= '' then
+        activity.setStatusBarColor(0x00FFFFFF)
+        LuaImageLoader.load(iv_home_bg, config.home_bg)
+    end
 
-  -- logo
-  if config.home_logo and config.home_logo ~= '' then
-    LuaImageLoader.loadWithRadius(iv_logo, 36 , config.home_logo)
-  end
+    -- logo
+    if config.home_logo and config.home_logo ~= '' then
+        LuaImageLoader.loadWithRadius(iv_logo, 36, config.home_logo)
+    end
 end
 
 
@@ -143,12 +142,12 @@ function onCreate(savedInstanceState)
     activity.setLightStatusBar()
     activity.setContentView(loadlayout(layout))
 
-    iv_logo.onClick = function (args)
-      newActivity(luajava.luaextdir .. '/activity_setting.lua')
+    iv_logo.onClick = function(args)
+        newActivity(luajava.luaextdir .. '/activity_setting.lua')
     end
 
-    tv_add_plugin.onClick = function (args)
-      newActivity(luajava.luadir .. '/activity_plugins.lua')
+    tv_add_plugin.onClick = function(args)
+        newActivity(luajava.luadir .. '/activity_plugins.lua')
     end
     adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data end,
@@ -165,7 +164,8 @@ function onCreate(savedInstanceState)
             if item then
                 local icon = ''
                 if config.home_loadicon then icon = item.icon end
-                LuaImageLoader.loadWithRadius(views.icon, 40, icon)
+                local radius = tonumber(config.home_icon_radius or '40')
+                LuaImageLoader.loadWithRadius(views.icon, radius, icon)
                 views.text.setText(item.text)
             end
             return convertView

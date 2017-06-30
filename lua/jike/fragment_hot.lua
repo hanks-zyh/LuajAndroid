@@ -54,14 +54,14 @@ end
 local log = require("log")
 
 local function launchDetail(fragment, msg)
-  local activity = fragment.getActivity()
-  log.print_r(msg)
-  if msg and msg.linkUrl then
-      WebViewActivity.start(activity, msg.linkUrl, 0xFFffe411)
-      return
-  end
+    local activity = fragment.getActivity()
+    log.print_r(msg)
+    if msg and msg.linkUrl then
+        WebViewActivity.start(activity, msg.linkUrl, 0xFFffe411)
+        return
+    end
 
-  activity.toast('没有 url 可以打开')
+    activity.toast('没有 url 可以打开')
 end
 
 local function launchPicturePreview(fragment, msg, index)
@@ -113,11 +113,9 @@ function newInstance()
                 getItemCount = function()
                     return #data.msg
                 end,
-
                 getItemViewType = function(position)
                     return 0
                 end,
-
                 onCreateViewHolder = function(parent, viewType)
                     local views = {}
                     local holder = LuaRecyclerHolder(loadlayout(item_view, views, RecyclerView))

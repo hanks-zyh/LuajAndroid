@@ -50,26 +50,26 @@ local layout = {
     layout_height = "fill",
     statusBarColor = "#FDE04C",
     {
-      RelativeLayout,
-      layout_width = "fill",
-      layout_height = "56dp",
-      background = "#FDE04C",
-      {
-          TextView,
-          layout_centerInParent = true,
-          text = "动漫屋",
-          textColor = "#43250C",
-          textSize = "18sp",
-      },
-      {
-        ImageView,
-        id = "iv_search",
-        layout_width = "56dp",
+        RelativeLayout,
+        layout_width = "fill",
         layout_height = "56dp",
-        padding = "16dp",
-        layout_alignParentRight = true,
-        src = "#dm5/ic_search.png"
-      }
+        background = "#FDE04C",
+        {
+            TextView,
+            layout_centerInParent = true,
+            text = "动漫屋",
+            textColor = "#43250C",
+            textSize = "18sp",
+        },
+        {
+            ImageView,
+            id = "iv_search",
+            layout_width = "56dp",
+            layout_height = "56dp",
+            padding = "16dp",
+            layout_alignParentRight = true,
+            src = "#dm5/ic_search.png"
+        }
     },
     {
         RecyclerView,
@@ -80,9 +80,9 @@ local layout = {
 }
 
 local function launchSearch()
-  local intent = Intent(activity, LuaActivity)
-  intent.putExtra("luaPath", "dm5/search.lua")
-  activity.startActivity(intent)
+    local intent = Intent(activity, LuaActivity)
+    intent.putExtra("luaPath", "dm5/search.lua")
+    activity.startActivity(intent)
 end
 
 local item_banner = {
@@ -114,6 +114,7 @@ local item_title = {
     {
         TextView,
         text = '更多﹥',
+        visibility = "gone",
         layout_alignParentRight = true,
         layout_centerVertical = true,
     },

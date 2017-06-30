@@ -40,33 +40,33 @@ local layout = {
     layout_height = "fill",
     statusBarColor = "#FDE04C",
     {
-      RelativeLayout,
-      layout_width = "fill",
-      layout_height = "56dp",
-      background = "#FDE04C",
-      {
-          EditText,
-          id = "et_keyword",
-          layout_width = "fill",
-          layout_height = "fill",
-          layout_marginLeft = "16dp",
-          layout_marginRight = "64dp",
-          maxLines = 1,
-          background = "#00FDE04C",
-          layout_centerInParent = true,
-          hint = "请输入关键字",
-          textColor = "#43250C",
-          textSize = "16sp",
-      },
-      {
-        ImageView,
-        id = "iv_search",
-        layout_width = "56dp",
+        RelativeLayout,
+        layout_width = "fill",
         layout_height = "56dp",
-        padding = "16dp",
-        layout_alignParentRight = true,
-        src = "#dm5/ic_search.png"
-      }
+        background = "#FDE04C",
+        {
+            EditText,
+            id = "et_keyword",
+            layout_width = "fill",
+            layout_height = "fill",
+            layout_marginLeft = "16dp",
+            layout_marginRight = "64dp",
+            maxLines = 1,
+            background = "#00FDE04C",
+            layout_centerInParent = true,
+            hint = "请输入关键字",
+            textColor = "#43250C",
+            textSize = "16sp",
+        },
+        {
+            ImageView,
+            id = "iv_search",
+            layout_width = "56dp",
+            layout_height = "56dp",
+            padding = "16dp",
+            layout_alignParentRight = true,
+            src = "#dm5/ic_search.png"
+        }
     },
     {
         RecyclerView,
@@ -128,39 +128,39 @@ local adapter
 local lastKey = ''
 
 local function search()
-   -- search
-   local key = et_keyword.getText().toString()
-   local reset = false
-   if key ~= lastKey then
-     reset = true
-     lastKey = key
-     page = 1
-   end
-   local options = {
-     url = 'http://m.dm5.com/pagerdata.ashx',
-     method = "POST",
-     formData = {
-       "t:7",
-       "f:0",
-       "pageindex:" .. page,
-       "title:" ..key,
-     }
-   }
-   log.print_r(options)
-   LuaHttp.request(options, function(e,code,body)
-     if e or code ~= 200 then return end
-     local json  = JSON.decode(body)
-     page = page + 1
-     uihelper.runOnUiThread(activity, function()
-       if reset then
-         for k,_ in pairs(data) do data[k] = nil end
-       end
-       for i = 1,#json do
-         data[#data +1]  = json[i]
-       end
-       adapter.notifyDataSetChanged()
-     end)
-   end)
+    -- search
+    local key = et_keyword.getText().toString()
+    local reset = false
+    if key ~= lastKey then
+        reset = true
+        lastKey = key
+        page = 1
+    end
+    local options = {
+        url = 'http://m.dm5.com/pagerdata.ashx',
+        method = "POST",
+        formData = {
+            "t:7",
+            "f:0",
+            "pageindex:" .. page,
+            "title:" .. key,
+        }
+    }
+    log.print_r(options)
+    LuaHttp.request(options, function(e, code, body)
+        if e or code ~= 200 then return end
+        local json = JSON.decode(body)
+        page = page + 1
+        uihelper.runOnUiThread(activity, function()
+            if reset then
+                for k, _ in pairs(data) do data[k] = nil end
+            end
+            for i = 1, #json do
+                data[#data + 1] = json[i]
+            end
+            adapter.notifyDataSetChanged()
+        end)
+    end)
 end
 
 function onDestroy()
@@ -211,7 +211,7 @@ function onCreate(savedInstanceState)
             end
 
             if position == #data then
-              search(true)
+                search(true)
             end
         end,
     }))

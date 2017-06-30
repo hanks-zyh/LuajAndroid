@@ -1,4 +1,3 @@
-
 --
 -- Created by IntelliJ IDEA.
 -- User: hanks
@@ -38,18 +37,17 @@ local JSON = require "cjson"
 local log = require("log")
 local screenWidth = uihelper.getScreenWidth()
 
-local function getData(rid, data, adapter, fragment,swipe_layout)
+local function getData(rid, data, adapter, fragment, swipe_layout)
     if rid == nil then rid = '/news/getnews' end
-    local url = string.format('http://www.buka.cn%s',rid)
+    local url = string.format('http://www.buka.cn%s', rid)
     local options = {
         url = url,
         method = 'POST',
         headers = { 'X-Requested-With:XMLHttpRequest' },
         formData = {
-            'start='.. data.page
+            'start=' .. data.page
         }
     }
-    print(url)
     LuaHttp.request(options, function(error, code, body)
         if error or code ~= 200 then
             print('fetch buka data error')
@@ -57,89 +55,89 @@ local function getData(rid, data, adapter, fragment,swipe_layout)
         end
         local arr = JSON.decode(body).items
         uihelper.runOnUiThread(activity, function()
-            for i=1,#arr do
+            for i = 1, #arr do
                 data.items[#data.items + 1] = arr[i]
             end
             data.page = data.page + 1
             adapter.notifyDataSetChanged()
             swipe_layout.setRefreshing(false)
-	        swipe_layout.setEnabled(false)
+            swipe_layout.setEnabled(false)
         end)
     end)
 end
 
 local function launchDetail(fragment, item)
-  local activity = fragment.getActivity()
-  if item and item.mid then
-    local intent = Intent(activity, LuaActivity)
-    intent.putExtra("luaPath", 'buka/detail.lua')
-    intent.putExtra("mid", item.mid)
-    activity.startActivity(intent)
-  end 
+    local activity = fragment.getActivity()
+    if item and item.mid then
+        local intent = Intent(activity, LuaActivity)
+        intent.putExtra("luaPath", 'buka/detail.lua')
+        intent.putExtra("mid", item.mid)
+        activity.startActivity(intent)
+    end
 end
 
 function newInstance(rid)
 
-	-- create view table
-	local layout = {
-		SwipeRefreshLayout,
-      layout_width = "fill",
-      layout_height = "fill",
-      id = "swipe_layout",
-		{
-			RecyclerView,
-			id = "recyclerView",
-			layout_width = "fill",
-			layout_height = "fill",
-			 paddingTop = "8dp",
-            paddingLeft= "4dp",
+    -- create view table
+    local layout = {
+        SwipeRefreshLayout,
+        layout_width = "fill",
+        layout_height = "fill",
+        id = "swipe_layout",
+        {
+            RecyclerView,
+            id = "recyclerView",
+            layout_width = "fill",
+            layout_height = "fill",
+            paddingTop = "8dp",
+            paddingLeft = "4dp",
             paddingRight = "4dp",
             clipToPadding = false,
-		},
-	}
+        },
+    }
 
-	local item_category = {
-	    LinearLayout,
-	    layout_width = (screenWidth - uihelper.dp2px(8)) / 3,
-	    layout_height = "210dp",
-	    paddingLeft = "4dp",
-	    paddingRight = "4dp",
-	    paddingTop = "8dp",
-	    orientation = "vertical",
-	    gravity = "center",
-	    {
-	        ImageView,
-	        id = "iv_cover",
-	        layout_width = "fill",
-	        layout_height = "160dp",
-	        scaleType = "centerCrop",
-	    },
-	    {
-	        TextView,
-	        id = "tv_title",
-	        layout_height = "26dp",
-	        layout_width = "match",
-	        padding = "4dp",
-	        textSize = "14sp",
-	        textColor = "#444444",
-	        singleLine = true,
-	        ellipsize = "end",
-	        gravity = "center",
-	    }, 
-	    {
-	        TextView,
-	        id = "tv_info",
-	        layout_height = "15dp",
-	        layout_width = "match",
-	        textSize = "12sp",
-	        textColor = "#888888",
-	        singleLine = true,
-	        ellipsize = "end",
-	        gravity = "center",
-	    },
-	}
+    local item_category = {
+        LinearLayout,
+        layout_width = (screenWidth - uihelper.dp2px(8)) / 3,
+        layout_height = "210dp",
+        paddingLeft = "4dp",
+        paddingRight = "4dp",
+        paddingTop = "8dp",
+        orientation = "vertical",
+        gravity = "center",
+        {
+            ImageView,
+            id = "iv_cover",
+            layout_width = "fill",
+            layout_height = "160dp",
+            scaleType = "centerCrop",
+        },
+        {
+            TextView,
+            id = "tv_title",
+            layout_height = "26dp",
+            layout_width = "match",
+            padding = "4dp",
+            textSize = "14sp",
+            textColor = "#444444",
+            singleLine = true,
+            ellipsize = "end",
+            gravity = "center",
+        },
+        {
+            TextView,
+            id = "tv_info",
+            layout_height = "15dp",
+            layout_width = "match",
+            textSize = "12sp",
+            textColor = "#888888",
+            singleLine = true,
+            ellipsize = "end",
+            gravity = "center",
+        },
+    }
 
-	local data = { page = 0, items = {} }
+    local data = { page = 0, items = {} }
     local hadLoadData
     local isVisible
     local ids = {}
@@ -152,43 +150,44 @@ function newInstance(rid)
         hadLoadData = true
         getData(rid, data, adapter, fragment, ids.swipe_layout)
     end
+
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
         onCreateView = function(inflater, container, savedInstanceState)
-            return  loadlayout(layout, ids)
+            return loadlayout(layout, ids)
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaRecyclerAdapter(luajava.createProxy('androlua.adapter.LuaRecyclerAdapter$AdapterCreator', {
-		        getItemCount = function()
-		            return #data.items
-		        end,
-		        getItemViewType = function(position)
-		            return 0
-		        end,
-		        onCreateViewHolder = function(parent, viewType)
-		            local views = {}
-		            local holder= LuaRecyclerHolder(loadlayout(item_category, views, RecyclerView))
-		            holder.itemView.setTag(views)
-		            holder.itemView.getLayoutParams().width = screenWidth / 3
-		            holder.itemView.onClick = function ( v )
-		            	local position = holder.getAdapterPosition() + 1
-		            	launchDetail(fragment, data.items[position])
-		            end
-		            return holder
-		        end,
-		        onBindViewHolder = function(holder, position)
-		        	position = position + 1
-		            local views = holder.itemView.getTag()
+                getItemCount = function()
+                    return #data.items
+                end,
+                getItemViewType = function(position)
+                    return 0
+                end,
+                onCreateViewHolder = function(parent, viewType)
+                    local views = {}
+                    local holder = LuaRecyclerHolder(loadlayout(item_category, views, RecyclerView))
+                    holder.itemView.setTag(views)
+                    holder.itemView.getLayoutParams().width = screenWidth / 3
+                    holder.itemView.onClick = function(v)
+                        local position = holder.getAdapterPosition() + 1
+                        launchDetail(fragment, data.items[position])
+                    end
+                    return holder
+                end,
+                onBindViewHolder = function(holder, position)
+                    position = position + 1
+                    local views = holder.itemView.getTag()
                     local item = data.items[position]
                     LuaImageLoader.load(views.iv_cover, item.logo)
                     views.tv_title.setText(item.name)
                     views.tv_info.setText(item.lastup)
-		            if  position == #data.items then getData(rid, data, adapter, fragment, ids.swipe_layout) end
-		        end,
-		    }))
-		    ids.recyclerView.setLayoutManager(GridLayoutManager(activity, 3))
-		    ids.recyclerView.setAdapter(adapter)
-	        ids.swipe_layout.setRefreshing(true)
-	        lazyLoad()
+                    if position == #data.items then getData(rid, data, adapter, fragment, ids.swipe_layout) end
+                end,
+            }))
+            ids.recyclerView.setLayoutManager(GridLayoutManager(activity, 3))
+            ids.recyclerView.setAdapter(adapter)
+            ids.swipe_layout.setRefreshing(true)
+            lazyLoad()
         end,
         onUserVisible = function(visible)
             isVisible = visible

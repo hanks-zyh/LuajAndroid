@@ -11,6 +11,7 @@ import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -76,11 +77,11 @@ public class LuaImageLoader {
             blurTransformation = new BlurTransformation(context, (int) blueRadius);
         }
         if (radius > 0 && blueRadius > 0) {
-            manager.bitmapTransform(roundedCornersTransformation, blurTransformation);
+            manager.bitmapTransform(new CenterCrop(context),roundedCornersTransformation, blurTransformation);
         } else if (radius > 0) {
-            manager.bitmapTransform(roundedCornersTransformation);
+            manager.bitmapTransform(new CenterCrop(context),roundedCornersTransformation);
         } else if (blueRadius > 0) {
-            manager.bitmapTransform(blurTransformation);
+            manager.bitmapTransform(new CenterCrop(context),blurTransformation);
         }
         manager
                 .placeholder(placeholderDrawable)

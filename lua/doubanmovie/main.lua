@@ -48,7 +48,7 @@ local layout = {
             layout_width = "fill",
             layout_height = "fill",
             paddingTop = "8dp",
-            paddingLeft= "4dp",
+            paddingLeft = "4dp",
             paddingRight = "4dp",
             clipToPadding = false,
         },
@@ -73,11 +73,11 @@ local item_view = {
         scaleType = "centerCrop",
     },
     {
-      View,
-      layout_width = "fill",
-      layout_height = "36dp",
-      background = "#AA000000",
-      layout_gravity = "bottom",
+        View,
+        layout_width = "fill",
+        layout_height = "36dp",
+        background = "#AA000000",
+        layout_gravity = "bottom",
     },
     {
         TextView,
@@ -128,7 +128,7 @@ end
 local function launchDetail(item)
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", 'doubanmovie/detail.lua')
-    intent.putExtra("id", item.id ..'')
+    intent.putExtra("id", item.id .. '')
     activity.startActivity(intent)
 end
 
@@ -174,7 +174,7 @@ function onCreate(savedInstanceState)
                 views.tv_title.setText(item.nm)
                 local sc = item.sc
                 if sc == nil or sc == 0 then sc = '' end
-                views.tv_score.setText( '' .. sc)
+                views.tv_score.setText('' .. sc)
             end
         end,
     }))

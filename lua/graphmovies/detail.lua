@@ -153,10 +153,10 @@ local function getData()
                 "a:1",
             },
         }
-        LuaHttp.request(options, function(e, c, b) 
-            baseUrl = string.match(b,'data":{"p":"(.-)"')
+        LuaHttp.request(options, function(e, c, b)
+            baseUrl = string.match(b, 'data":{"p":"(.-)"')
             print(baseUrl)
-            for m, r in string.gmatch(b, '"m":"(.-)","r":"(.-)"') do 
+            for m, r in string.gmatch(b, '"m":"(.-)","r":"(.-)"') do
                 data[#data + 1] = { m = m, r = r }
             end
             uihelper.runOnUiThread(activity, function()

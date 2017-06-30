@@ -1,9 +1,9 @@
 {
-    "id":"pub.hanks.ithome",
-    "name":"IT之家",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10neq5anj20460460sh.jpg",
-    "main":"main.lua",
-    "versionName":"1.0",
-    "versionCode":2,
-    "desc":"快速精选IT新闻"
+  "id": "pub.hanks.ithome",
+  "name": "IT之家",
+  "icon": "http://ww1.sinaimg.cn/large/8c9b876fly1fh34zt6cspj20460460sh.jpg",
+  "main": "main.lua",
+  "versionName": "1.0",
+  "versionCode": 2,
+  "desc": "快速精选IT新闻"
 }

@@ -2,7 +2,7 @@
 -- Created by IntelliJ IDEA.  Copyright (C) 2017 Hanks
 -- User: hanks
 -- Date: 2017/5/26
--- 漫本联盟 dm5.com
+-- 布卡漫画
 --
 require "import"
 import "android.widget.*"
@@ -166,45 +166,35 @@ local function updateHeader()
     LuaImageLoader.load(iv_cover, baseInfo.coverImg or '')
     tv_title.setText(baseInfo.title or '')
     tv_type.setText(string.format('%s        %s', trim(baseInfo.author), trim(baseInfo.type)))
-    tv_score.setText('评分:' .. baseInfo.score)
+    tv_score.setText(baseInfo.score)
     tv_desc.setText(baseInfo.desc or '')
     tv_updateinfo.setText(baseInfo.updateInfo or '')
 end
 
-local function getData(url)
+local function getData(mid)
+    local url = string.format('http://www.buka.cn/detail/%s', mid)
+    print(url)
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then
             print('fetch dm5 data error')
             return
         end
         uihelper.runOnUiThread(activity, function()
-            -- TOP10
-            local coverImg = string.match(body, '<div class="coverForm".-<img src="(.-)"')
-            local info = string.match(body, '<div class="info d[-]item[-]content">(.-)</div>')
-            local title = string.match(info, '<p class="title d[-]nowrap">(.-)</p>')
-            local updateInfo = string.match(info, '<p class="bottom d[-]nowrap">(.-)</p>')
-            local author, type
-            for sub in string.gmatch(info, '<p class="subtitle d[-]nowrap">(.-)</p>') do
-                if type == nil then
-                    type = sub
-                else
-                    author = sub
-                end
-            end
-            local score = string.match(body, '<div class="sorce">(.-)</div>'):gsub('<.->', '')
-            local desc = string.match(body, '<div class="detailContent">(.-)</div>'):gsub('<.->', '')
+            local coverImg, title = string.match(body, '<div class="manga[-]img .-<img src="(.-)" width="%d+" height="%d+" alt="(.-)"')
+
+            local updateInfo = string.match(body, '<div class="author[-]names".-<span.->(.-)</span>')
+            local author = string.match(body, '<a .-class="author">(.-)</a>')
+            local desc = string.match(body, '<div class="manga[-]desc[-]font">(.-)</div>')
+
             baseInfo.coverImg = coverImg
             baseInfo.title = trim(title)
-            baseInfo.type = type:gsub('%s+', ' ')
+            baseInfo.type = ''
             baseInfo.author = author:gsub('%s+', ' ')
-            baseInfo.score = score:gsub('%s+', ' ')
+            baseInfo.score = ''
             baseInfo.updateInfo = updateInfo:gsub('%s+', ' ')
             baseInfo.desc = trim(desc)
             updateHeader()
-            local capters = string.match(body, '<div .-id="chapterList_1".->(.-)</div>')
-            for li in string.gmatch(capters, '<li>(.-)</li>') do
-                local url = string.match(li, '<a href="(.-)"')
-                local name = li:gsub('<.->', ''):gsub('%s+', '')
+            for url, name in string.gmatch(body, '<a  class="epsbox[-]eplink ".-onclick="payChapter[(]\'(.-)\',\'(.-)\'') do
                 data[#data + 1] = { url = url, name = name }
             end
             adapter.notifyDataSetChanged()
@@ -214,8 +204,8 @@ end
 
 function launchDetail(item)
     local intent = Intent(activity, LuaActivity)
-    intent.putExtra("luaPath", "dm5/viewer.lua")
-    intent.putExtra("id", item.url)
+    intent.putExtra("luaPath", "buka/viewer.lua")
+    intent.putExtra("url", item.url)
     activity.startActivity(intent)
 end
 
@@ -254,6 +244,6 @@ function onCreate(savedInstanceState)
     recyclerView.setLayoutManager(GridLayoutManager(activity, 4))
     recyclerView.setAdapter(adapter)
 
-    local url = activity.getIntent().getStringExtra('url')
-    getData(url or 'http://m.dm5.com/manhua-yongzheheluku/')
+    local mid = activity.getIntent().getStringExtra('mid')
+    getData(mid)
 end

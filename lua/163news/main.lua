@@ -8,7 +8,7 @@ require "import"
 import "android.widget.*"
 import "android.content.*"
 import "android.view.View"
- import "android.support.v4.view.ViewPager"
+import "android.support.v4.view.ViewPager"
 import "android.support.design.widget.TabLayout"
 import "androlua.adapter.LuaFragmentPageAdapter"
 
@@ -55,7 +55,7 @@ local data = {
     titles = {},
     fragments = {},
 }
- 
+
 
 table.insert(data.fragments, fragmentNews.newInstance('BA8J7DG9wangning'))
 table.insert(data.titles, '推荐')
@@ -83,17 +83,17 @@ table.insert(data.titles, '体育')
 
 table.insert(data.fragments, fragmentNews.newInstance('BCR1UC1Qwangning'))
 table.insert(data.titles, '社会')
- 
+
 table.insert(data.fragments, fragmentNews.newInstance('BA10TA81wangning'))
 table.insert(data.titles, '娱乐')
 
 table.insert(data.fragments, fragmentNews.newInstance('BA8FF5PRwangning'))
-table.insert(data.titles, '教育') 
+table.insert(data.titles, '教育')
 
 table.insert(data.fragments, fragmentNews.newInstance('BAI6RHDKwangning'))
-table.insert(data.titles, '图片') 
+table.insert(data.titles, '图片')
 
- 
+
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
     luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
         getCount = function() return #data.fragments end,
@@ -153,5 +153,4 @@ function onCreate(savedInstanceState)
     --             adapter.notifyDataSetChanged()
     --         end)
     --     end)
-
 end

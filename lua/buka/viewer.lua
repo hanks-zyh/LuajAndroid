@@ -14,9 +14,7 @@ import "androlua.widget.video.VideoPlayerActivity"
 import "androlua.LuaImageLoader"
 import "androlua.LuaWebView"
 
-
 local uihelper = require("uihelper")
-local JSON = require("cjson")
 
 -- create view table
 local layout = {
@@ -28,7 +26,7 @@ local layout = {
         ListView,
         id = "listview",
         dividerHeight = "4dp",
-        layouti_width = "fill",
+        layout_width = "fill",
         layout_height = "fill",
     },
     {
@@ -55,70 +53,30 @@ local item_view = {
 local data = {}
 local adapter
 
-local htmlTemplate = [[
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head>
-<body>
-<script type="text/javascript">
-%s
-</script>
-<script type="text/javascript">
-var s = {};
-s.method = 'setImg';
-s.data = newImgs;
-window.luaApp.call(JSON.stringify(s));
-</script>
-</body>
-</html>
-]]
-local function toast(s)
-    uihelper.runOnUiThread(activity, function()
-        activity.toast(s)
-    end)
-end
-
-
 local function getData(url)
     LuaHttp.request({ url = url }, function(error, code, body)
-        local script = string.match(body, '<script type="text/javascript">(.-)</script>')
-        local data = string.format(htmlTemplate, script)
         uihelper.runOnUiThread(activity, function()
-            webview.loadData(data, "text/html; charset=UTF-8", nil)
+            for url in string.gmatch(body, ' data[-]original="(.-)"') do
+                data[#data + 1] = url
+            end
+            local u = data[1] or 'http://c-r6.sosobook.cn/pics/103915/65603/t4029739_0001.jpg'
+            table.insert(data, 1, u:sub(1, #u - 5) .. '1.jpg')
+            adapter.notifyDataSetChanged()
         end)
     end)
 end
 
-local log = require('log')
 function launchDetail(item)
-end
-
-local function callback(jsonStr)
-    local json = JSON.decode(jsonStr)
-    if json.method ~= 'setImg' then
-        return
-    end
-
-    uihelper.runOnUiThread(activity, function()
-        for i = 1, #json.data do
-            data[#data + 1] = json.data[i]
-        end
-        adapter.notifyDataSetChanged()
-    end)
 end
 
 function onCreate(savedInstanceState)
     activity.setStatusBarColor(0x00000000)
     activity.setContentView(loadlayout(layout))
 
-    local id = activity.getIntent().getStringExtra('id')
-    local url = 'http://m.dm5.com' .. id
-
-    webview.injectObjectToJavascript(callback, "luaApp")
-
+    local url = activity.getIntent().getStringExtra('url')
+    if not url:find('^http://') then
+        url = 'http://www.buka.cn' .. url
+    end
     adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
         getCount = function() return #data end,
         getView = function(position, convertView, parent)
@@ -143,7 +101,5 @@ function onCreate(savedInstanceState)
         onItemClick = function(adapter, view, position, id)
         end,
     }))
-
-
     getData(url)
 end

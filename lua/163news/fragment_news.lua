@@ -20,28 +20,28 @@ local JSON = require "cjson"
 local log = require "log"
 
 
-local function getData(params, data, adapter, fragment,swipe_layout, reload)
+local function getData(params, data, adapter, fragment, swipe_layout, reload)
 
     -- http://3g.163.com/touch/jsonp/sy/recommend/30-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec3
     -- http://3g.163.com/touch/jsonp/sy/recommend/40-10.html?hasad=1&miss=25&refresh=A&offset=0&size=10&callback=syrec4
     -- http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/10-10.html
     -- http://3g.163.com/touch/reconstruct/article/list/BBM54PGAwangning/20-10.html
     -- http://3g.163.com/touch/reconstruct/article/list/BCR1UC1Qwangning/0-10.html
-    
+
     local url = string.format('http://3g.163.com/touch/reconstruct/article/list/%s/%d-10.html', params.rid, params.page * 10)
     print(url)
 
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then return end
-        body = body:sub(10,#body-1)
+        body = body:sub(10, #body - 1)
         print(body)
         local arr = JSON.decode(body)[params.rid]
         uihelper.runOnUiThread(fragment.getActivity(), function()
             if reload then
-                for k,_ in pairs(date) do data[k] = nil end
+                for k, _ in pairs(date) do data[k] = nil end
             end
-            for i=1,#arr do
-              data[#data + 1] = arr[i]
+            for i = 1, #arr do
+                data[#data + 1] = arr[i]
             end
             params.page = params.page + 1
             adapter.notifyDataSetChanged()
@@ -56,8 +56,8 @@ local function launchDetail(fragment, item)
         activity.toast('没有 url 可以打开')
         return
     end
-    if not item.url:find('^http://') then 
-        WebViewActivity.start(activity, item.skipURL , 0xFFff3333)
+    if not item.url:find('^http://') then
+        WebViewActivity.start(activity, item.skipURL, 0xFFff3333)
         return
     else
         local activity = fragment.getActivity()
@@ -70,19 +70,19 @@ end
 
 local function dateStr(d)
     if type(d) == 'string' then
-        local Y,M,D,h,m,s = string.match(d,'(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)')
-        return dateStr(os.time({day=D,month=M,year=Y,hour=h,min=m,sec=s}))
+        local Y, M, D, h, m, s = string.match(d, '(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)')
+        return dateStr(os.time({ day = D, month = M, year = Y, hour = h, min = m, sec = s }))
     end
     local now = os.time()
     local dx = now - d
     if dx < 600 then
         return '刚刚'
-    elseif  dx < 3600 then
-        return math.floor(dx/60) .. '分钟前'
-    elseif  dx < 3600 * 24 then
-        return math.floor(dx/3600) .. '小时前'
+    elseif dx < 3600 then
+        return math.floor(dx / 60) .. '分钟前'
+    elseif dx < 3600 * 24 then
+        return math.floor(dx / 3600) .. '小时前'
     else
-        return os.date('%y-%m-%d',d)
+        return os.date('%y-%m-%d', d)
     end
 end
 
@@ -91,17 +91,16 @@ local function newInstance(rid)
 
     -- create view table
     local layout = {
-      SwipeRefreshLayout,
-      layout_width = "fill",
-      layout_height = "fill",
-      id = "swipe_layout",
-      {
-        ListView,
-        id = "listview",
+        SwipeRefreshLayout,
         layout_width = "fill",
         layout_height = "fill",
-        
-      }
+        id = "swipe_layout",
+        {
+            ListView,
+            id = "listview",
+            layout_width = "fill",
+            layout_height = "fill",
+        }
     }
 
     local item_view = {
@@ -149,7 +148,7 @@ local function newInstance(rid)
             textColor = "#aaaaaa",
         }
     }
-    local singleImg =  {
+    local singleImg = {
         ImageView,
         layout_width = (uihelper.getScreenWidth() - uihelper.dp2px(44)) / 3,
         layout_height = "83dp",
@@ -160,7 +159,7 @@ local function newInstance(rid)
     local hadLoadData
     local isVisible
     local lastId
-    local params = { rid=rid,  page = 0 }
+    local params = { rid = rid, page = 0 }
     local data = {}
     local ids = {}
     local adapter
@@ -172,9 +171,10 @@ local function newInstance(rid)
         hadLoadData = true
         getData(params, data, adapter, fragment, ids.swipe_layout)
     end
+
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
         onCreateView = function(inflater, container, savedInstanceState)
-            return  loadlayout(layout, ids)
+            return loadlayout(layout, ids)
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
@@ -195,24 +195,23 @@ local function newInstance(rid)
                             views.iv_image.setVisibility(8)
                             views.layout_imgs.setVisibility(0)
                             views.layout_imgs.removeAllViews()
-                            item.imgextra[#item.imgextra + 1] = {imgsrc=item.imgsrc}
+                            item.imgextra[#item.imgextra + 1] = { imgsrc = item.imgsrc }
                             local len = #item.imgextra
                             if len > 3 then len = 3 end
-                            for i=1,len do
-                              local img = loadlayout(singleImg,{},LinearLayout)
-                              LuaImageLoader.load(img, item.imgextra[i].imgsrc)    
-                              views.layout_imgs.addView(img)
+                            for i = 1, len do
+                                local img = loadlayout(singleImg, {}, LinearLayout)
+                                LuaImageLoader.load(img, item.imgextra[i].imgsrc)
+                                views.layout_imgs.addView(img)
                             end
                         else
                             views.iv_image.setVisibility(0)
                             views.layout_imgs.setVisibility(8)
-                            LuaImageLoader.load(views.iv_image, item.imgsrc) 
+                            LuaImageLoader.load(views.iv_image, item.imgsrc)
                         end
-                        views.tv_date.setText(string.format('%s        %s', dateStr(item.ptime), item.source ))
+                        views.tv_date.setText(string.format('%s        %s', dateStr(item.ptime), item.source))
                         views.tv_title.setText(item.title)
-
                     end
-                    
+
                     if position == #data then getData(params, data, adapter, fragment, ids.swipe_layout) end
 
                     return convertView

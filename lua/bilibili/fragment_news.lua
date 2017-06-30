@@ -18,15 +18,15 @@ import "android.support.v4.widget.SwipeRefreshLayout"
 local uihelper = require "uihelper"
 local JSON = require "cjson"
 
-local function getData(rid, data, adapter, fragment,swipe_layout)
+local function getData(rid, data, adapter, fragment, swipe_layout)
     if rid == nil then rid = 0 end
-    local url = string.format('https://api.bilibili.com/x/web-interface/ranking?rid=%d&day=3&jsonp=jsonp',rid)
+    local url = string.format('https://api.bilibili.com/x/web-interface/ranking?rid=%d&day=3&jsonp=jsonp', rid)
     LuaHttp.request({ url = url }, function(error, code, body)
         if error or code ~= 200 then return end
         local arr = JSON.decode(body).data.list
         uihelper.runOnUiThread(fragment.getActivity(), function()
-            for i=1,#arr do
-              data[#data + 1] = arr[i]
+            for i = 1, #arr do
+                data[#data + 1] = arr[i]
             end
             adapter.notifyDataSetChanged()
             swipe_layout.setRefreshing(false)
@@ -35,30 +35,29 @@ local function getData(rid, data, adapter, fragment,swipe_layout)
 end
 
 local function launchDetail(fragment, item)
-  local activity = fragment.getActivity()
-  if item and item.aid then
-      local url = string.format('https://m.bilibili.com/video/av%d.html', item.aid)
-      WebViewActivity.start(activity, url, 0xFFfb7299)
-      return
-  end
-  activity.toast('没有 url 可以打开')
+    local activity = fragment.getActivity()
+    if item and item.aid then
+        local url = string.format('https://m.bilibili.com/video/av%d.html', item.aid)
+        WebViewActivity.start(activity, url, 0xFFfb7299)
+        return
+    end
+    activity.toast('没有 url 可以打开')
 end
 
 function newInstance(rid)
 
     -- create view table
     local layout = {
-      SwipeRefreshLayout,
-      layout_width = "fill",
-      layout_height = "fill",
-      id = "swipe_layout",
-      {
-        ListView,
-        id = "listview",
+        SwipeRefreshLayout,
         layout_width = "fill",
         layout_height = "fill",
-      }
-
+        id = "swipe_layout",
+        {
+            ListView,
+            id = "listview",
+            layout_width = "fill",
+            layout_height = "fill",
+        }
     }
 
     local item_view = {
@@ -112,9 +111,10 @@ function newInstance(rid)
         hadLoadData = true
         getData(rid, data, adapter, fragment, ids.swipe_layout)
     end
+
     fragment.setCreator(luajava.createProxy('androlua.LuaFragment$FragmentCreator', {
         onCreateView = function(inflater, container, savedInstanceState)
-            return  loadlayout(layout, ids)
+            return loadlayout(layout, ids)
         end,
         onViewCreated = function(view, savedInstanceState)
             adapter = LuaAdapter(luajava.createProxy("androlua.LuaAdapter$AdapterCreator", {
@@ -131,7 +131,7 @@ function newInstance(rid)
                     local item = data[position]
                     if item then
                         LuaImageLoader.load(views.iv_image, item.pic)
-                        views.tv_date.setText(string.format('%d 次播放        %d 条弹幕',item.play ,item.video_review))
+                        views.tv_date.setText(string.format('%d 次播放        %d 条弹幕', item.play, item.video_review))
                         views.tv_title.setText(item.title)
                     end
                     return convertView

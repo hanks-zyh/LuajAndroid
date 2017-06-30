@@ -122,5 +122,4 @@ function onCreate(savedInstanceState)
     tab.setTabMode(TabLayout.MODE_SCROLLABLE)
     tab.setTabGravity(TabLayout.GRAVITY_CENTER)
     tab.setupWithViewPager(viewPager)
-
 end

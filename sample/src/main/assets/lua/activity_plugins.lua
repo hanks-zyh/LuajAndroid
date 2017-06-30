@@ -33,15 +33,15 @@ local layout = {
         layout_width = "fill",
         layout_height = "56dp",
         background = "#222222",
-        gravity="center_vertical",
+        gravity = "center_vertical",
         {
             ImageView,
             id = "back",
             layout_width = "40dp",
             layout_height = "40dp",
-            layout_marginLeft="12dp",
-            src="@drawable/ic_menu_back",
-            scaleType="centerInside",
+            layout_marginLeft = "12dp",
+            src = "@drawable/ic_menu_back",
+            scaleType = "centerInside",
         },
         {
             TextView,
@@ -49,7 +49,7 @@ local layout = {
             layout_width = "fill",
             id = "tv_title",
             gravity = "center_vertical",
-            paddingLeft="8dp",
+            paddingLeft = "8dp",
             textColor = "#ffffff",
             textSize = "16sp",
             text = "插件列表",
@@ -74,7 +74,7 @@ local item_view = {
         layout_gravity = "center_vertical",
         layout_width = "40dp",
         layout_height = "40dp",
-        scaleType="centerInside",
+        scaleType = "centerInside",
     },
     {
         TextView,
@@ -129,9 +129,9 @@ end
 
 local function flatTypeColor(type)
     local color = 0xff111111
-    if type == 'uninstall' then color  = 0xff888888
-    elseif type == 'update' then color =  0xff222222
-    elseif type == 'downloading' then color =  0xffc22525
+    if type == 'uninstall' then color = 0xff888888
+    elseif type == 'update' then color = 0xff222222
+    elseif type == 'downloading' then color = 0xffc22525
     end
     return color
 end
@@ -141,7 +141,7 @@ local data = {} -- plugin list
 local adapter
 
 local function notifyAdapterData()
-    uihelper.runOnUiThread(activity,function() adapter.notifyDataSetChanged() end)
+    uihelper.runOnUiThread(activity, function() adapter.notifyDataSetChanged() end)
 end
 
 local function compareWithLocal(localList, plugin)
@@ -157,20 +157,20 @@ local function compareWithLocal(localList, plugin)
 end
 
 local function getData()
-  local options = {
-      url = 'https://coding.net/u/zhangyuhan/p/api_luanroid/git/raw/master/api/plugins'
-  }
-  LuaHttp.request(options, function(error, code, body)
-      local localList = FileUtils.getPluginList()
-      local json = JSON.decode(body)
-      local list = json.data
-      for i = 1, #list do
-          local plugin = list[i]
-          compareWithLocal(localList, plugin)
-          data[#data + 1] =  plugin;
-      end
-      notifyAdapterData()
-  end)
+    local options = {
+        url = 'https://coding.net/u/zhangyuhan/p/api_luanroid/git/raw/master/api/plugins'
+    }
+    LuaHttp.request(options, function(error, code, body)
+        local localList = FileUtils.getPluginList()
+        local json = JSON.decode(body)
+        local list = json.data
+        for i = 1, #list do
+            local plugin = list[i]
+            compareWithLocal(localList, plugin)
+            data[#data + 1] = plugin;
+        end
+        notifyAdapterData()
+    end)
 end
 
 

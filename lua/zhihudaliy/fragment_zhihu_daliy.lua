@@ -42,7 +42,7 @@ local function launchDetail(fragment, newsid)
     local activity = fragment.getActivity()
     local intent = Intent(activity, LuaActivity)
     intent.putExtra("luaPath", 'zhihudaliy/activity_zhihu_daliy_detail.lua')
-    intent.putExtra("newsid", string.format('%d',newsid))
+    intent.putExtra("newsid", string.format('%d', newsid))
     activity.startActivity(intent)
 end
 

@@ -1,9 +1,9 @@
 {
-    "id":"pub.hanks.bilibili",
-    "name":"哔哩哔哩",
-    "icon":"http://ww1.sinaimg.cn/large/8c9b876fly1fh10o9bu6jj2046046jr5.jpg",
-    "main":"main.lua",
-    "versionName":"1.0",
-    "versionCode":1,
-    "desc":"B 站视频排行"
+  "id": "pub.hanks.bilibili",
+  "name": "哔哩哔哩",
+  "icon": "http://ww1.sinaimg.cn/large/8c9b876fly1fh10o9bu6jj2046046jr5.jpg",
+  "main": "main.lua",
+  "versionName": "1.0",
+  "versionCode": 1,
+  "desc": "B 站视频排行"
 }

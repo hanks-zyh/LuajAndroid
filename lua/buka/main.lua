@@ -21,13 +21,13 @@ local layout = {
     layout_width = "fill",
     layout_height = "fill",
     orientation = "vertical",
-    statusBarColor = "#fb7299",
+    statusBarColor = "#F4B440",
     {
         TabLayout,
         id = "tab",
         layout_width = "fill",
         layout_height = "48dp",
-        background = "#fb7299",
+        background = "#F4B440",
     },
     {
         FrameLayout,
@@ -64,13 +64,13 @@ table.insert(data.titles, '已完结')
 
 table.insert(data.fragments, fragmentNews.newInstance('/category/12084/最近上新'))
 table.insert(data.titles, '最近上新')
- 
+
 table.insert(data.fragments, fragmentNews.newInstance('/category/12053/日韩'))
 table.insert(data.titles, '日韩')
- 
+
 table.insert(data.fragments, fragmentNews.newInstance('/category/12036/条漫'))
 table.insert(data.titles, '条漫')
- 
+
 
 local adapter = LuaFragmentPageAdapter(activity.getSupportFragmentManager(),
     luajava.createProxy("androlua.adapter.LuaFragmentPageAdapter$AdapterCreator", {
@@ -96,5 +96,4 @@ function onCreate(savedInstanceState)
     tab.setTabMode(TabLayout.MODE_SCROLLABLE)
     tab.setTabGravity(TabLayout.GRAVITY_CENTER)
     tab.setupWithViewPager(viewPager)
-
 end

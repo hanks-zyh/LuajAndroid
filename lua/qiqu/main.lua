@@ -48,15 +48,9 @@ local layout = {
 
 function onCreate(savedInstanceState)
     activity.setContentView(loadlayout(layout))
-    webview.setVisibility(8)
-    progressBar.setVisibility(0)
+    webview.setVisibility(0)
+    progressBar.setVisibility(8)
     webview.loadUrl('http://hanks.pub/joke/')
-    webview.setWebViewClientListener(luajava.createProxy('androlua.LuaWebView$WebViewClientListener', {
-        onPageFinished = function(view, url)
-            webview.setVisibility(0)
-            progressBar.setVisibility(8)
-        end
-    }))
 end
 
 function onDestroy()
